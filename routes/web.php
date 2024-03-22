@@ -117,9 +117,14 @@ Route::post('/vnpay-payment','CheckoutController@vnpay_payment');
 Route::post('/momo-payment','CheckoutController@momo_payment');
 
 //Banner
-Route::get('/managa-banner','SliderController@register_auth');
+Route::get('/managa-slider','SliderController@manage_slider');
+Route::get('/add-slider','SliderController@add_slider');
+Route::post('/insert-slider','SliderController@insert_slider');
+Route::get('/unactive-slider/{slider_id}','SliderController@unactive_slider');
+Route::get('/active-slider/{slider_id}','SliderController@active_slider');
+
 //Phan quyen
-Route::get('/register-auth','AuthController@register_auth');
+
 
 
 

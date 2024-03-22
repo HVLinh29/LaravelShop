@@ -24,6 +24,7 @@
               <th style="color: brown">Hinh anh</th>
               <th style="color: brown">Mo ta</th>
               <th style="color: brown">Tinh trang</th>
+              <th style="color: brown">Quan ly</th>
             
               <th style="width:30px;"></th>
             </tr>
@@ -31,19 +32,20 @@
           <tbody>
             @foreach($all_slider as $key =>$sli)
             <tr>
-              <td>{{$br->brand_name}}</td>
-              <td>{{$br->brand_desc}}</td>
+              <td>{{$sli->slider_name}}</td>
+              <td><img src ="public/uploads/slider/{{$sli->slider_image}}" height="100" width="100"></td>
+              <td>{{$sli->slider_desc}}</td>
               <td><span class="text-ellipsis">
                 <?php
-                  if($br->brand_status==0){
+                  if($sli->slider_status==1){
                   ?>
                     
-                    <a href="{{URL::to('/unactive-brand-product/'.$br->brand_id)}}">
+                    <a href="{{URL::to('/unactive-slider/'.$sli->slider_id)}}">
                       <i class="fa-thumb-styling fa-solid fa-thumbs-up"></i></a>
                     <?php
                   }else{
                    ?>
-                    <a href="{{URL::to('/active-brand-product/'.$br->brand_id)}}">
+                    <a href="{{URL::to('/active-slider/'.$sli->slider_id)}}">
                       <i class="fa-thumb-styling fa-solid fa-thumbs-down"></i></a>
                     <?php
                   }
@@ -52,9 +54,8 @@
               </span></td>
               
               <td>
-                <a href="{{URL::to('/edit-brand-product/'.$br->brand_id)}}" class="active" ui-toggle-class="">
-                  <i class="fa-regular fa-pen-to-square"></i></a>
-                <a onclick="return confirm('Bạn có muốn xóa thương hiệu này?')" href="{{URL::to('/delete-brand-product/'.$br->brand_id)}}" class="active" ui-toggle-class="">
+              
+                <a onclick="return confirm('Bạn có muốn xóa Slide này?')" href="{{URL::to('/delete-slider/'.$sli->slider_id)}}" class="active" ui-toggle-class="">
                   <i class="fa-solid fa-delete-left"></i></a>
               </td>
             </tr>
@@ -66,3 +67,4 @@
     </div>
   </div>
 @endsection
+

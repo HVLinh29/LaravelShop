@@ -233,11 +233,8 @@
                     <option id="{{$or->order_id}}" selected value="3">Hủy đơn hàng-tạm giữ</option>
                   </select>
                 </form>
-
                 @endif
                 @endforeach
-
-
             </td>
           </tr>
         </tbody>
