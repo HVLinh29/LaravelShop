@@ -68,4 +68,10 @@ class SliderController extends Controller
         Session::put('message','Kích hoạt được slider');
         return Redirect::to('managa-slider');
     }
+    public function delete_slider($slider_id){
+        $slider = Slider::find($slider_id);
+        $slider->delete();
+        Session::put('message','Xóa Slider thành công');
+        return Redirect::to('managa-slider');
+    }
 }

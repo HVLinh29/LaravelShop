@@ -1,7 +1,7 @@
 
 <!DOCTYPE html>
 <head>
-<title>Admin Shop Laravel</title>
+<title>Dang ki Auth</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="keywords" content="Visitors Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
@@ -24,7 +24,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <body>
 <div class="log-w3">
 <div class="w3layouts-main">
-	<h2 style="color: white">ĐĂNG NHẬP</h2>
+	<h2 style="color: white">ĐĂNG KY ADMIN</h2>
 	<?php
 	$message = Session::get('message');
 	if($message){
@@ -32,19 +32,21 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		Session::put('message',null);
 	}
 	?>
-		<form action="{{URL::to('/admin-dashboard')}}" method="post">
+		<form action="{{URL::to('/register')}}" method="post">
 			{{csrf_field()}}
 			@foreach($errors->all() as $val)
 			<ul>
 			<li>{{$val}}</li>
 			</ul>
 			@endforeach
+            <input type="text" class="ggg" name="admin_name" value="{{old('admin_name')}}" placeholder="Nhập Ten" required="">
 			<input type="text" class="ggg" name="admin_email" placeholder="Nhập Email" required="">
+            <input type="text" class="ggg" name="admin_phone" value="{{old('admin_phone')}}" placeholder="Nhập SDT" required="">
 			<input type="password" class="ggg" name="admin_password" placeholder="Nhập Password" required="">
 			
 			
 				<div class="clearfix"></div>
-				<input type="submit" value="ĐĂNG NHẬP" name="login">
+				<input type="submit" value="ĐĂNG KY" name="login">
 				<div class="g-recaptcha" data-sitekey="{{env('CAPTCHA_KEY')}}"></div>
 				<br/>
 				@if($errors->has('g-recaptcha-response'))

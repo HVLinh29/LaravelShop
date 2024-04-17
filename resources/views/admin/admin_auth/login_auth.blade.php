@@ -1,7 +1,7 @@
 
 <!DOCTYPE html>
 <head>
-<title>Admin Shop Laravel</title>
+<title>Dang nhap Auth</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="keywords" content="Visitors Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
@@ -24,7 +24,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <body>
 <div class="log-w3">
 <div class="w3layouts-main">
-	<h2 style="color: white">ĐĂNG NHẬP</h2>
+	<h2 style="color: white">ĐĂNG NHAP AUTH</h2>
 	<?php
 	$message = Session::get('message');
 	if($message){
@@ -32,7 +32,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		Session::put('message',null);
 	}
 	?>
-		<form action="{{URL::to('/admin-dashboard')}}" method="post">
+		<form action="{{URL::to('/login')}}" method="post">
 			{{csrf_field()}}
 			@foreach($errors->all() as $val)
 			<ul>
@@ -44,7 +44,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			
 			
 				<div class="clearfix"></div>
-				<input type="submit" value="ĐĂNG NHẬP" name="login">
+				<input type="submit" value="ĐĂNG NHAP" name="login">
 				<div class="g-recaptcha" data-sitekey="{{env('CAPTCHA_KEY')}}"></div>
 				<br/>
 				@if($errors->has('g-recaptcha-response'))
@@ -55,7 +55,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		</form>
 		<a href="{{url('/login-google')}}">Login Google</a>
 		<a href="{{url('/register-auth')}}">Đăng kí phân quyền</a>
-		<a href="{{url('/login-auth')}}">Đăng nhap Auth</a>
+        <a href="{{url('/login-auth')}}">Đăng nhap Auth</a>
 </div>
 </div>
 <script src="{{asset('public/backend/js/bootstrap.js')}}"></script>

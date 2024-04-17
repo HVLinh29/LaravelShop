@@ -14,6 +14,7 @@ use App\Social;
 use App\Login;
 use App\Rules\Captcha;
 use Validator;
+use Auth;
 class AdminController extends Controller
 {
     public function login_google(){
@@ -69,7 +70,7 @@ class AdminController extends Controller
     }
     public function AuthLogin()
     {
-        $admin_id = Session::get('admin_id');
+        $admin_id = Auth::id();
     
         if ($admin_id) {
             return Redirect::to('admin.dashboard');

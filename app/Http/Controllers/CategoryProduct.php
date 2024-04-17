@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\Console\Helper\Table;
 use Session;
+
+use App\Exports\ExcelExports;
+use Excel;
+use App\Imports\Imports;
+use CategoryModel;
 use Illuminate\Support\Facades\Redirect;
 session_start();
 class CategoryProduct extends Controller
@@ -105,6 +110,15 @@ class CategoryProduct extends Controller
         return view('pages.category.show_category')->with('category',$cate_product)->with('brand',$brand_product)
         ->with('category_by_id',$category_by_id)->with('category_name',$category_name)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)
         ->with('url_canonical',$url_canonical);
+    }
+    public function export_csv(){
+        return Excel::download(new ExcelExports , 'danhmucsanpham.xlsx');
+    }
+    public function import_csv(Request $request){
+        $path = $request->file('file')->getRealPath();
+        Excel::import(new Imports, $path);
+        return back();
+
     }
 
     

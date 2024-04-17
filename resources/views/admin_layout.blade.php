@@ -50,7 +50,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                
                 <span class="username">
 					<?php
-					$name = Session::get('admin_name');
+					$name = Auth::user()->admin_name;
 					if($name){
 						echo $name;
 					
@@ -61,7 +61,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             </a>
             <ul class="dropdown-menu extended logout">
                 
-                <li><a href="{{URL::to('/logout')}}"><i class="fa fa-key"></i>Đăng xuất</a></li>
+                <li><a href="{{URL::to('/logout-auth')}}"><i class="fa fa-key"></i>Đăng xuất</a></li>
             </ul>
         </li>
         <!-- user login dropdown end -->
@@ -162,6 +162,19 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                        
                     </ul>
                 </li>
+                @hasrole(['admin','author'])    
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="fa-solid fa-car"></i>
+                        <span>User</span>
+                    </a>
+                    <ul class="sub">
+                        <li><a href="{{URL::to('/add-users')}}">Thêm user</a></li>
+                       <li><a href="{{URL::to('/users')}}">Liệt kê user</a></li>
+                     
+                   </ul>
+                </li>
+                @endhasrole
                 
             </ul>            
 		</div>

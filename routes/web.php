@@ -30,6 +30,10 @@ Route::post('/update-category-product/{category_product_id}','CategoryProduct@up
 Route::get('/unactive-category-product/{category_product_id}','CategoryProduct@unactive_category_product');
 Route::get('/active-category-product/{category_product_id}','CategoryProduct@active_category_product');
 
+Route::post('/export-csv','CategoryProduct@export_csv');
+Route::post('/import-csv','CategoryProduct@import_csv');
+
+
 //Brand Product
 Route::get('/add-brand-product','BrandProduct@add_brand_product');
 Route::get('/edit-brand-product/{brand_product_id}','BrandProduct@edit_brand_product');
@@ -122,8 +126,23 @@ Route::get('/add-slider','SliderController@add_slider');
 Route::post('/insert-slider','SliderController@insert_slider');
 Route::get('/unactive-slider/{slider_id}','SliderController@unactive_slider');
 Route::get('/active-slider/{slider_id}','SliderController@active_slider');
+Route::get('/delete-slider/{slider_id}','SliderController@delete_slider');
 
 //Phan quyen
+Route::get('/register-auth','AuthController@register_auth');
+Route::get('/login-auth','AuthController@login_auth');
+Route::get('/logout-auth','AuthController@logout_auth');
+Route::post('/register','AuthController@register');
+Route::post('/login','AuthController@login');
+
+//User
+Route::get('users','UserController@index');
+Route::get('add-users','UserController@add_users');
+Route::post('store-users','UserController@store_users');
+Route::post('assign-roles','UserController@assign_roles');
+
+
+
 
 
 
