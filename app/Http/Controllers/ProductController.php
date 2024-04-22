@@ -8,11 +8,12 @@ use Symfony\Component\Console\Helper\Table;
 use Session;
 use Illuminate\Support\Facades\Redirect;
 session_start();
+use Auth;
 class ProductController extends Controller
 {
     public function AuthLogin()
     {
-        $admin_id = Session::get('admin_id');
+        $admin_id = Auth::id();
     
         if ($admin_id) {
             return Redirect::to('admin.dashboard');

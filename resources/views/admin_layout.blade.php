@@ -162,6 +162,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                        
                     </ul>
                 </li>
+                @transferrights
+                <li>
+                    <span><a href="{{URL::to('/transferrights-destroy')}}">Stop chuyen quyen</a></span>
+                 
+                </li>
+                @endtransferrights
                 @hasrole(['admin','author'])    
                 <li class="sub-menu">
                     <a href="javascript:;">

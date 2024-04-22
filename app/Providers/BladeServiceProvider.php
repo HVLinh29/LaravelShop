@@ -34,5 +34,11 @@ class BladeServiceProvider extends ServiceProvider
         }
         return false;
         });
+        Blade::if('transferrights', function(){
+            if(session()->get('transferrights')){
+                return true;
+            }
+            return false;
+        });
     }
 }

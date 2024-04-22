@@ -37,7 +37,10 @@
               @csrf
               <tr>
                 <td>{{ $user->admin_name }}</td>
-                <td>{{ $user->admin_email }} <input type="hidden" name="admin_email" value="{{ $user->admin_email }}"></td>
+                <td>{{ $user->admin_email }} 
+                  <input type="hidden" name="admin_email" value="{{ $user->admin_email }}">
+                  <input type="hidden" name="admin_id" value="{{ $user->admin_id }}">
+                </td>
                 <td>{{ $user->admin_phone }}</td>
                 <td>{{ $user->admin_password }}</td>
                 <td><input type="checkbox" name="author_role" {{$user->hasRole('author') ? 'checked' : ''}}></td>
@@ -47,8 +50,10 @@
               <td>
                   
                     
-                 <input type="submit" value="Assign roles" class="btn btn-sm btn-default">
-                
+                <p><input type="submit" value="Phan quyen" class="btn btn-sm btn-default"></p>
+                <p><a style="margin: 5px 0" class="btn btn-sm btn-danger" href="{{url('/delete-user-roles/'.$user->admin_id)}}">Xoa User</a></p>
+                <p><a style="margin: 5px 0" class="btn btn-sm btn-success" href="{{url('/transferrights/'.$user->admin_id)}}">Chuyen quyen</a></p>
+              </td> 
               </td> 
 
               </tr>

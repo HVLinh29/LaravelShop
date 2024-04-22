@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Roles;
 use App\Admin;
 use Session;
+use Auth;
 class UserController extends Controller
 {
     public function index(){
@@ -15,19 +16,22 @@ class UserController extends Controller
         return view('admin.user.list_user')->with(compact('admin'));
     }
     public function add_users(){
-        return view('admin.users.add_users');
+        return view('admin.user.add_users');
     }
     public function assign_roles(Request $request){
-        $data = $request->all();
-        $user = Admin::where('admin_email',$data['admin_email'])->first();
+        if(Auth::id() == $request->admin_id){
+            return redirect()->back()->with('message','Ban khong co quyen phan quyen tai khoan cua ban');
+        }
+    
+        $user = Admin::where('admin_email',$request->admin_email)->first();
         $user->roles()->detach();
-        if($request['author_role']){
+        if($request->author_role){
            $user->roles()->attach(Roles::where('name','author')->first());     
         }
-        if($request['user_role']){
+        if($request->user_role){
            $user->roles()->attach(Roles::where('name','user')->first());     
         }
-        if($request['admin_role']){
+        if($request->admin_role){
            $user->roles()->attach(Roles::where('name','admin')->first());     
         }
         return redirect()->back()->with('message','Cap quyen thanh cong');
@@ -39,9 +43,34 @@ class UserController extends Controller
         $admin->admin_phone = $data['admin_phone'];
         $admin->admin_email = $data['admin_email'];
         $admin->admin_password = md5($data['admin_password']);
-        $admin->save();
+        
         $admin->roles()->attach(Roles::where('name','user')->first());
+        $admin->save();
+
         Session::put('message','Thêm users thành công');
         return Redirect::to('users');
+    }
+    public function delete_user_roles($admin_id){
+        if(Auth::id() == $admin_id){
+            return redirect()->back()->with('message','Ban khong co quyen xoa tai khoan cua ban');
+        }
+
+        $admin =Admin::find($admin_id);
+        if($admin){
+            $admin->roles()->detach();
+            $admin->delete();
+        }
+        return redirect()->back()->with('message','Xoa User thanh cong');
+    }
+    public function transferrights($admin_id){
+        $user = Admin::where('admin_id',$admin_id)->first();
+        if($user){
+            session()->put('transferrights',$user->admin_id);
+        }
+        return redirect('/users');
+    }
+    public function transferrights_destroy() {
+       session()->forget('transferrights');
+       return redirect('/users');
     }
 }
