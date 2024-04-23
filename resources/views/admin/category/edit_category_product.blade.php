@@ -32,6 +32,23 @@
                             <textarea style="resize: none"rows="5"  name="category_product_keywords" 
                             class="form-control" id="exampleInputPassword1" >{{$edit_value->meta_keywords}}</textarea>
                         </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Thuoc danh muc</label>
+                            <select name="category_parent" class="form-control input-sm m-bot15">
+                                <option value="0">Danh muc cha</option>
+                                @foreach($category as $key => $val)
+                                    @if($val->category_parent==0)
+                                    <option {{$val->category_id==$edit_value->category_id ? 'selected' : ''}} value="{{$val->category_id}}">{{$val->category_name}}</option>
+                                    @endif
+                                    @foreach($category as $key => $val2)
+                                        @if($val2->category_parent==$val->category_id)
+                                            <option {{$val2->category_id==$edit_value->category_id ? 'selected' : ''}} value="{{$val2->category_id}}"> ---{{$val2->category_name}}</option>
+                                        @endif
+                                    @endforeach
+                              @endforeach
+                              
+                            </select>
+                        </div>
                         <button type="submit" name="update_category_product" class="btn btn-success">Cập nhật danh mục</button>
                     </form>
                     </div>

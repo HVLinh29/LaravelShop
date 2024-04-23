@@ -148,6 +148,15 @@ Route::get('transferrights-destroy','UserController@transferrights_destroy');
 Route::post('store-users','UserController@store_users');
 Route::post('assign-roles','UserController@assign_roles')->middleware('auth.roles');
 
+//Bai viet
+Route::get('/add-category-post','CategoryPost@add_category_post');
+Route::get('/edit-category-post/{cate_post_id}','CategoryPost@edit_category_post');
+Route::post('/save-category-post','CategoryPost@save_category_post');
+Route::get('list-category-post','CategoryPost@list_category_post');
+Route::get('/danh-muc-bai-viet/{cate_post_slug}','CategoryPost@danh_muc_bai_viet');
+Route::post('/update-category-post/{cate_id}','CategoryPost@update_category_post');
+Route::get('/delete-category-post/{cate_id}','CategoryPost@delete_category_post');
+
 
 
 

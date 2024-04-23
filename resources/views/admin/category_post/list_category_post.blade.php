@@ -5,7 +5,7 @@
 <div class="table-agile-info">
     <div class="panel panel-default">
       <header class="panel-heading">
-      Liệt kê danh mục sản phẩm
+      Liệt kê danh mục bai viet
     </header>
       
       <div class="table-responsive">
@@ -19,51 +19,32 @@
           ?>
           <thead>
             <tr>
-              <th style="color:brown">Tên danh mục</th>
-              <th style="color:brown">Thụoc danh muc</th>
+              <th style="color:brown">Tên danh mục baiviet</th>
+              <th style="color:brown">Slug</th>
+              <th style="color:brown">Mo ta danh muc</th>
               <th style="color:brown">Hiển thị</th>
               <th style="color:brown">Quản lý</th>
             
             </tr>
           </thead>
           <tbody>
-            @foreach($all_category_product as $key =>$cate_pro)
+            @foreach($category_post as $key =>$cate_post)
             <tr>
-              <td>{{$cate_pro->category_name}}</td>
+              <td>{{$cate_post->cate_post_name}}</td>
+              <td>{{$cate_post->cate_post_slug}}</td>
+              <td>{{$cate_post->cate_post_desc}}</td>
               <td>
-                @if($cate_pro->category_parent==0)
-                <span style="color:red">Danh muc cha</span>
+                @if($cate_post->cate_post_status==0)
+                <span style="color:red">Ẩn</span>
                 @else
-                  @foreach($category_product as $key => $cate_sub_pro)
-                  
-                  @if($cate_sub_pro->category_id==$cate_pro->category_parent)
-                    <span style="color:black">{{$cate_sub_pro->category_name}}</span>
-                  @endif
-                  @endforeach
+                <span style="color:green">Hiển thị</span>
                 @endif
               </td>
-              <td><span class="text-ellipsis">
-                <?php
-                  if($cate_pro->category_status==0){
-                  ?>
-                    
-                    <a href="{{URL::to('/unactive-category-product/'.$cate_pro->category_id)}}">
-                      <i class="fa-thumb-styling fa-solid fa-thumbs-up"></i></a>
-                    <?php
-                  }else{
-                   ?>
-                    <a href="{{URL::to('/active-category-product/'.$cate_pro->category_id)}}">
-                      <i class="fa-thumb-styling fa-solid fa-thumbs-down"></i></a>
-                    <?php
-                  }
-
-                ?>
-              </span></td>
               
               <td>
-                <a href="{{URL::to('/edit-category-product/'.$cate_pro->category_id)}}" class="active" ui-toggle-class="">
+                <a href="{{URL::to('/edit-category-post/'.$cate_post->cate_post_id)}}" class="active" ui-toggle-class="">
                   <i class="fa-regular fa-pen-to-square"></i></a>
-                <a onclick="return confirm('Bạn có muốn xóa danh mục này?')" href="{{URL::to('/delete-category-product/'.$cate_pro->category_id)}}" class="active" ui-toggle-class="">
+                <a onclick="return confirm('Bạn có muốn xóa danh mục này?')" href="{{URL::to('/delete-category-post/'.$cate_post->cate_post_id)}}" class="active" ui-toggle-class="">
                   <i class="fa-solid fa-delete-left"></i></a>
               </td>
             </tr>
