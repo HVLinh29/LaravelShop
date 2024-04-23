@@ -154,11 +154,22 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 <li class="sub-menu">
                     <a href="javascript:;">
                         <i class="fa-solid fa-tag"></i>
-                        <span>Bai viet</span>
+                        <span>Danh muc bai viet</span>
                     </a>
                     <ul class="sub">
 						<li><a href="{{URL::to('/add-category-post')}}">Thêm danh muc bai viet</a></li>
 						<li><a href="{{URL::to('/list-category-post')}}">Liệt kê danh muc bai viet</a></li>
+                       
+                    </ul>
+                </li>
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="fa-solid fa-tag"></i>
+                        <span>Bai viet</span>
+                    </a>
+                    <ul class="sub">
+						<li><a href="{{URL::to('/add-post')}}">Thêm  bai viet</a></li>
+						<li><a href="{{URL::to('/list-post')}}">Liệt kê  bai viet</a></li>
                        
                     </ul>
                 </li>
@@ -425,6 +436,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script>
 	CKEDITOR.replace('cheditor');
 	CKEDITOR.replace('cheditor1');
+    CKEDITOR.replace('cheditor2');
+    CKEDITOR.replace('cheditor3');
+    CKEDITOR.replace('cheditor4');
 </script>
 
 

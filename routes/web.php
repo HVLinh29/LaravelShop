@@ -10,6 +10,9 @@ Route::get('/danh-muc-san-pham/{category_id}','CategoryProduct@show_category_hom
 Route::get('/thuong-hieu-san-pham/{brand_id}','BrandProduct@show_brand_home');
 Route::get('/chi-tiet-san-pham/{product_id}','ProductController@details_product');
 
+//Danh muc bai viet
+Route::get('/danh-muc-bai-viet/{post_slug}','PostController@danh_muc_bai_viet');
+
 
 //Backend
 Route::get('/admin','AdminController@index');
@@ -148,7 +151,7 @@ Route::get('transferrights-destroy','UserController@transferrights_destroy');
 Route::post('store-users','UserController@store_users');
 Route::post('assign-roles','UserController@assign_roles')->middleware('auth.roles');
 
-//Bai viet
+//Danh muc Bai viet
 Route::get('/add-category-post','CategoryPost@add_category_post');
 Route::get('/edit-category-post/{cate_post_id}','CategoryPost@edit_category_post');
 Route::post('/save-category-post','CategoryPost@save_category_post');
@@ -156,6 +159,14 @@ Route::get('list-category-post','CategoryPost@list_category_post');
 Route::get('/danh-muc-bai-viet/{cate_post_slug}','CategoryPost@danh_muc_bai_viet');
 Route::post('/update-category-post/{cate_id}','CategoryPost@update_category_post');
 Route::get('/delete-category-post/{cate_id}','CategoryPost@delete_category_post');
+
+//Bai viet
+Route::get('/add-post','PostController@add_post');
+Route::get('/list-post','PostController@list_post');
+Route::post('/save-post','PostController@save_post');
+Route::get('/delete-post/{post_id}','PostController@delete_post');
+Route::get('/edit-post/{post_id}','PostController@edit_post');
+Route::post('/update-post/{post_id}','PostController@update_post');
 
 
 
