@@ -17,7 +17,7 @@
                             <input type="hidden" id="wishlist_productprice{{$product->product_id}}" value="{{$product->product_price}}" 
                             class="cart_product_price_{{$product->product_id}}">
                             <input type="hidden" value="1" class="cart_product_qty_{{$product->product_id}}">
-                            <a id="wishlist_producturl{{$product->product_id}}" href="{{ URL::to('chi-tiet-san-pham/' . $product->product_id) }}">
+                            <a id="wishlist_producturl{{$product->product_id}}" href="{{ URL::to('chi-tiet-san-pham/' . $product->product_slug) }}">
                                 <img id="wishlist_productimage{{$product->product_id}}" src="{{ URL::to('public/uploads/product/' . $product->product_image) }}" alt="" />
                                 <h2 style="color: red">{{ number_format($product->product_price,0,',','.')}}đ</h2>
                                 <p>{{ $product->product_name }}</p>

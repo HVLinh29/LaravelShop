@@ -13,13 +13,13 @@
                     Session::put('message', null);
                 }
                 ?>
-                <form action="{{ url('/insert-gallery/' . $pro_id) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{url('/insert-gallery/'.$pro_id)}}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="row">
                         <div class="col-md-3" align="right">
                         </div>
                         <div class="col-md-6">
-                            <input type="file" class="form-control" id="file" name="file[] accept="image/*" multiple>
+                            <input type="file" class="form-control" id="file" name="file[]" accept="image/*" multiple>
                             <span id="error_gallery"></span>
                         </div>
                         <div class="col-md-3">
@@ -29,7 +29,7 @@
                 </form>
         </div>
         <div class="panel-body">
-            <input type="hidden" value="{{ $pro_id }}" name="pro_id" class="pro_id">
+            <input type="hidden" value="{{$pro_id}}" name="pro_id" class="pro_id">
             <form>
                 @csrf
                 <div id="gallery_load">

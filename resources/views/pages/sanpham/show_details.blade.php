@@ -14,30 +14,12 @@
             </style>
             <div class="col-sm-5">
                 <ul id="imageGallery">
-                    <li data-thumb="{{ asset('public/fontend/images/bia.jpg') }}"
-                        data-src="{{ asset('public/fontend/images/bia.jpg') }}">
-                        <img width="100%" src="{{ asset('public/fontend/images/bia.jpg') }}" />
+                    @foreach($gallery as $key =>$gal)
+                    <li data-thumb="{{asset('public/uploads/gallery/'.$gal->gallery_image) }}"
+                        data-src="{{asset('public/uploads/gallery/'.$gal->gallery_image) }}">
+                        <img width="100%" alt="{{$gal->gallery_name}}" src="{{asset('public/uploads/gallery/'.$gal->gallery_image) }}" />
                     </li>
-                    <li data-thumb="{{ asset('public/fontend/images/bia.jpg') }}"
-                        data-src="{{ asset('public/fontend/images/bia.jpg') }}">
-                        <img width="100%" src="{{ asset('public/fontend/images/bia.jpg') }}" />
-                    </li>
-                    <li data-thumb="{{ asset('public/fontend/images/bia.jpg') }}"
-                        data-src="{{ asset('public/fontend/images/bia.jpg') }}">
-                        <img width="100%" src="{{ asset('public/fontend/images/bia.jpg') }}" />
-                    </li>
-                    <li data-thumb="{{ asset('public/fontend/images/bia.jpg') }}"
-                        data-src="{{ asset('public/fontend/images/bia.jpg') }}">
-                        <img width="100%" src="{{ asset('public/fontend/images/bia.jpg') }}" />
-                    </li>
-                    <li data-thumb="{{ asset('public/fontend/images/bia.jpg') }}"
-                        data-src="{{ asset('public/fontend/images/bia.jpg') }}">
-                        <img width="100%" src="{{ asset('public/fontend/images/bia.jpg') }}" />
-                    </li>
-                    <li data-thumb="{{ asset('public/fontend/images/bia.jpg') }}"
-                        data-src="{{ asset('public/fontend/images/bia.jpg') }}">
-                        <img width="100%" src="{{ asset('public/fontend/images/bia.jpg') }}" />
-                    </li>
+                   @endforeach
 
 
 

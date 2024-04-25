@@ -6,9 +6,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="keywords" content="Visitors Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
 Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
 <!-- bootstrap-css -->
 <link rel="stylesheet" href="{{asset('public/backend/css/bootstrap.min.css')}}" >
+
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <!-- //bootstrap-css -->
 <!-- Custom CSS -->
 <link href="{{asset('public/backend/css/style.css')}}" rel='stylesheet' type='text/css' />
@@ -319,7 +322,64 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 $('#error_gallery').html('<span class="text-danger">'+error+'</span>');
                 return false;
             }
-        })
+        });
+        $(document).on('blur','.edit_gal_name', function(){
+            var gal_id = $(this).data('gal_id');
+            var gal_text = $(this).text();
+            var _token = $('input[name="_token"]').val();
+            $.ajax({
+                url: "{{url('/update-gallery-name')}}",
+                method: "POST",
+                data: {gal_id: gal_id,gal_text:gal_text, _token: _token},
+                success: function(data){
+                    load_gallery();
+                    $('#error_gallery').html('<span class="text-danger">Cap nhat ten hinh anh thanh cong</span>');
+                }
+            });
+        });
+        $(document).on('click','.delete-gallery', function(){
+            var gal_id = $(this).data('gal_id');
+            var _token = $('input[name="_token"]').val();
+            if(confirm('Ban muon xoa hinh anh nay khong')){
+                $.ajax({
+                url: "{{url('/delete-gallery')}}",
+                method: "POST",
+                data: {gal_id:gal_id,_token: _token},
+                success: function(data){
+                    load_gallery();
+                    $('#error_gallery').html('<span class="text-danger">Xoa hinh anh thanh cong</span>');
+                }
+            });
+            } 
+        });
+
+        $(document).on('change','.file_image', function(){
+            var gal_id = $(this).data('gal_id');
+            var image = document.getElementById('file-'+gal_id).files[0];
+
+            var form_data = new FormData();
+            form_data.append("file",document.getElementById('file-'+gal_id).files[0]);
+            form_data.append("gal_id",gal_id);
+
+          
+                $.ajax({
+                url: "{{url('/update-gallery')}}",
+                method: "POST",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    
+                },
+                data:form_data,
+                contentType: false,
+                processData: false,
+                cache: false,
+                success: function(data){
+                    load_gallery();
+                    $('#error_gallery').html('<span class="text-danger">Cap nhat hinh anh thanh cong</span>');
+                }
+            });
+        
+        });
      });
 </script>
 <script type="text/javascript">
