@@ -15,6 +15,11 @@
     <link href="{{ asset('public/fontend/css/main.css') }}" rel="stylesheet">
     <link href="{{ asset('public/fontend/css/responsive.css') }}" rel="stylesheet">
     <link href="{{ asset('public/fontend/css/sweetalert.css') }}" rel="stylesheet">
+    <link href="{{ asset('public/fontend/css/lightslider.css') }}" rel="stylesheet">
+    <link href="{{ asset('public/fontend/css/prettify.css') }}" rel="stylesheet">
+    <link href="{{ asset('public/fontend/css/lightgallery.min.css') }}" rel="stylesheet">
+
+
     <link rel="shortcut icon" href="{{ 'public/fontend/images/ico/favicon.ico' }}">
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/ico/apple-touch-icon-144-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/ico/apple-touch-icon-114-precomposed.png">
@@ -128,7 +133,7 @@
                                 <li class="dropdown"><a href="#">Sản phẩm<i class="fa fa-angle-down"></i></a>
                                     <ul role="menu" class="sub-menu">
                                         @foreach($category as $key => $danhmuc)
-                                        <li><a href="{{URL::to('/danh-muc-san-pham/'.$danhmuc->category_id)}}">{{$danhmuc->category_name}}</a></li>
+                                        <li><a href="{{URL::to('/danh-muc-san-pham/'.$danhmuc->category_slug)}}">{{$danhmuc->category_name}}</a></li>
                                         @endforeach
                                     </ul>
                                 </li> 
@@ -225,7 +230,7 @@
                                             <ul>
                                                 @foreach($category as $key =>$cate_sub)
                                                 @if($cate_sub->category_parent == $cate->category_id)
-                                                    <li><a href="{{URL::to('/danh-muc-san-pham/'.$cate_sub->category_id)}}">
+                                                    <li><a href="{{URL::to('/danh-muc-san-pham/'.$cate_sub->category_slug)}}">
                                                     {{$cate_sub->category_name}} </a></li>
                                                     @endif
                                                 @endforeach
@@ -244,7 +249,7 @@
                             @foreach ($brand as $key => $brand)
                                 <div class="brands-name">
                                     <ul class="nav nav-pills nav-stacked">
-                                        <li><a href="{{ URL::to('/thuong-hieu-san-pham/' . $brand->brand_id) }}">
+                                        <li><a href="{{ URL::to('/thuong-hieu-san-pham/' . $brand->brand_slug) }}">
                                                 <span class="pull-right"></span>{{ $brand->brand_name }}</a></li>
 
                                     </ul>
@@ -359,6 +364,12 @@
     <script src="{{ asset('public/fontend/js/main.js') }}"></script>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <script src="{{ asset('public/fontend/js/sweetalert.min.js') }}"></script>
+    <script src="{{ asset('public/fontend/js/lightgallery-all.min.js') }}"></script>
+    <script src="{{ asset('public/fontend/js/lightslider.js') }}"></script>
+    <script src="{{ asset('public/fontend/js/prettify.js') }}"></script>
+
+
+
     <div id="fb-root"></div>
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v19.0"
         nonce="HvSWG6qx"></script>
@@ -591,7 +602,24 @@
             localStorage.setItem('data', JSON.stringify(old_data));
         }
     </script>
-
+    <script type="text/javascript">
+            $(document).ready(function() {
+            $('#imageGallery').lightSlider({
+                gallery:true,
+                item:1,
+                loop:true,
+                thumbItem:3,
+                slideMargin:0,
+                enableDrag: false,
+                currentPagerPosition:'left',
+                onSliderLoad: function(el) {
+                    el.lightGallery({
+                        selector: '#imageGallery .lslide'
+                    });
+                }   
+            });  
+        });
+    </script>
 
 </body>
 

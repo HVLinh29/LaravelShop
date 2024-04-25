@@ -282,6 +282,46 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		
 	});
 </script>
+
+<script type="text/javascript">
+     $(document).ready(function(){
+        load_gallery();
+
+        function load_gallery(){
+            var pro_id = $('.pro_id').val();
+            var _token = $('input[name="_token"]').val();
+            $.ajax({
+                url: "{{url('/select-gallery')}}",
+                method: "POST",
+                data: {pro_id: pro_id, _token: _token},
+                success: function(data){
+                    $('#gallery_load').html(data);
+                }
+            });
+        }
+
+        $('#file').change(function(){
+            var error = '';
+            var files = $('#file')[0].files;
+
+            if(files.length>5){
+                error+='<p>Chi duoc chon toi da 5 anh</p>'
+            }else if(files.length==''){
+                error+='<p>Vui long chon anh</p>'
+            }else if(files.size > 2000000){
+                error+='<p>Kich thuoc anh qua lon</p>'
+            }
+
+            if(error==''){
+
+            }else{
+                $('#file').val('');
+                $('#error_gallery').html('<span class="text-danger">'+error+'</span>');
+                return false;
+            }
+        })
+     });
+</script>
 <script type="text/javascript">
     $(document).ready(function(){
 

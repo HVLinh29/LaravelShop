@@ -9,6 +9,7 @@ use Session;
 use Illuminate\Support\Facades\Redirect;
 session_start();
 use Auth;
+use App\CatePost;
 class ProductController extends Controller
 {
     public function AuthLogin()
@@ -41,6 +42,7 @@ class ProductController extends Controller
         $this->AuthLogin();
         $data = array();
         $data['product_name'] = $request->product_name;
+        $data['product_slug'] = $request->product_slug;
         $data['product_quantity'] = $request->product_quantity;
         $data['product_price'] = $request->product_price;
         $data['product_desc'] = $request->product_desc;
@@ -92,6 +94,7 @@ class ProductController extends Controller
         $this->AuthLogin();
         $data = array();
         $data['product_name'] = $request->product_name;
+        $data['product_slug'] = $request->product_slug;
         $data['product_quantity'] = $request->product_quantity;
         $data['product_price'] = $request->product_price;
         $data['product_desc'] = $request->product_desc;
@@ -126,6 +129,8 @@ class ProductController extends Controller
 
     //Trang chu giao dien
     public function details_product(Request $request, $product_id){
+
+        $category_post = CatePost::orderBy('cate_post_id','DESC')->get();
         $cate_product = DB::table('tbl_category_product')->where('category_status','0')->orderby('category_id','desc')->get();
         $brand_product = DB::table('tbl_brand')->where('brand_status','0')->orderby('brand_id','desc')->get();
 
@@ -152,6 +157,6 @@ class ProductController extends Controller
 
         return view('pages.sanpham.show_details')->with('category',$cate_product)->with('brand',$brand_product)
         ->with('product_details',$details_product)->with('splienquan',$splienquan)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)
-        ->with('url_canonical',$url_canonical);
+        ->with('url_canonical',$url_canonical)->with('category_post',$category_post);
     }
 }

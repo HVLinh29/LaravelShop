@@ -21,6 +21,7 @@
             <tr>
               
               <th style="color: brown">Tên thương hiệu</th>
+              <th style="color: brown">Slug</th>
               <th style="color: brown">Mô tả</th>
               <th style="color: brown">Hiển thị</th>
               <th style="color: brown">Quản lý</th>
@@ -32,6 +33,7 @@
             @foreach($all_brand_product as $key =>$br)
             <tr>
               <td>{{$br->brand_name}}</td>
+              <td>{{$br->brand_slug}}</td>
               <td>{{$br->brand_desc}}</td>
               <td><span class="text-ellipsis">
                 <?php

@@ -18,10 +18,14 @@
                     <div class="position-center">
                         <form role="form" action="{{URL::to('/update-brand-product/'.$edit_value->brand_id)}}" method="POST">
                             {{csrf_field()}}
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Tên thương hiệu</label>
-                            <input type="text" value="{{$edit_value->brand_name}}" class="form-control"  name="brand_product_name"  id="exampleInputEmail1" >
-                        </div>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Tên thuong hieu</label>
+                                <input type="text" value="{{$edit_value->brand_name}}"  onkeyup="ChangeToSlug();" name="brand_product_name" class="form-control" id="slug" >
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Slug</label>
+                                <input type="text" value="{{$edit_value->brand_slug}}" name="brand_slug" class="form-control" id="convert_slug" >
+                            </div>
                         <div class="form-group">
                             <label for="exampleInputPassword1">Mô tả thương hiệu</label>
                             <textarea style="resize: none"rows="5"  name="brand_product_desc" class="form-control" 

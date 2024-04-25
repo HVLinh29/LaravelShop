@@ -1,81 +1,24 @@
-{{-- @extends('layout')
+@extends('layout')
 @section('content')
     <div class="features_items">
-        <h2 class="title text-center">DANH MUC BAI VIET</h2>
-        <div class="row"> <!-- Thêm lớp row ở đây -->
-        @foreach ($all_product as $key => $product)
-           
+        <h2 class="title text-center">{{$meta_title}}</h2>
+        <div class="product-image-wrapper" style="border: none">
+            @foreach ($post as $key => $p)
+                <div class="single-products" style="margin: 10px 0;padding:2px">
+                    <div class="text-center">
 
-        @endforeach
+                        <img style="float: left;width:30%;padding:5px;height:150px"
+                            src="{{ URL::to('public/uploads/post/' . $p->post_image) }}" alt="{{ $p->post_slug }}" />
+                        <h4 style="color: #000;padding:5px;">{{ $p->post_title }}</h4>
+                        <p>{!! $p->post_desc !!}</p>
+
+                    </div>
+                    <div class="text-right">
+                        <a href="{{url('/bai-viet',$p->post_slug)}}" class="btn btn-default add-to-cart">Xem bai viet</a>
+                    </div>
+
+                </div>
+            @endforeach
         </div>
     </div>
 @endsection
-<style>
- /* CSS cho sản phẩm */
-.product-image-wrapper {
-    margin-bottom: 20px;
-}
-
-.productinfo {
-    position: relative;
-}
-
-.productinfo form {
-    padding: 20px;
-    background-color: #fff; /* Màu nền */
-    border-radius: 10px; /* Bo tròn viền */
-    box-shadow: 0px 2px 10px white; /* Hiệu ứng đổ bóng */
-}
-
-.productinfo h2 {
-    font-size: 18px;
-    margin-top: 10px;
-}
-
-.productinfo p {
-    font-size: 16px;
-    margin-bottom: 15px;
-}
-
-.add-to-cart {
-    background-color: #FE980F; /* Màu nút thêm vào giỏ hàng */
-    color: #fff;
-    border: none;
-    padding: 10px 15px;
-    font-size: 14px;
-    border-radius: 3px;
-    cursor: pointer;
-}
-
-.add-to-cart:hover {
-    background-color: #E58E0B; /* Màu nền khi hover */
-}
-
-/* CSS cho nút yêu thích */
-.button_wishlist {
-    border: none;
-    background: transparent;
-    color: #83AFA8;
-    font-size: 14px;
-    cursor: pointer;
-    padding: 0;
-}
-
-.button_wishlist span:hover {
-    color: #FE980F; /* Màu khi hover */
-}
-
-/* CSS cho nút xem nhanh */
-.choose .nav-pills li:nth-child(2) a {
-    color: #83AFA8;
-    font-size: 14px;
-    padding: 0;
-}
-
-.choose .nav-pills li:nth-child(2) a:hover {
-    color: #FE980F; /* Màu khi hover */
-}
-
-
-
-</style> --}}

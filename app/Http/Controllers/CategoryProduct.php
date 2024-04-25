@@ -13,7 +13,7 @@ use App\Imports\Imports;
 use App\CategoryModel;
 use Illuminate\Support\Facades\Redirect;
 session_start();
-
+use App\CatePost;
 use Auth;
 class CategoryProduct extends Controller
 {
@@ -34,6 +34,7 @@ class CategoryProduct extends Controller
     }
     public function all_category_product(){
         $this->AuthLogin();
+
         $category_product = CategoryModel::where('category_parent',0)->orderBy('category_id','DESC')->get();
         $all_category_product=DB::table('tbl_category_product')->orderBy('category_parent','DESC')->get();
         $manager_category_product = view('admin.category.all_category_product')->with('all_category_product',$all_category_product)
@@ -44,6 +45,7 @@ class CategoryProduct extends Controller
         $this->AuthLogin();
         $data = array();
         $data['category_name'] = $request->category_product_name;
+        $data['category_slug'] = $request->category_slug;
         $data['category_parent'] = $request->category_parent;
         $data['meta_keywords'] = $request->category_product_keywords;
         $data['category_desc'] = $request->category_product_desc;
@@ -78,6 +80,7 @@ class CategoryProduct extends Controller
         $this->AuthLogin();
         $data = array();
         $data['category_name'] = $request->category_product_name;
+        $data['category_slug'] = $request->category_slug;
         $data['category_parent'] = $request->category_parent;
         $data['meta_keywords'] = $request->category_product_keywords;
         $data['category_desc'] = $request->category_product_desc;
@@ -94,6 +97,9 @@ class CategoryProduct extends Controller
 
     //Danh muc trang chu
     public function show_category_home(Request $request,$category_id){
+
+        $category_post = CatePost::orderBy('cate_post_id','DESC')->get();
+
         //seo 
         $meta_desc = "";
         $meta_keywords = "";
@@ -118,7 +124,7 @@ class CategoryProduct extends Controller
         
         return view('pages.category.show_category')->with('category',$cate_product)->with('brand',$brand_product)
         ->with('category_by_id',$category_by_id)->with('category_name',$category_name)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)
-        ->with('url_canonical',$url_canonical);
+        ->with('url_canonical',$url_canonical)->with('category_post',$category_post);
     }
     public function export_csv(){
         return Excel::download(new ExcelExports , 'danhmucsanpham.xlsx');

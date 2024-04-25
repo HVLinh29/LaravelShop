@@ -9,12 +9,13 @@ use Session;
 use App\Brand;
 use Illuminate\Support\Facades\Redirect;
 session_start();
-
+use App\CatePost;
+use Auth;
 class BrandProduct extends Controller
 {
     public function AuthLogin()
     {
-        $admin_id = Session::get('admin_id');
+        $admin_id = Auth::id();
     
         if ($admin_id) {
             return Redirect::to('admin.dashboard');
@@ -39,6 +40,7 @@ class BrandProduct extends Controller
         $data = $request->all();
         $brand = new Brand();
         $brand->brand_name =$data['brand_product_name'];
+        $brand->brand_slug =$data['brand_slug'];
         $brand->brand_desc =$data['brand_product_desc'];
         $brand->brand_status =$data['brand_product_status'];
         $brand->save();
@@ -72,6 +74,7 @@ class BrandProduct extends Controller
         $data = $request->all();
         $brand = Brand::find($brand_product_id);
         $brand->brand_name =$data['brand_product_name'];
+        $brand->brand_slug =$data['brand_slug'];
         $brand->brand_desc =$data['brand_product_desc'];
         // $brand->brand_status =$data['brand_product_status'];
         $brand->save();
@@ -87,6 +90,10 @@ class BrandProduct extends Controller
 
     //Trang chu Fontend
     public function show_brand_home($brand_id){
+
+        $category_post = CatePost::orderBy('cate_post_id','DESC')->get();
+
+
         $cate_product = DB::table('tbl_category_product')->where('category_status','0')->orderby('category_id','desc')->get();
         $brand_product = DB::table('tbl_brand')->where('brand_status','0')->orderby('brand_id','desc')->get();
 
@@ -97,6 +104,6 @@ class BrandProduct extends Controller
 
 
         return view('pages.brand.show_brand')->with('category',$cate_product)->with('brand',$brand_product)
-        ->with('brand_by_id',$brand_by_id)->with('brand_name',$brand_name);
+        ->with('brand_by_id',$brand_by_id)->with('brand_name',$brand_name)->with('category_post',$category_post);
     }
 }

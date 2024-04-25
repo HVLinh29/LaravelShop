@@ -20,6 +20,7 @@
           <thead>
             <tr>
               <th style="color:brown">Tên danh mục</th>
+              <th style="color:brown">Slug</th>
               <th style="color:brown">Thụoc danh muc</th>
               <th style="color:brown">Hiển thị</th>
               <th style="color:brown">Quản lý</th>
@@ -30,6 +31,7 @@
             @foreach($all_category_product as $key =>$cate_pro)
             <tr>
               <td>{{$cate_pro->category_name}}</td>
+              <td>{{$cate_pro->category_slug}}</td>
               <td>
                 @if($cate_pro->category_parent==0)
                 <span style="color:red">Danh muc cha</span>

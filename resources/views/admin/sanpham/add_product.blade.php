@@ -17,11 +17,14 @@
                     <div class="position-center">
                         <form role="form" action="{{URL::to('/save-product')}}" method="POST" enctype="multipart/form-data">
                             {{csrf_field()}}
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Tên sản phẩm</label>
-                            <input type="text" class="form-control"  name="product_name"  id="exampleInputEmail1" 
-                            data-validation="length" data-validation-length="min10" data-validation-error-msg="Làm ơn điền ít nhất 10 ký tự">
-                        </div>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Tên sản phẩm</label>
+                                <input type="text" data-validation="length" data-validation-length="min10" data-validation-error-msg="Làm ơn điền ít nhất 10 ký tự" name="product_name" class="form-control " id="slug" placeholder="Tên danh mục" onkeyup="ChangeToSlug();"> 
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Slug</label>
+                                <input type="text" name="product_slug" class="form-control " id="convert_slug" placeholder="Tên danh mục">
+                            </div>
                         <div class="form-group">
                             <label for="exampleInputEmail1">Số lượng sản phẩm</label>
                             <input type="text" data-validation="number" data-validation-error-msg="Làm ơn điền số lượng" name="product_quantity" 
@@ -31,6 +34,7 @@
                             <label for="exampleInputEmail1">Hình ảnh sản phẩm</label>
                             <input type="file" class="form-control"  name="product_image"  id="exampleInputEmail1">
                         </div>
+                        
                         <div class="form-group">
                             <label for="exampleInputPassword1">Mô tả sản phẩm</label>
                             <textarea style="resize: none"rows="5"  name="product_desc" class="form-control" id="cheditor" ></textarea>
