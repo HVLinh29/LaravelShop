@@ -5,7 +5,7 @@
     @foreach($brand_name as $key =>$name)
     <h2 class="title text-center">Thương hiệu: {{$name->brand_name}}</h2>
     @foreach($brand_by_id as $key =>$product)
-    <a href="{{URL::to('chi-tiet-san-pham/'.$product->product_id)}}">
+    <a href="{{URL::to('chi-tiet-san-pham/'.$product->product_slug)}}">
     <div class="col-sm-4">
         <div class="product-image-wrapper">
             <div class="single-products">

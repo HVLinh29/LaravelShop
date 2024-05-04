@@ -10,7 +10,7 @@
     <h2 class="title text-center">Danh mục: {{$name->category_name}}</h2>
     @endforeach
     @foreach($category_by_id as $key =>$product)
-    <a href="{{URL::to('chi-tiet-san-pham/'.$product->product_id)}}">
+    <a href="{{URL::to('chi-tiet-san-pham/'.$product->product_slug)}}">
     <div class="col-sm-4">
         <div class="product-image-wrapper">
             <div class="single-products">

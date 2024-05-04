@@ -197,13 +197,13 @@ class ProductController extends Controller
         $cate_product = DB::table('tbl_category_product')->where('category_status', '0')->orderby('category_id', 'desc')->get();
         $brand_product = DB::table('tbl_brand')->where('brand_status', '0')->orderby('brand_id', 'desc')->get();
 
-        $tag = str_replace("-","", $product_tag);
+        $tag = str_replace("-", "", $product_tag);
         $pro_tag = Product::where('product_status', '0')->where('product_name', 'LIKE', '%' . $tag . '%')
-        ->orWhere('product_tags','LIKE', '%' . $tag . '%')->orWhere('product_slug','LIKE', '%' . $tag . '%')->get();
+            ->orWhere('product_tags', 'LIKE', '%' . $tag . '%')->orWhere('product_slug', 'LIKE', '%' . $tag . '%')->get();
 
-        $meta_desc = 'Tags:'.$product_tag;
-        $meta_keywords = 'Tags:'.$product_tag;
-        $meta_title = 'Tags:'.$product_tag;
+        $meta_desc = 'Tags:' . $product_tag;
+        $meta_keywords = 'Tags:' . $product_tag;
+        $meta_title = 'Tags:' . $product_tag;
         $url_canonical = $request->url();
 
 
@@ -212,5 +212,41 @@ class ProductController extends Controller
             ->with('slider', $slider)->with('category_post', $category_post)->with('meta_desc', $meta_desc)
             ->with('meta_keywords', $meta_keywords)->with('meta_title', $meta_title)->with('url_canonical', $url_canonical)
             ->with('product_tag', $product_tag)->with('pro_tag', $pro_tag);
+    }
+    public function quickview(Request $request)
+    {
+        $product_id = $request->product_id;
+        $product = Product::find($product_id);
+        $gallery = Gallery::where('product_id', $product_id)->get();
+        $output['product_gallery'] = '';
+        foreach ($gallery as $ket => $gal) {
+            $output['product_gallery'] .= '<p><img  width="100%" src="public/uploads/gallery/' . $gal->gallery_image . '"> </p>';
+        }
+
+        $output['product_name'] = $product->product_name;
+        $output['product_id'] = $product->product_id;
+        $output['product_price'] = number_format($product->product_price, 0, ',', '.') . 'VND';
+        $output['product_desc'] = $product->product_desc;
+        $output['product_content'] = $product->product_content;
+        $output['product_image'] = '<p><img width="100%" src="public/uploads/product/' . $product->product_image . '"</p>';
+
+        $output['product_button'] = ' <input type="button" value="Mua ngay"
+        class="btn btn-success btn-sm add-to-cart-quickview" 
+        data-id_product="'.$product->product_id.'"  name="add-to-cart">';
+
+        $output['product_quickview_value'] = '
+        <input type="hidden" value="' . $product->product_id . '"
+                class="cart_product_id_' . $product->product_id . '">
+        <input type="hidden" value="' . $product->product_name . ' }}"
+                class="cart_product_name_' . $product->product_id . '">
+        <input type="hidden" value="' . $product->product_quantity . ' }}"
+                class="cart_product_quantity_' . $product->product_id . '">
+        <input type="hidden" value="' . $product->product_image . ' }}"
+                class="cart_product_image_' . $product->product_id . '">   
+        <input type="hidden" value="' . $product->product_price . ' }}"
+                 class="cart_product_price_' . $product->product_id . '">                  
+        <input type="hidden" value="1"
+                class="cart_product_qty_' . $product->product_id . '">';
+        echo json_encode($output);
     }
 }

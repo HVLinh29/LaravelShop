@@ -4,12 +4,16 @@ use Illuminate\Support\Facades\Route;
 Route::get('/','HomeController@index' );
 Route::get('/trang-chu','HomeController@index');
 Route::post('/tim-kiem','HomeController@search');
+Route::post('/autocomplete-ajax','HomeController@autocomplete_ajax');
 
 //Danh muc san pham trang chu
 Route::get('/danh-muc-san-pham/{category_id}','CategoryProduct@show_category_home');
 Route::get('/thuong-hieu-san-pham/{brand_id}','BrandProduct@show_brand_home');
 Route::get('/chi-tiet-san-pham/{product_id}','ProductController@details_product');
 Route::get('/tag/{product_tag}','ProductController@tag');
+
+Route::post('/quickview','ProductController@quickview');
+
 
 //Danh muc bai viet
 Route::get('/danh-muc-bai-viet/{post_slug}','PostController@danh_muc_bai_viet');

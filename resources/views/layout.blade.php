@@ -155,10 +155,11 @@
                         </div>
                     </div>
                     <div class="col-sm-4">
-                        <form method="POST" action="{{ URL::to('/tim-kiem') }}">
+                        <form method="POST" action="{{ URL::to('/tim-kiem') }}" autocomplete="off">
                             {{ csrf_field() }}
                             <div class="search_box pull-right">
-                                <input type="text" name="keywords_submit" placeholder="Từ khóa" />
+                                <input type="text" name="keywords_submit" id="keywords" placeholder="Từ khóa" />
+                                <div id="search_ajax"></div>
                                 <input type="submit" style="color: #000" name="search_item"
                                     class=" btn-success btn-sm" value="Tìm kiếm">
                             </div>
@@ -393,6 +394,7 @@
                 var cart_product_quantity = $('.cart_product_quantity_' + id).val();
                 var cart_product_price = $('.cart_product_price_' + id).val();
                 var cart_product_qty = $('.cart_product_qty_' + id).val();
+
                 var _token = $('input[name="_token"]').val();
                 if (parseInt(cart_product_qty) > parseInt(cart_product_quantity)) {
                     alert('Làm ơn đặt nhỏ hơn ' + cart_product_quantity);
@@ -641,12 +643,111 @@
                     _token: _token
                 },
                 success: function(data) {
-                 $('#video_title').html(data.video_title);
-                 $('#video_link').html(data.video_link);
-                 $('#video_desc').html(data.video_desc);
+                    $('#video_title').html(data.video_title);
+                    $('#video_link').html(data.video_link);
+                    $('#video_desc').html(data.video_desc);
                 }
             });
         })
+    </script>
+    <script type="text/javascript">
+        $('#keywords').keyup(function() {
+            var query = $(this).val();
+            if (query != '') {
+                var _token = $('input[name="_token"]').val();
+                $.ajax({
+                    url: '{{ url('/autocomplete-ajax') }}',
+                    method: "POST",
+
+                    data: {
+                        query: query,
+                        _token: _token
+                    },
+                    success: function(data) {
+                        $('#search_ajax').fadeIn();
+                        $('#search_ajax').html(data);
+                    }
+                });
+            } else {
+                $('#search_ajax').fadeOut();
+            }
+        });
+        $(document).on('click', 'li', function() {
+            $('#keywords').val($(this).text());
+            $('#search_ajax').fadeOut();
+        })
+    </script>
+    <script type="text/javascript">
+        $('.xemnhanh').click(function() {
+            var product_id = $(this).data('id_product');
+            var _token = $('input[name="_token"]').val();
+            $.ajax({
+                url: '{{ url('/quickview') }}',
+                method: "POST",
+                dataType: "JSON",
+                data: {
+                    product_id: product_id,
+                    _token: _token
+                },
+                success: function(data) {
+                    $('#product_quickview_title').html(data.product_name);
+                    $('#product_quickview_price').html(data.product_price);
+                    $('#product_quickview_image').html(data.product_image);
+                    $('#product_quickview_id').html(data.product_id);
+                    $('#product_quickview_gallery').html(data.product_gallery);
+                    $('#product_quickview_desc').html(data.product_desc);
+                    $('#product_quickview_content').html(data.product_content);
+                    $('#product_quickview_value').html(data.product_quickview_value);
+                    $('#product_quickview_button').html(data.product_button);
+
+
+                }
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).on('click', '.add-to-cart-quickview', function() {
+
+            var id = $(this).data('id_product');
+            // alert(id);
+            var cart_product_id = $('.cart_product_id_' + id).val();
+            var cart_product_name = $('.cart_product_name_' + id).val();
+            var cart_product_image = $('.cart_product_image_' + id).val();
+            var cart_product_quantity = $('.cart_product_quantity_' + id).val();
+            var cart_product_price = $('.cart_product_price_' + id).val();
+            var cart_product_qty = $('.cart_product_qty_' + id).val();
+
+            var _token = $('input[name="_token"]').val();
+            if (parseInt(cart_product_qty) > parseInt(cart_product_quantity)) {
+                alert('Làm ơn đặt nhỏ hơn ' + cart_product_quantity);
+            } else {
+
+                $.ajax({
+                    url: '{{ url('/add-cart-ajax') }}',
+                    method: 'POST',
+                    data: {
+                        cart_product_id: cart_product_id,
+                        cart_product_name: cart_product_name,
+                        cart_product_image: cart_product_image,
+                        cart_product_price: cart_product_price,
+                        cart_product_qty: cart_product_qty,
+                        _token: _token,
+                        cart_product_quantity: cart_product_quantity
+                    },
+                    beforeSend: function() {
+                        $("#beforesend_quickview").html("<p class='text text-primary'>Dang them san pham vao gio hang</p>");
+                    },
+                    success: function() {
+                        $("#beforesend_quickview").html("<p class='text text-success'>Da them san pham vao gio hang</p>");
+                    }
+
+                });
+            }
+        });
+        $(document).on('click', '.redirect-cart', function() {
+            window.location.href = "{{url('/gio-hang')}}";
+        });
+
     </script>
 
 

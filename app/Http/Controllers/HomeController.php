@@ -11,6 +11,7 @@ session_start();
 use Mail;
 use App\Slider;
 use App\CatePost;
+use App\Product;
 class HomeController extends Controller
 {
 
@@ -74,6 +75,19 @@ class HomeController extends Controller
                     $message->from($to_email,$to_name);
                 });
                  return redirect('/')->with('message','');
+    }
+    public function autocomplete_ajax(Request $request){
+        $data = $request->all();
+
+        if($data['query']){
+            $product = Product::where('product_status','0')->where('product_name','LIKE','%'.$data['query'].'%')->get();
+            $output = '<ul class="dropdown-menu" style="display:block; position:relative">';
+            foreach($product as $key => $val){
+                $output.='<li><a href="#">'.$val->product_name.'</a></li>';
+            }
+            $output.='</ul>';
+            echo $output;
+        }
     }
 
 }
