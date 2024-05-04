@@ -129,23 +129,27 @@
                         <div class="mainmenu pull-left">
                             <ul class="nav navbar-nav collapse navbar-collapse">
                                 <li><a href="{{ url('/trang-chu') }}" class="active">Trang chủ</a></li>
-                                
+
                                 <li class="dropdown"><a href="#">Sản phẩm<i class="fa fa-angle-down"></i></a>
                                     <ul role="menu" class="sub-menu">
-                                        @foreach($category as $key => $danhmuc)
-                                        <li><a href="{{URL::to('/danh-muc-san-pham/'.$danhmuc->category_slug)}}">{{$danhmuc->category_name}}</a></li>
-                                        @endforeach
-                                    </ul>
-                                </li> 
-                                <li class="dropdown"><a href="#">Tin tức<i class="fa fa-angle-down"></i></a>
-                                    <ul role="menu" class="sub-menu">
-                                        @foreach($category_post as $key => $danhmucbaiviet)
-                                        <li><a href="{{URL::to('/danh-muc-bai-viet/'.$danhmucbaiviet->cate_post_slug)}}">{{$danhmucbaiviet->cate_post_name}}</a></li>
+                                        @foreach ($category as $key => $danhmuc)
+                                            <li><a
+                                                    href="{{ URL::to('/danh-muc-san-pham/' . $danhmuc->category_slug) }}">{{ $danhmuc->category_name }}</a>
+                                            </li>
                                         @endforeach
                                     </ul>
                                 </li>
-
                                 <li><a href="{{ URL::to('/gio-hang') }}">Giỏ hàng</a></li>
+                                <li class="dropdown"><a href="#">Tin tức<i class="fa fa-angle-down"></i></a>
+                                    <ul role="menu" class="sub-menu">
+                                        @foreach ($category_post as $key => $danhmucbaiviet)
+                                            <li><a
+                                                    href="{{ URL::to('/danh-muc-bai-viet/' . $danhmucbaiviet->cate_post_slug) }}">{{ $danhmucbaiviet->cate_post_name }}</a>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </li>
+                                <li><a href="{{ URL::to('/video-linhwatch') }}">Video</a></li>
                                 <li><a href="#">Liên hệ</a></li>
                             </ul>
                         </div>
@@ -155,8 +159,8 @@
                             {{ csrf_field() }}
                             <div class="search_box pull-right">
                                 <input type="text" name="keywords_submit" placeholder="Từ khóa" />
-                                <input type="submit" style="color: #000" name="search_item" class=" btn-success btn-sm"
-                                    value="Tìm kiếm">
+                                <input type="submit" style="color: #000" name="search_item"
+                                    class=" btn-success btn-sm" value="Tìm kiếm">
                             </div>
                         </form>
                     </div>
@@ -165,7 +169,7 @@
         </div><!--/header-bottom-->
     </header><!--/header-->
 
-    {{-- <section id="slider"><!--slider-->
+    <section id="slider"><!--slider-->
         <div class="container">
             <div class="row">
                 <div class="col-sm-12">
@@ -184,14 +188,16 @@
                                 @php
                                     $i++;
                                 @endphp
-                                <div class="item {{$i== 1 ? 'active' : ''}}">
-                                   
+                                <div class="item {{ $i == 1 ? 'active' : '' }}">
+
                                     <div class="col-sm-12">
-                                        <img alt="{{$slide->slider_desc}}" src ="public/uploads/slider/{{ $slide->slider_image }}"
-                                        height="200" width="100%" class="img img-reponsive">
+                                        <img alt="{{ $slide->slider_desc }}"
+                                            src="{{ asset('public/uploads/slider/' . $slide->slider_image) }}"
+                                            height="200" width="100%" class="img img-reponsive">
                                     </div>
                                 </div>
                             @endforeach
+
                         </div>
 
 
@@ -206,7 +212,7 @@
                 </div>
             </div>
         </div>
-    </section><!--/slider--> --}}
+    </section><!--/slider-->
 
     <section>
         <div class="container">
@@ -217,27 +223,29 @@
                         <div class="panel-group category-products" id="accordian">
                             @foreach ($category as $key => $cate)
                                 <div class="panel panel-default">
-                                    @if($cate->category_parent == 0)
-                                    <div class="panel-heading">
-                                        <h4 class="panel-title">
-                                            <a data-toggle="collapse" data-parent="#accordian" 
-                                            href="#{{$cate->category_id}}"><span class="badge pull-right"><i class="fa fa-plus"></i></span>
-                                            {{ $cate->category_name }}</a>
-                                        </h4>
-                                    </div>
-                                    <div id="{{$cate->category_id}}" class="panel-collapse collapse">
-                                        <div class="panel-body">
-                                            <ul>
-                                                @foreach($category as $key =>$cate_sub)
-                                                @if($cate_sub->category_parent == $cate->category_id)
-                                                    <li><a href="{{URL::to('/danh-muc-san-pham/'.$cate_sub->category_slug)}}">
-                                                    {{$cate_sub->category_name}} </a></li>
-                                                    @endif
-                                                @endforeach
-                                                
-                                            </ul>
+                                    @if ($cate->category_parent == 0)
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#accordian"
+                                                    href="#{{ $cate->category_id }}"><span
+                                                        class="badge pull-right"><i class="fa fa-plus"></i></span>
+                                                    {{ $cate->category_name }}</a>
+                                            </h4>
                                         </div>
-                                    </div>
+                                        <div id="{{ $cate->category_id }}" class="panel-collapse collapse">
+                                            <div class="panel-body">
+                                                <ul>
+                                                    @foreach ($category as $key => $cate_sub)
+                                                        @if ($cate_sub->category_parent == $cate->category_id)
+                                                            <li><a
+                                                                    href="{{ URL::to('/danh-muc-san-pham/' . $cate_sub->category_slug) }}">
+                                                                    {{ $cate_sub->category_name }} </a></li>
+                                                        @endif
+                                                    @endforeach
+
+                                                </ul>
+                                            </div>
+                                        </div>
                                     @endif
                                 </div>
                             @endforeach
@@ -603,23 +611,44 @@
         }
     </script>
     <script type="text/javascript">
-            $(document).ready(function() {
+        $(document).ready(function() {
             $('#imageGallery').lightSlider({
-                gallery:true,
-                item:1,
-                loop:true,
-                thumbItem:3,
-                slideMargin:0,
+                gallery: true,
+                item: 1,
+                loop: true,
+                thumbItem: 3,
+                slideMargin: 0,
                 enableDrag: false,
-                currentPagerPosition:'left',
+                currentPagerPosition: 'left',
                 onSliderLoad: function(el) {
                     el.lightGallery({
                         selector: '#imageGallery .lslide'
                     });
-                }   
-            });  
+                }
+            });
         });
     </script>
+    <script type="text/javascript">
+        $(document).on('click', '.watch-video', function() {
+            var video_id = $(this).attr('id');
+            var _token = $('input[name="_token"]').val();
+            $.ajax({
+                url: '{{ url('/watch-video') }}',
+                method: "POST",
+                dataType: "JSON",
+                data: {
+                    video_id: video_id,
+                    _token: _token
+                },
+                success: function(data) {
+                 $('#video_title').html(data.video_title);
+                 $('#video_link').html(data.video_link);
+                 $('#video_desc').html(data.video_desc);
+                }
+            });
+        })
+    </script>
+
 
 </body>
 

@@ -37,11 +37,11 @@
                         
                         <div class="form-group">
                             <label for="exampleInputPassword1">Mô tả sản phẩm</label>
-                            <textarea style="resize: none"rows="5"  name="product_desc" class="form-control" id="cheditor" ></textarea>
+                            <textarea style="resize: none"rows="5"  name="product_desc" id="cheditor" class="form-control" id="cheditor" ></textarea>
                         </div>
                         <div class="form-group">
                             <label for="exampleInputPassword1">Nội dung sản phẩm</label>
-                            <textarea style="resize: none"rows="5"  name="product_content" class="form-control" id="cheditor1"></textarea>
+                            <textarea style="resize: none"rows="5"  name="product_content" id="cheditor1" class="form-control" id="cheditor1"></textarea>
                         </div>
                         <div class="form-group">
                             <label for="exampleInputEmail1">Gía sản phẩm</label>
@@ -63,6 +63,10 @@
                                 <option value="{{$brand->brand_id}}">{{$brand->brand_name}}</option>
                                 @endforeach
                             </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Tags san pham</label>
+                            <input type="text" data-role="tagsinput" class="form-control"  name="product_tags"  id="">
                         </div>
                         <div class="form-group">
                             <label for="exampleInputPassword1">Hiển thị</label>

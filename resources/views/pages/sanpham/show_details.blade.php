@@ -8,18 +8,27 @@
                     height: 140px;
                     max-width: 100%;
                 }
-				li.active{
-					border: 2px solid brown;
-				}
+
+                li.active {
+                    border: 2px solid brown;
+                }
             </style>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb" style="background: none">
+                  <li class="breadcrumb-item"><a href="{{url('/')}}">Trang chu</a></li>
+                  <li class="breadcrumb-item"><a href="{{url('/danh-muc-san-pham/'.$cate_slug)}}">{{$product_cate}}</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">{{$meta_title}}</li>
+                </ol>
+            </nav>
             <div class="col-sm-5">
                 <ul id="imageGallery">
-                    @foreach($gallery as $key =>$gal)
-                    <li data-thumb="{{asset('public/uploads/gallery/'.$gal->gallery_image) }}"
-                        data-src="{{asset('public/uploads/gallery/'.$gal->gallery_image) }}">
-                        <img width="100%" alt="{{$gal->gallery_name}}" src="{{asset('public/uploads/gallery/'.$gal->gallery_image) }}" />
-                    </li>
-                   @endforeach
+                    @foreach ($gallery as $key => $gal)
+                        <li data-thumb="{{ asset('public/uploads/gallery/' . $gal->gallery_image) }}"
+                            data-src="{{ asset('public/uploads/gallery/' . $gal->gallery_image) }}">
+                            <img width="100%" alt="{{ $gal->gallery_name }}"
+                                src="{{ asset('public/uploads/gallery/' . $gal->gallery_image) }}" />
+                        </li>
+                    @endforeach
 
 
 
@@ -68,6 +77,35 @@
                     <p><b>Danh mục:</b> {{ $value->category_name }}</p>
                     <a href=""><img src="images/product-details/share.png" class="share img-responsive"
                             alt="" /></a>
+                    <fieldset>
+                        <legend>Tags</legend>
+                        <p><i class="fa fa-tag"></i>
+                            @php
+                                $tags = $value->product_tags;
+                                $tags = explode(',', $tags);
+                            @endphp
+                         
+                            @foreach ($tags as $tag)
+                                <a href="{{ url('/tag/' . str_slug($tag)) }}" class="tags_style">{{ $tag }}</a>
+                            @endforeach
+                        </p>
+                    </fieldset>
+                    <style>
+                        a.tags_style {
+                            margin: 3px 2px;
+                            border: 1px solid;
+
+                            height: auto;
+                            background: #428bca;
+                            color: #ffff;
+                            padding: 0px;
+                        }
+
+                        a.tags_style:hover {
+                            background: #337ab7;
+                            color: #ffff;
+                        }
+                    </style>
                 </div><!--/product-information-->
             </div>
         </div><!--/product-details-->

@@ -9,6 +9,7 @@ Route::post('/tim-kiem','HomeController@search');
 Route::get('/danh-muc-san-pham/{category_id}','CategoryProduct@show_category_home');
 Route::get('/thuong-hieu-san-pham/{brand_id}','BrandProduct@show_brand_home');
 Route::get('/chi-tiet-san-pham/{product_id}','ProductController@details_product');
+Route::get('/tag/{product_tag}','ProductController@tag');
 
 //Danh muc bai viet
 Route::get('/danh-muc-bai-viet/{post_slug}','PostController@danh_muc_bai_viet');
@@ -176,6 +177,15 @@ Route::post('/update-gallery-name','GalleryController@update_gallery_name');
 Route::post('/delete-gallery','GalleryController@delete_gallery');
 Route::post('/update-gallery','GalleryController@update_gallery');
 
+//video
+Route::get('/video','VideoController@video');
+Route::get('/video-linhwatch','VideoController@video_home');
+Route::post('/select-video','VideoController@select_video');
+Route::post('/insert-video','VideoController@insert_video');
+Route::post('/update-video','VideoController@update_video');
+Route::post('/delete-video','VideoController@delete_video');
+Route::post('/update-video-image','VideoController@update_video_image');
+Route::post('/watch-video','VideoController@watch_video');
 
 
 

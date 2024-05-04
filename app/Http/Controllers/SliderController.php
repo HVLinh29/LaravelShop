@@ -7,11 +7,12 @@ use App\Slider;
 use Illuminate\Support\Facades\Session;
 use Redirect;
 use Illuminate\Support\Facades\DB;
+use Auth;
 class SliderController extends Controller
 {
     public function AuthLogin()
     {
-        $admin_id = Session::get('admin_id');
+        $admin_id = Auth::id();
     
         if ($admin_id) {
             return Redirect::to('admin.dashboard');
@@ -50,10 +51,10 @@ class SliderController extends Controller
             $slider->save();
 
             Session::put('message', 'Thêm slider thành công');
-            return Redirect::to('add-slider');
+            return Redirect::to('managa-slider');
         } else {
             Session::put('message', 'Làm ơn thêm hình ảnh');
-            return Redirect::to('add-slider');
+            return Redirect::to('managa-slider');
         }
     }
     public function unactive_slider($slider_id){

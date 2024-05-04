@@ -10,6 +10,7 @@ use App\Brand;
 use Illuminate\Support\Facades\Redirect;
 session_start();
 use App\CatePost;
+use App\Slider;
 use Auth;
 class BrandProduct extends Controller
 {
@@ -89,21 +90,31 @@ class BrandProduct extends Controller
     }
 
     //Trang chu Fontend
-    public function show_brand_home($brand_id){
-
+    public function show_brand_home(Request $request, $brand_slug){
         $category_post = CatePost::orderBy('cate_post_id','DESC')->get();
+        //slide
+        $slider = Slider::orderBy('slider_id','DESC')->where('slider_status','1')->take(4)->get();
 
+        $cate_product = DB::table('tbl_category_product')->where('category_status','0')->orderby('category_id','desc')->get(); 
+        $brand_product = DB::table('tbl_brand')->where('brand_status','0')->orderby('brand_id','desc')->get(); 
+        
+        
+        $brand_by_id = DB::table('tbl_product')->join('tbl_brand','tbl_product.brand_id','=','tbl_brand.brand_id')->where('tbl_brand.brand_slug',$brand_slug)->paginate(6);
 
-        $cate_product = DB::table('tbl_category_product')->where('category_status','0')->orderby('category_id','desc')->get();
-        $brand_product = DB::table('tbl_brand')->where('brand_status','0')->orderby('brand_id','desc')->get();
+        $brand_name = DB::table('tbl_brand')->where('tbl_brand.brand_slug',$brand_slug)->limit(1)->get();
 
-        $brand_by_id = DB::table('tbl_product')->join('tbl_brand','tbl_product.brand_id',
-        '=','tbl_brand.brand_id')->where('tbl_product.brand_id',$brand_id)->get();
-
-        $brand_name = DB::table('tbl_brand')->where('tbl_brand.brand_id',$brand_id)->limit(1)->get();
-
-
+        foreach($brand_name as $key => $val){
+            //seo 
+            $meta_desc = $val->brand_desc; 
+            $meta_keywords = $val->brand_desc;
+            $meta_title = $val->brand_name;
+            $url_canonical = $request->url();
+            //--seo
+        }
+         
         return view('pages.brand.show_brand')->with('category',$cate_product)->with('brand',$brand_product)
-        ->with('brand_by_id',$brand_by_id)->with('brand_name',$brand_name)->with('category_post',$category_post);
+        ->with('brand_by_id',$brand_by_id)->with('brand_name',$brand_name)->with('meta_desc',$meta_desc)
+        ->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical)
+        ->with('slider',$slider) ->with('category_post',$category_post);
     }
 }
