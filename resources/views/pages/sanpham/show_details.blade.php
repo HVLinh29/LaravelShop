@@ -68,8 +68,14 @@
                                 class="cart_product_qty_{{ $value->product_id }}" value="1" />
                             <input name="productid_hidden" type="hidden" value="{{ $value->product_id }}" />
                         </span>
-                        <input type="button" value="Thêm giỏ hàng" class="btn btn-primary btn-sm add-to-cart"
-                            data-id_product="{{ $value->product_id }}" name="add-to-cart">
+                        {{-- <input type="button" value="Thêm giỏ hàng" class="btn btn-primary btn-sm add-to-cart"
+                            data-id_product="{{ $value->product_id }}" name="add-to-cart"> --}}
+                        <div>
+                            <button type="button" class="btn btn-default add-to-cart"
+                                data-id_product="{{ $value->product_id }}" name="add-to-cart">
+                                <i class="fas fa-shopping-cart"></i>
+                            </button>
+                        </div>
                     </form>
 
                     <p><b>Tình trạng:</b> Còn hàng</p>
@@ -153,7 +159,8 @@
                         <p><b>Đánh giá sản phẩm </b></p>
                         {{-- Danh gia sao --}}
                         <div style="display: flex; align-items: center;">
-                            <ul style="width: 80%;" class="list-inline rating" title="Average Rating" style="margin-right: 10px;">
+                            <ul style="width: 80%;" class="list-inline rating" title="Average Rating"
+                                style="margin-right: 10px;">
                                 @for ($count = 1; $count <= 5; $count++)
                                     @php
                                         if ($count <= $rating) {
@@ -162,20 +169,16 @@
                                             $color = 'color:#ccc;';
                                         }
                                     @endphp
-                            
+
                                     <li title="star_rating" id="{{ $value->product_id }}-{{ $count }}"
                                         data-index="{{ $count }}" data-product_id="{{ $value->product_id }}"
                                         data-rating="{{ $rating }}" class="rating"
                                         style="cursor:pointer;{{ $color }} font-size:30px;">&#9733;</li>
                                 @endfor
                             </ul>
-                            
+
                             <span>Số lượt đánh giá: {{ $ratingCount }}</span>
                         </div>
-                        
-                        
-                        
-                        
 
                         <p><b>Bình luận về sản phẩm</b></p>
 
@@ -212,11 +215,16 @@
                                     <div class="productinfo text-center product-related">
                                         <img src="{{ URL::to('public/uploads/product/' . $lienquan->product_image) }}"
                                             alt="" />
-                                        <h2>{{ number_format($lienquan->product_price, 0, ',', '.') }}đ</h2>
                                         <p>{{ $lienquan->product_name }}</p>
-                                        <input type="button" value="Thêm giỏ hàng"
+                                        <h2>{{ number_format($lienquan->product_price, 0, ',', '.') }}đ</h2>
+
+                                        {{-- <input type="button" value="Thêm giỏ hàng"
                                             class="btn btn-danger btn-sm add-to-cart"
+                                            data-id_product="{{ $value->product_id }}" name="add-to-cart"> --}}
+                                        <button type="button" class="btn btn-default add-to-cart"
                                             data-id_product="{{ $value->product_id }}" name="add-to-cart">
+                                            <i class="fas fa-shopping-cart"></i>
+                                        </button>
 
 
                                     </div>
@@ -224,6 +232,23 @@
                                 </div>
                             </div>
                         </div>
+                        <style>
+                            .add-to-cart {
+                                border-radius: 50%;
+                                background-color: #000;
+                                color: #fff;
+                                padding: 10px;
+                                transition: background-color 0.3s ease;
+                                border: none;
+                                overflow: hidden;
+                                /* Giữ cho phần bên ngoài khu vực hình tròn bị ẩn đi */
+                            }
+
+                            .add-to-cart:hover {
+                                background-color: #333;
+                                transform: scale(1.1);
+                            }
+                        </style>
                     @endforeach
 
 
@@ -234,3 +259,35 @@
         </div>
     </div>
 @endsection
+<style>
+    .product-image-wrapper {
+        border-radius: 10px;
+        /* Bo tròn góc */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        /* Đổ bóng */
+        transition: transform 0.3s ease;
+        /* Thêm hiệu ứng chuyển đổi */
+    }
+
+    .product-image-wrapper:hover {
+        transform: scale(1.05);
+        /* Phóng to 5% khi di chuột vào */
+    }
+
+    .add-to-cart {
+        border-radius: 50%;
+        background-color: #000;
+        color: #fff;
+        padding: 10px;
+        transition: background-color 0.3s ease;
+        border: none;
+        overflow: hidden;
+        /* Giữ cho phần bên ngoài khu vực hình tròn bị ẩn đi */
+    }
+
+    .add-to-cart:hover {
+        background-color: #333;
+        transform: scale(1.1);
+        /* Phóng to khi di chuột vào */
+    }
+</style>

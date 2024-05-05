@@ -37,6 +37,8 @@ Route::get('/dashboard','AdminController@show');
 Route::post('/admin-dashboard','AdminController@dashboard');
 Route::get('/logout','AdminController@logout');
 
+Route::post('/filter-by-date','AdminController@filter_by_date');
+
 //Category Product
 Route::get('/add-category-product','CategoryProduct@add_category_product');
 Route::get('/edit-category-product/{category_product_id}','CategoryProduct@edit_category_product');

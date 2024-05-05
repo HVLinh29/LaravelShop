@@ -29,9 +29,11 @@
                                         <img id="wishlist_productimage{{ $product->product_id }}"
                                             src="{{ URL::to('public/uploads/product/' . $product->product_image) }}"
                                             alt="" />
+
+                                        <p style="margin-top: 30px">{{ $product->product_name }}</p>
                                         <h2 style="color: red">{{ number_format($product->product_price, 0, ',', '.') }}đ
                                         </h2>
-                                        <p>{{ $product->product_name }}</p>
+
 
                                     </a>
                                     {{-- <style>
@@ -52,22 +54,33 @@
                                         class="btn btn-default xemnhanh" data-id_product="{{ $product->product_id }}"
                                         name="add-to-cart" value="Xem nhanh"> --}}
                                     <style>
-                                        .xemnhanh,
                                         .add-to-cart {
-                                            background: #f5f5ED;
-                                            border: 0 none;
-                                            border-radius: 0;
-                                            color: #696763;
-                                            font-family: 'ROBOTO', sans-serif;
-                                            font-size: 15px;
-                                            margin-bottom: 25px;
+                                            border-radius: 50%;
+                                            background-color: #000;
+                                            color: #fff;
+                                            padding: 10px;
+                                            transition: background-color 0.3s ease;
+                                            border: none;
+                                            overflow: hidden;
+                                            /* Giữ cho phần bên ngoài khu vực hình tròn bị ẩn đi */
+                                        }
+
+                                        .add-to-cart:hover {
+                                            background-color: #333;
+                                            transform: scale(1.1);
                                         }
                                     </style>
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <input type="button" class="btn btn-default add-to-cart"
+                                            {{-- <input type="button" class="btn btn-default add-to-cart"
                                                 data-id_product="{{ $product->product_id }}" name="add-to-cart"
-                                                value="Them gio hang">
+                                                value="Them gio hang"> --}}
+                                            <button type="button" class="btn btn-default add-to-cart"
+                                                data-id_product="{{ $product->product_id }}" name="add-to-cart">
+                                                <i class="fas fa-shopping-cart"></i>
+                                            </button>
+
+
                                         </div>
                                         <div class="col-md-6">
                                             <input type="button" data-toggle="modal" data-target="#xemnhanh"
@@ -175,23 +188,23 @@
     </div>
 @endsection
 <style>
-    /* CSS cho sản phẩm */
     .product-image-wrapper {
         margin-bottom: 20px;
+        border-radius: 10px;
+        /* Bo tròn góc */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        /* Đổ bóng */
+        transition: transform 0.3s ease;
+        /* Thêm hiệu ứng chuyển đổi */
+    }
+
+    .product-image-wrapper:hover {
+        transform: scale(1.05);
+        /* Phóng to 5% khi di chuột vào */
     }
 
     .productinfo {
         position: relative;
-    }
-
-    .productinfo form {
-        padding: 20px;
-        background-color: #fff;
-        /* Màu nền */
-        border-radius: 10px;
-        /* Bo tròn viền */
-        box-shadow: 0px 2px 10px white;
-        /* Hiệu ứng đổ bóng */
     }
 
     .productinfo h2 {
@@ -202,17 +215,6 @@
     .productinfo p {
         font-size: 16px;
         margin-bottom: 15px;
-    }
-
-    .add-to-cart {
-        background-color: #FE980F;
-        /* Màu nút thêm vào giỏ hàng */
-        color: #fff;
-        border: none;
-        padding: 10px 15px;
-        font-size: 14px;
-        border-radius: 3px;
-        cursor: pointer;
     }
 
     .add-to-cart:hover {
@@ -237,7 +239,7 @@
 
     /* CSS cho nút xem nhanh */
     .choose .nav-pills li:nth-child(2) a {
-        color: #83AFA8;
+        color: #ff0000;
         font-size: 14px;
         padding: 0;
     }
@@ -255,12 +257,12 @@
     .button_wishlist {
         border: none;
         background: #ffffff;
-        color: #83AFA8;
+        color: #ff0000;
 
     }
 
     ul.nav.nav-pills.nav-justified i {
-        color: #83AFA8;
+        color: #ff0000;
     }
 
     .button_wishlist span:hover {

@@ -18,6 +18,11 @@
     <link href="{{ asset('public/fontend/css/lightslider.css') }}" rel="stylesheet">
     <link href="{{ asset('public/fontend/css/prettify.css') }}" rel="stylesheet">
     <link href="{{ asset('public/fontend/css/lightgallery.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.3/themes/base/jquery-ui.min.css">
+
+
+
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -160,13 +165,52 @@
                         <form method="POST" action="{{ URL::to('/tim-kiem') }}" autocomplete="off">
                             {{ csrf_field() }}
                             <div class="search_box pull-right">
+                                {{-- <input type="text" name="keywords_submit" id="keywords" placeholder="Từ khóa" />
+                                <div id="search_ajax"></div>
+        <input type="submit" style="color: #000" name="search_item" class="btn-success btn-sm" value="Tìm kiếm"> --}}
                                 <input type="text" name="keywords_submit" id="keywords" placeholder="Từ khóa" />
                                 <div id="search_ajax"></div>
                                 <input type="submit" style="color: #000" name="search_item"
                                     class=" btn-success btn-sm" value="Tìm kiếm">
+                                <style>
+                                    .search_box {
+                                        position: relative;
+                                    }
+
+                                    #search_ajax {
+                                        position: absolute;
+                                        top: 100%;
+                                        left: 0;
+                                        width: 100%;
+
+                                        /* Điều chỉnh màu nền của kết quả tìm kiếm */
+
+                                        z-index: 999;
+                                        /* Đảm bảo kết quả tìm kiếm được hiển thị trên menu */
+                                    }
+
+                                    .search_box {
+                                        display: flex;
+                                        align-items: center;
+                                    }
+
+                                    .search_box input[type="text"] {
+                                        flex: 1;
+                                        /* Ô tìm kiếm sẽ mở rộng để lấp đầy không gian còn lại */
+                                        margin-right: 10px;
+                                        /* Khoảng cách giữa ô tìm kiếm và nút submit */
+                                    }
+
+                                    .search_box input[type="submit"] {
+                                        font-size: 14px;
+                                        padding: 5px 10px;
+                                    }
+                                </style>
+
                             </div>
                         </form>
                     </div>
+
                 </div>
             </div>
         </div><!--/header-bottom-->
@@ -196,7 +240,7 @@
                                     <div class="col-sm-12">
                                         <img alt="{{ $slide->slider_desc }}"
                                             src="{{ asset('public/uploads/slider/' . $slide->slider_image) }}"
-                                            height="200" width="100%" class="img img-reponsive">
+                                            height="450" width="100%" class="img img-reponsive">
                                     </div>
                                 </div>
                             @endforeach
@@ -373,12 +417,14 @@
     <script src="{{ asset('public/fontend/js/price-range.js') }}"></script>
     <script src="{{ asset('public/fontend/js/jquery.prettyPhoto.js') }}"></script>
     <script src="{{ asset('public/fontend/js/main.js') }}"></script>
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
     <script src="{{ asset('public/fontend/js/sweetalert.min.js') }}"></script>
     <script src="{{ asset('public/fontend/js/lightgallery-all.min.js') }}"></script>
     <script src="{{ asset('public/fontend/js/lightslider.js') }}"></script>
     <script src="{{ asset('public/fontend/js/prettify.js') }}"></script>
 
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src=" https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.3/jquery-ui.min.js" async defer></script>
 
 
     <div id="fb-root"></div>
@@ -856,18 +902,45 @@
             });
         });
     </script>
-   <script type="text/javascript">
-    $(document).ready(function() {
-        $('#sort').on('change', function() { // fix syntax error here
-            var url = $(this).val();
-            if (url) {
-                window.location = url;
-            } else {
-                return false;
-            }
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#sort').on('change', function() { // fix syntax error here
+                var url = $(this).val();
+                if (url) {
+                    window.location = url;
+                } else {
+                    return false;
+                }
+            });
         });
-    });
-</script>
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#slider-range").slider({
+                orientation: "horizontal",
+                range: true,
+                min: {{$min_price}},
+                max: {{$max_price}},
+                step: 10000, // Adjust the step size according to your needs
+                values: [{{$min_price}}, {{$max_price}}],
+                slide: function(event, ui) {
+                    // Format the price range with commas for better readability
+                    $("#amount").val(formatCurrency(ui.values[0]) + " - " + formatCurrency(ui.values[1]));
+                    $("#start_price").val(ui.values[0]);
+                    $("#end_price").val(ui.values[1]);
+                }
+            });
+    
+            // Function to format currency with commas
+            function formatCurrency(value) {
+                return "đ" + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            }
+    
+            // Set initial price range value
+            $("#amount").val(formatCurrency($("#slider-range").slider("values", 0)) + " - " + formatCurrency($("#slider-range").slider("values", 1)));
+        });
+    </script>
+    
 </body>
 
 </html>

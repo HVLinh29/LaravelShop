@@ -8,7 +8,8 @@ body {
   font-weight:400px;
 }
 .productinfo.text-center img {
-  height: 225px;
+  height: 245px;
+  margin-top: 10px;
 }
 ul li {
   list-style: none;
@@ -224,7 +225,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .mainmenu ul li a:hover, .mainmenu ul li a.active,  .shop-menu ul li a.active{
 	background:none;
-	color:#fdb45e;
+	color: brown;
 }
 
 .search_box input {
@@ -555,11 +556,6 @@ ul.sub-menu {
 .carousel-indicators li.active {
 	  background: brown;
 }
-
-.item {
-  padding-left: 100px;
-}
-
 
 .pricing {
   position: absolute;
@@ -913,24 +909,6 @@ h2.title {
 }
 
 
-
-.add-to-cart {
-  background:#F5F5ED;
-  border: 0 none;
-  border-radius: 0;
-  color: #696763;
-  font-family: 'Roboto', sans-serif;
-  font-size: 15px;
-  margin-bottom: 25px;
-}
-
-.add-to-cart:hover {
-  background: red;
-  border: 0 none;
-  border-radius: 0;
-  color: #FFFFFF;
-}
-
 .add-to{
   margin-bottom: 10px;
 }
@@ -938,16 +916,6 @@ h2.title {
 .add-to-cart i{
 	margin-right:5px;
 }
-
-.add-to-cart:hover {
-  background: red;
-  color: #FFFFFF;
-}
-
-.choose {
-  border-top: 1px solid #F7F7F0;
-}
-
 .choose ul li a {
   color: #B3AFA8;
   font-family: 'Roboto', sans-serif;

@@ -31,6 +31,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <!-- //calendar -->
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.6/css/dataTables.dataTables.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
 
     <!-- //font-awesome icons -->
     <script src="{{ asset('public/backend/js/jquery2.0.3.min.js') }}"></script>
@@ -128,7 +130,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         </li>
                         <li class="sub-menu">
                             <a href="javascript:;">
-                                <i class="fa fa-product-hunt"></i>
+                                <i class="fa fa-shopify"></i>
                                 <span>Sản phẩm</span>
                             </a>
                             <ul class="sub">
@@ -139,7 +141,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         </li>
                         <li class="sub-menu">
                             <a href="javascript:;">
-                                <i class="fa fa-book"></i>
+                                <i class="fa fa-eye"></i>
                                 <span>Đơn hàng</span>
                             </a>
                             <ul class="sub">
@@ -172,7 +174,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         </li>
                         <li>
                             <a href="{{ URL::to('/infomation') }}">
-                                <i class="fa-solid fa-address-card"></i>
+                                <i class="fa fa-address-card"></i>
                                 <span>Thông tin liên hệ</span>
                             </a>
                         </li>
@@ -189,7 +191,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         </li>
                         <li class="sub-menu">
                             <a href="javascript:;">
-                                <i class="fa fa-tag"></i>
+                                <i class="fa fa-book"></i>
                                 <span>Bài viết</span>
                             </a>
                             <ul class="sub">
@@ -211,7 +213,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         </li>
                         <li class="sub-menu">
                             <a href="javascript:;">
-                                <i class="fa-solid fa-video"></i>
+                                <i class="fa fa-video"></i>
                                 <span>Video</span>
                             </a>
                             <ul class="sub">
@@ -306,12 +308,20 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <script>
         $(function() {
             $("#datepicker").datepicker({
-                dateFormat: "yy-mm-dd"
+                prevText:"Tháng trước",
+                nextText:"Tháng sau",
+                dayNamesMin: ["Tháng 1","Tháng 2","Tháng 3","Tháng 4","Tháng 5","Tháng 6","Tháng 7","Tháng 8","Tháng 9","Tháng 10","Tháng 11","Tháng 12"],
+                dateFormat: "yy-mm-dd",
+                duration:"slow"
             });
         });
         $(function() {
             $("#datepicker2").datepicker({
-                dateFormat: "yy-mm-dd"
+                prevText:"Tháng trước",
+                nextText:"Tháng sau",
+                dayNamesMin: ["Tháng 1","Tháng 2","Tháng 3","Tháng 4","Tháng 5","Tháng 6","Tháng 7","Tháng 8","Tháng 9","Tháng 10","Tháng 11","Tháng 12"],
+                dateFormat: "yy-mm-dd",
+                duration:"slow"
             });
         });
     </script>
@@ -932,6 +942,29 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         });
     </script>
     <!-- //calendar -->
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $('#btn-dashboard-filter').click(function(){
+            var _token = $('input[name="_token"]').val();
+            var from_date = $('#from_date').val();
+            var to_date = $('#to_date').val();
+
+            $.ajax({
+                url: '{{ url('/filter-by-date') }}',
+                method: 'POST',
+                dataType: 'json',
+                data: {
+                    _token: _token,
+                    from_date: from_date,
+                    to_date: to_date
+                },
+                success: function(data) {
+                  chart.setData(data);
+                }
+            });
+        })
+    })
+     </script>
 </body>
 
 </html>
