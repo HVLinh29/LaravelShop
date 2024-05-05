@@ -95,19 +95,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         </li>
                         <li class="sub-menu">
                             <a href="javascript:;">
-                                <i class="fa-solid fa-tag"></i>
-                                <span>Slider</span>
-                            </a>
-                            <ul class="sub">
-                                <li><a href="{{ URL::to('/managa-slider') }}">Liet ke Slider</a></li>
-                                <li><a href="{{ URL::to('/add-slider') }}">Them Slider</a></li>
-
-                            </ul>
-                        </li>
-
-
-                        <li class="sub-menu">
-                            <a href="javascript:;">
                                 <i class="fa-solid fa-list"></i>
                                 <span>Danh mục sản phẩm</span>
                             </a>
@@ -125,6 +112,17 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             <ul class="sub">
                                 <li><a href="{{ URL::to('/add-brand-product') }}">Thêm thương hiệu sản phẩm</a></li>
                                 <li><a href="{{ URL::to('/all-brand-product') }}">Liệt kê thương hiệu</a></li>
+
+                            </ul>
+                        </li>
+                        <li class="sub-menu">
+                            <a href="javascript:;">
+                                <i class="fa-solid fa-tag"></i>
+                                <span>Danh muc bai viet</span>
+                            </a>
+                            <ul class="sub">
+                                <li><a href="{{ URL::to('/add-category-post') }}">Thêm danh muc bai viet</a></li>
+                                <li><a href="{{ URL::to('/list-category-post') }}">Liệt kê danh muc bai viet</a></li>
 
                             </ul>
                         </li>
@@ -163,12 +161,23 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         </li>
                         <li class="sub-menu">
                             <a href="javascript:;">
-                                <i class="fa-solid fa-tag"></i>
-                                <span>Danh muc bai viet</span>
+                                <i class="fa-solid fa-car"></i>
+                                <span>Phí vận chuyển</span>
                             </a>
                             <ul class="sub">
-                                <li><a href="{{ URL::to('/add-category-post') }}">Thêm danh muc bai viet</a></li>
-                                <li><a href="{{ URL::to('/list-category-post') }}">Liệt kê danh muc bai viet</a></li>
+                                <li><a href="{{ URL::to('/delivery') }}">Quản lý phí vận chuyển</a></li>
+
+
+                            </ul>
+                        </li>
+                        <li class="sub-menu">
+                            <a href="javascript:;">
+                                <i class="fa-solid fa-tag"></i>
+                                <span>Slider</span>
+                            </a>
+                            <ul class="sub">
+                                <li><a href="{{ URL::to('/managa-slider') }}">Liet ke Slider</a></li>
+                                <li><a href="{{ URL::to('/add-slider') }}">Them Slider</a></li>
 
                             </ul>
                         </li>
@@ -185,6 +194,17 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         </li>
                         <li class="sub-menu">
                             <a href="javascript:;">
+                                <i class="fa-solid fa-tag"></i>
+                                <span>Binh luan</span>
+                            </a>
+                            <ul class="sub">
+
+                                <li><a href="{{ URL::to('/comment') }}">Liệt kê binh luan</a></li>
+
+                            </ul>
+                        </li>
+                        <li class="sub-menu">
+                            <a href="javascript:;">
                                 <i class="fa-solid fa-car"></i>
                                 <span>Video</span>
                             </a>
@@ -194,17 +214,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
                             </ul>
                         </li>
-                        <li class="sub-menu">
-                            <a href="javascript:;">
-                                <i class="fa-solid fa-car"></i>
-                                <span>Phí vận chuyển</span>
-                            </a>
-                            <ul class="sub">
-                                <li><a href="{{ URL::to('/delivery') }}">Quản lý phí vận chuyển</a></li>
 
-
-                            </ul>
-                        </li>
                         @transferrights
                             <li>
                                 <span><a href="{{ URL::to('/transferrights-destroy') }}">Stop chuyen quyen</a></span>
@@ -250,11 +260,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <script src="{{ asset('public/backend/js/bootstrap-tagsinput.min.js') }}"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script type="text/javascript">
-    $(document).ready( function () {
-    $('#myTable').DataTable();
-} );
+        $(document).ready(function() {
+            $('#myTable').DataTable();
+        });
     </script>
-    
+
     <script type="text/javascript">
         function ChangeToSlug() {
             var slug;
@@ -304,6 +314,52 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
         });
     </script>
+
+    <script type="text/javascript">
+        $('.comment_duyet').click(function() {
+            var comment_status = $(this).data('comment_status');
+            var comment_id = $(this).data('comment_id');
+            var comment_product_id = $(this).attr('id');
+            if(comment_status == 0){
+                var alert ='Duyet thanh cong binh luan';
+            }else{
+                var alert ='Huy duyet thanh cong binh luan';
+            }
+            $.ajax({
+                url: "{{ url('/duyet-comment') }}",
+                method: "POST",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+                },
+                data: {comment_status:comment_status, comment_id:comment_id, comment_product_id:comment_product_id},
+                success: function(data) {
+                   location.reload();
+                    $('#notify_comment').html('<span class="text text-alert">'+alert+'</span>');
+                }
+            });
+        });
+        $('.btn-reply-comment').click(function() {
+            var comment_id = $(this).data('comment_id');
+            var comment = $('.reply_comment_'+comment_id).val();
+            var comment_product_id = $(this).data('product_id');
+            
+            $.ajax({
+                url: "{{ url('/reply-comment') }}",
+                method: "POST",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+                },
+                data: {comment:comment, comment_id:comment_id, comment_product_id:comment_product_id},
+                success: function(data) {
+                    $('.reply_comment_'+comment_id).val('');
+                    $('#notify_comment').html('<span class="text text-alert">Tra loi binh luan thanh cong</span>');
+                }
+            });
+        });
+
+    </script>
     <script type="text/javascript">
         $(document).ready(function() {
             load_video();
@@ -327,7 +383,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 var video_slug = $('.video_slug').val();
                 var video_desc = $('.video_desc').val();
                 var video_link = $('.video_link').val();
-              
+
                 var form_data = new FormData();
                 form_data.append("file", document.getElementById("file_img_video").files[0]);
                 form_data.append("video_title", video_title);
@@ -342,7 +398,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 
                     },
-                    data:form_data,
+                    data: form_data,
                     contentType: false,
                     processData: false,
                     cache: false,
@@ -350,7 +406,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         load_video();
                         $('#notify').html(
                             '<span class="text text-success">Da them video thanh cong</span>'
-                            );
+                        );
                     }
                 });
 
@@ -387,7 +443,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         load_video();
                         $('#notify').html(
                             '<span class="text text-success">Cap nhat video thanh cong</span>'
-                            );
+                        );
                     }
                 });
             });
@@ -408,7 +464,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             load_video();
                             $('#notify').html(
                                 '<span class="text text-success">Xoa video thanh cong</span>'
-                                );
+                            );
                         }
                     });
                 }
@@ -437,8 +493,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     success: function(data) {
                         load_video();
                         $('#notify').html(
-                                '<span class="text text-success">Cap nhat hinh anh video thanh cong</span>'
-                                );
+                            '<span class="text text-success">Cap nhat hinh anh video thanh cong</span>'
+                        );
                     }
                 });
 
@@ -723,10 +779,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     alert('Cập nhật số lượng thành công');
 
                     location.reload();
-
-
-
-
                 }
             });
 

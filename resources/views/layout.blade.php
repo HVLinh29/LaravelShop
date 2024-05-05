@@ -19,6 +19,8 @@
     <link href="{{ asset('public/fontend/css/prettify.css') }}" rel="stylesheet">
     <link href="{{ asset('public/fontend/css/lightgallery.min.css') }}" rel="stylesheet">
 
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
 
     <link rel="shortcut icon" href="{{ 'public/fontend/images/ico/favicon.ico' }}">
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/ico/apple-touch-icon-144-precomposed.png">
@@ -735,22 +737,125 @@
                         cart_product_quantity: cart_product_quantity
                     },
                     beforeSend: function() {
-                        $("#beforesend_quickview").html("<p class='text text-primary'>Dang them san pham vao gio hang</p>");
+                        $("#beforesend_quickview").html(
+                            "<p class='text text-primary'>Dang them san pham vao gio hang</p>");
                     },
                     success: function() {
-                        $("#beforesend_quickview").html("<p class='text text-success'>Da them san pham vao gio hang</p>");
+                        $("#beforesend_quickview").html(
+                            "<p class='text text-success'>Da them san pham vao gio hang</p>");
                     }
 
                 });
             }
         });
         $(document).on('click', '.redirect-cart', function() {
-            window.location.href = "{{url('/gio-hang')}}";
+            window.location.href = "{{ url('/gio-hang') }}";
         });
-
     </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            load_comment();
 
+            function load_comment() {
+                var product_id = $('.comment_product_id').val();
+                var _token = $('input[name="_token"]').val();
+                $.ajax({
+                    url: '{{ url('/load-comment') }}',
+                    method: 'POST',
+                    data: {
+                        product_id: product_id,
+                        _token: _token,
+                    },
+                    success: function(data) {
+                        $('#comment_show').html(data);
+                    }
 
+                });
+            }
+            $('.send-comment').click(function() {
+                var product_id = $('.comment_product_id').val();
+                var comment_name = $('.comment_name').val();
+                var comment_content = $('.comment_content').val();
+                var _token = $('input[name="_token"]').val();
+                $.ajax({
+                    url: '{{ url('/send-comment') }}',
+                    method: 'POST',
+                    data: {
+                        product_id: product_id,
+                        comment_name: comment_name,
+                        comment_content: comment_content,
+                        _token: _token,
+                    },
+                    success: function(data) {
+
+                        $('#notify_comment').html(
+                            '<span class="text text-success">Them binh luan thanh cong, cho xem xet</span>'
+                        )
+                        load_comment();
+                        $('#notify_comment').fadeOut(5000);
+
+                        $('.comment_name').val('');
+                        $('.comment_content').val('');
+                    }
+
+                });
+            });
+        });
+    </script>
+   <script type="text/javascript">
+        function remove_background(product_id) {
+            for (var count = 1; count <= 5; count++) {
+                $('#' + product_id + '-' + count).css('color', '#ccc');
+            }
+        }
+        //hover chuột đánh giá sao
+        $(document).on('mouseenter', '.rating', function() {
+            var index = $(this).data("index"); //3
+            var product_id = $(this).data('product_id'); //13
+
+            // alert(index);
+            // alert(product_id);
+            remove_background(product_id);
+            for (var count = 1; count <= index; count++) {
+                $('#' + product_id + '-' + count).css('color', '#ffcc00');
+            }
+        });
+        //nhả chuột ko đánh giá
+        $(document).on('mouseleave', '.rating', function() {
+            var index = $(this).data("index");
+            var product_id = $(this).data('product_id');
+            var rating = $(this).data("rating");
+            remove_background(product_id);
+            //alert(rating);
+            for (var count = 1; count <= rating; count++) {
+                $('#' + product_id + '-' + count).css('color', '#ffcc00');
+            }
+        });
+        //clivk danh gia sao
+        $(document).on('click', '.rating', function() {
+            var index = $(this).data("index"); // Lấy giá trị index của đánh giá
+            var product_id = $(this).data('product_id'); // Lấy giá trị product_id từ phần tử HTML
+            var _token = $('input[name="_token"]').val();
+
+            $.ajax({
+                url: "{{ url('insert-rating') }}",
+                method: 'POST',
+                data: {
+                    index: index,
+                    product_id: product_id, 
+                    _token: _token
+                },
+                success: function(data) {
+                    if (data == 'done') {
+                        alert("Bạn đã đánh giá " + index + " trên 5");
+                        location.reload();
+                    } else {
+                        alert("Bạn chưa đánh giá");
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

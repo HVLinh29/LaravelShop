@@ -13,4 +13,8 @@ class Product extends Model
     ];
     protected $primaryKey = 'product_id';
  	protected $table = 'tbl_product';
+
+     public function comment(){
+        return $this->hasMany('App\Comment');
+     }
 }

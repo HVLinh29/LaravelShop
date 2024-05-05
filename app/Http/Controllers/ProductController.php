@@ -15,6 +15,8 @@ use App\CatePost;
 use App\Gallery;
 use App\Slider;
 use App\Product;
+use App\Comment;
+use App\Rating;
 use File;
 
 class ProductController extends Controller
@@ -184,11 +186,15 @@ class ProductController extends Controller
             ->join('tbl_brand', 'tbl_brand.brand_id', '=', 'tbl_product.brand_id')
             ->where('tbl_category_product.category_id', $category_id)->whereNotIn('tbl_product.product_slug', [$product_slug])->get();
 
+        $rating = Rating::where('product_id',$product_id)->avg('rating');
+        $rating = round($rating);
+        $ratingCount = Rating::where('product_id', $product_id)->count();
+
         return view('pages.sanpham.show_details')->with('category', $cate_product)->with('brand', $brand_product)
             ->with('product_details', $details_product)->with('splienquan', $splienquan)->with('meta_desc', $meta_desc)->with('meta_keywords', $meta_keywords)->with('meta_title', $meta_title)
             ->with('url_canonical', $url_canonical)->with('category_post', $category_post)
             ->with('gallery', $gallery)->with('slider', $slider)->with('product_cate', $product_cate)
-            ->with('cate_slug', $cate_slug);
+            ->with('cate_slug', $cate_slug)->with('rating', $rating)->with('ratingCount', $ratingCount);
     }
     public function tag(Request $request, $product_tag)
     {
@@ -232,7 +238,7 @@ class ProductController extends Controller
 
         $output['product_button'] = ' <input type="button" value="Mua ngay"
         class="btn btn-success btn-sm add-to-cart-quickview" 
-        data-id_product="'.$product->product_id.'"  name="add-to-cart">';
+        data-id_product="' . $product->product_id . '"  name="add-to-cart">';
 
         $output['product_quickview_value'] = '
         <input type="hidden" value="' . $product->product_id . '"
@@ -249,4 +255,110 @@ class ProductController extends Controller
                 class="cart_product_qty_' . $product->product_id . '">';
         echo json_encode($output);
     }
+    public function load_comment(Request $request)
+    {
+        $product_id = $request->product_id;
+
+        $comment = Comment::where('comment_product_id', $product_id)->where('comment_parent_comment','=',0)->where('comment_status', 0)->get();
+        $comment_rep = Comment::with('product')->where('comment_parent_comment','>',0)->get();
+        $output = '';
+        foreach ($comment as $key => $com) {
+            $output .= '
+            <div class="row style_comment">
+            <div class="col-md-2">
+            <img width="100%" src="' . url('/public/fontend/images/download.png') . '" class="img img-responsive img-thumbnail">
+        </div>
+        <div class="col-md-10">
+            <p style="color: green">@' . $com->comment_name . '</p>
+            <p style="color: #000">@' . $com->comment_date . '</p>
+            <p>' . $com->comment . '</p>
+        </div>
+            </div><p></p>
+';
+            foreach ($comment_rep as $key => $rep_comment) {
+
+                if ($rep_comment->comment_parent_comment == $com->comment_id) {
+                    $output .= '
+            <div class="row style_comment" style="margin:5px 40px">
+            <div class="col-md-2">
+            <img width="60%" src="' . url('/public/fontend/images/images.png') . '" class="img img-responsive img-thumbnail">
+        </div>
+        <div class="col-md-10">
+            <p style="color: brown">@Admin</p>
+            <p style="color: #000">' . $rep_comment->comment . '</p>
+            <p></p>
+        </div>
+            </div><p></p>
+            ';
+                }
+            }
+        }
+        echo $output;
+    }
+    public function send_comment(Request $request)
+    {
+        $product_id = $request->product_id;
+        $comment_name = $request->comment_name;
+        $comment_content = $request->comment_content;
+        $comment = new Comment();
+        $comment->comment_product_id = $product_id;
+        $comment->comment_name = $comment_name;
+        $comment->comment = $comment_content;
+        $comment->comment_status = 1;   
+        $comment->comment_parent_comment = 0;
+        $comment->save();
+    }
+    public function list_comment()
+    {
+        $comment = Comment::with('product')->orderBy('comment_status', 'desc')->get();
+        $comment_rep = Comment::with('product')->where('comment_parent_comment','>',0)->get();
+        return view('admin.comment.list_comment')->with(compact('comment','comment_rep'));
+    }
+    public function duyet_comment(Request $request)
+    {
+        $data = $request->all();
+        $comment = Comment::find($data['comment_id']);
+        $comment->comment_status = $data['comment_status'];
+        $comment->save();
+    }
+    public function reply_comment(Request $request)
+    {
+        $data = $request->all();
+        $comment = new Comment();
+        $comment->comment = $data['comment'];
+        $comment->comment_product_id = $data['comment_product_id'];
+        $comment->comment_parent_comment = $data['comment_id'];
+        $comment->comment_name = 'Admin';
+        $comment->comment_status = 0;
+        $comment->save();
+    }
+    public function delete_comment($comment_id){
+        // Kiểm tra xem comment_id có tồn tại không
+        if ($comment_id) {
+            // Xóa bình luận từ CSDL
+            $deleted = Comment::where('comment_id', $comment_id)->delete();
+            
+            // Kiểm tra xem xóa bình luận thành công hay không
+            if ($deleted) {
+                // Nếu xóa thành công, chuyển hướng về trang trước đó hoặc trang chính của ứng dụng của bạn
+                return redirect()->back()->with('success', 'Bình luận đã được xóa thành công.');
+            } else {
+                // Nếu xóa không thành công, thông báo lỗi
+                return redirect()->back()->with('error', 'Xóa bình luận thất bại. Vui lòng thử lại sau.');
+            }
+        } else {
+            // Nếu không có comment_id được cung cấp, thông báo lỗi
+            return redirect()->back()->with('error', 'Không tìm thấy bình luận cần xóa.');
+        }
+    }
+    public function insert_rating(Request $request)
+    {
+        $data = $request->all();
+        $rating = new Rating();
+        $rating->product_id = $data['product_id'];
+        $rating->rating = $data['index'];
+        $rating->save();
+        return 'done';
+    }
+    
 }
