@@ -9,6 +9,24 @@
    
     <h2 class="title text-center">Danh mục: {{$name->category_name}}</h2>
     @endforeach
+
+    <div class="row">
+        <div class="col-md-4">
+            <label for="amount">Sắp xếp theo</label>    
+            <form>
+                @csrf
+                <select name="sort" id="sort" class="form-control">
+                    <option value="{{Request::url()}}?sort_by=none">Lọc</option>
+                    <option value="{{Request::url()}}?sort_by=tang_dan">Gía tăng dần</option>
+                    <option value="{{Request::url()}}?sort_by=giam_dan">Gía giảm dần</option>
+                    <option value="{{Request::url()}}?sort_by=kytu_az">A đến Z</option>
+                    <option value="{{Request::url()}}?sort_by=kytu_za">Z đến A</option>
+                </select>
+            </form>
+        </div>
+    </div>
+
+
     @foreach($category_by_id as $key =>$product)
     <a href="{{URL::to('chi-tiet-san-pham/'.$product->product_slug)}}">
     <div class="col-sm-4">

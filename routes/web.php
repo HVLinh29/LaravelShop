@@ -12,7 +12,7 @@ Route::get('/thuong-hieu-san-pham/{brand_id}','BrandProduct@show_brand_home');
 Route::get('/chi-tiet-san-pham/{product_id}','ProductController@details_product');
 Route::get('/tag/{product_tag}','ProductController@tag');
 Route::get('/comment','ProductController@list_comment');
-
+//Binh luan va danh gia sao
 Route::post('/quickview','ProductController@quickview');
 Route::post('/load-comment','ProductController@load_comment');
 Route::post('/send-comment','ProductController@send_comment');
@@ -21,8 +21,11 @@ Route::post('/reply-comment','ProductController@reply_comment');
 Route::get('/delete-comment/{comment_id}','ProductController@delete_comment');
 Route::post('/insert-rating','ProductController@insert_rating');
 
-
-
+//Lien he
+Route::get('/lien-he','ContactController@lien_he');
+Route::get('/infomation','ContactController@infomation');
+Route::post('/save-info','ContactController@save_info');
+Route::post('/update-info/{info_id}','ContactController@update_info');
 
 //Danh muc bai viet
 Route::get('/danh-muc-bai-viet/{post_slug}','PostController@danh_muc_bai_viet');

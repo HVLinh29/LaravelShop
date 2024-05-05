@@ -152,7 +152,7 @@
                                     </ul>
                                 </li>
                                 <li><a href="{{ URL::to('/video-linhwatch') }}">Video</a></li>
-                                <li><a href="#">Liên hệ</a></li>
+                                <li><a href="{{ URL::to('/lien-he') }}">Liên hệ</a></li>
                             </ul>
                         </div>
                     </div>
@@ -802,7 +802,7 @@
             });
         });
     </script>
-   <script type="text/javascript">
+    <script type="text/javascript">
         function remove_background(product_id) {
             for (var count = 1; count <= 5; count++) {
                 $('#' + product_id + '-' + count).css('color', '#ccc');
@@ -842,7 +842,7 @@
                 method: 'POST',
                 data: {
                     index: index,
-                    product_id: product_id, 
+                    product_id: product_id,
                     _token: _token
                 },
                 success: function(data) {
@@ -856,6 +856,18 @@
             });
         });
     </script>
+   <script type="text/javascript">
+    $(document).ready(function() {
+        $('#sort').on('change', function() { // fix syntax error here
+            var url = $(this).val();
+            if (url) {
+                window.location = url;
+            } else {
+                return false;
+            }
+        });
+    });
+</script>
 </body>
 
 </html>

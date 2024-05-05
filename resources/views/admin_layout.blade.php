@@ -95,7 +95,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         </li>
                         <li class="sub-menu">
                             <a href="javascript:;">
-                                <i class="fa-solid fa-list"></i>
+                                <i class="fa fa-list"></i>
                                 <span>Danh mục sản phẩm</span>
                             </a>
                             <ul class="sub">
@@ -106,7 +106,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         </li>
                         <li class="sub-menu">
                             <a href="javascript:;">
-                                <i class="fa-solid fa-copyright"></i>
+                                <i class="fa fa-copyright"></i>
                                 <span>Thương hiệu sản phẩm</span>
                             </a>
                             <ul class="sub">
@@ -117,18 +117,18 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         </li>
                         <li class="sub-menu">
                             <a href="javascript:;">
-                                <i class="fa-solid fa-tag"></i>
-                                <span>Danh muc bai viet</span>
+                                <i class="fa fa-tag"></i>
+                                <span>Danh mục bài viết</span>
                             </a>
                             <ul class="sub">
-                                <li><a href="{{ URL::to('/add-category-post') }}">Thêm danh muc bai viet</a></li>
-                                <li><a href="{{ URL::to('/list-category-post') }}">Liệt kê danh muc bai viet</a></li>
+                                <li><a href="{{ URL::to('/add-category-post') }}">Thêm danh mục bài viết</a></li>
+                                <li><a href="{{ URL::to('/list-category-post') }}">Liệt kê danh mục bài viết</a></li>
 
                             </ul>
                         </li>
                         <li class="sub-menu">
                             <a href="javascript:;">
-                                <i class="fa-brands fa-product-hunt"></i>
+                                <i class="fa fa-product-hunt"></i>
                                 <span>Sản phẩm</span>
                             </a>
                             <ul class="sub">
@@ -150,7 +150,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         </li>
                         <li class="sub-menu">
                             <a href="javascript:;">
-                                <i class="fa-solid fa-tag"></i>
+                                <i class="fa fa-dollar-sign"></i>
                                 <span>Mã giảm giá</span>
                             </a>
                             <ul class="sub">
@@ -161,7 +161,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         </li>
                         <li class="sub-menu">
                             <a href="javascript:;">
-                                <i class="fa-solid fa-car"></i>
+                                <i class="fa fa-car"></i>
                                 <span>Phí vận chuyển</span>
                             </a>
                             <ul class="sub">
@@ -170,46 +170,52 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
                             </ul>
                         </li>
+                        <li>
+                            <a href="{{ URL::to('/infomation') }}">
+                                <i class="fa-solid fa-address-card"></i>
+                                <span>Thông tin liên hệ</span>
+                            </a>
+                        </li>
                         <li class="sub-menu">
                             <a href="javascript:;">
-                                <i class="fa-solid fa-tag"></i>
+                                <i class="fa fa-sliders"></i>
                                 <span>Slider</span>
                             </a>
                             <ul class="sub">
-                                <li><a href="{{ URL::to('/managa-slider') }}">Liet ke Slider</a></li>
-                                <li><a href="{{ URL::to('/add-slider') }}">Them Slider</a></li>
+                                <li><a href="{{ URL::to('/managa-slider') }}">Liệt kê Slider</a></li>
+                                <li><a href="{{ URL::to('/add-slider') }}">Thêm Slider</a></li>
 
                             </ul>
                         </li>
                         <li class="sub-menu">
                             <a href="javascript:;">
-                                <i class="fa-solid fa-tag"></i>
-                                <span>Bai viet</span>
+                                <i class="fa fa-tag"></i>
+                                <span>Bài viết</span>
                             </a>
                             <ul class="sub">
-                                <li><a href="{{ URL::to('/add-post') }}">Thêm bai viet</a></li>
-                                <li><a href="{{ URL::to('/list-post') }}">Liệt kê bai viet</a></li>
+                                <li><a href="{{ URL::to('/add-post') }}">Thêm bài viết</a></li>
+                                <li><a href="{{ URL::to('/list-post') }}">Liệt kê bài viết</a></li>
 
                             </ul>
                         </li>
                         <li class="sub-menu">
                             <a href="javascript:;">
-                                <i class="fa-solid fa-tag"></i>
-                                <span>Binh luan</span>
+                                <i class="fa fa-comments"></i>
+                                <span>Bình luận</span>
                             </a>
                             <ul class="sub">
 
-                                <li><a href="{{ URL::to('/comment') }}">Liệt kê binh luan</a></li>
+                                <li><a href="{{ URL::to('/comment') }}">Liệt kê bình luận</a></li>
 
                             </ul>
                         </li>
                         <li class="sub-menu">
                             <a href="javascript:;">
-                                <i class="fa-solid fa-car"></i>
+                                <i class="fa-solid fa-video"></i>
                                 <span>Video</span>
                             </a>
                             <ul class="sub">
-                                <li><a href="{{ URL::to('/video') }}">Them video</a></li>
+                                <li><a href="{{ URL::to('/video') }}">Thêm video</a></li>
 
 
                             </ul>
@@ -217,14 +223,14 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
                         @transferrights
                             <li>
-                                <span><a href="{{ URL::to('/transferrights-destroy') }}">Stop chuyen quyen</a></span>
+                                <span><a href="{{ URL::to('/transferrights-destroy') }}">Dừng chuyển quyền</a></span>
 
                             </li>
                         @endtransferrights
                         @hasrole(['admin', 'author'])
                             <li class="sub-menu">
                                 <a href="javascript:;">
-                                    <i class="fa-solid fa-car"></i>
+                                    <i class="fa fa-users"></i>
                                     <span>User</span>
                                 </a>
                                 <ul class="sub">

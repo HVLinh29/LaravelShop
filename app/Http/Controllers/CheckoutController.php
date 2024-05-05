@@ -19,6 +19,8 @@ use App\Feeship;
 use App\Shipping;
 use App\Order;
 use App\OrderDetails;
+use App\CatePost;
+use App\Slider;
 
 class CheckoutController extends Controller
 {
@@ -34,7 +36,8 @@ class CheckoutController extends Controller
     }
     public function login_checkout(Request $request)
     {
-
+        $category_post = CatePost::orderBy('cate_post_id', 'DESC')->get();
+        $slider = Slider::orderBy('slider_id', 'DESC')->where('slider_status', '1')->take(4)->get();
         //seo 
         $meta_desc = "Đăng nhập thanh toán";
         $meta_keywords = "Đăng nhập thanh toán";
@@ -45,7 +48,7 @@ class CheckoutController extends Controller
         $cate_product = DB::table('tbl_category_product')->where('category_status', '0')->orderby('category_id', 'desc')->get();
         $brand_product = DB::table('tbl_brand')->where('brand_status', '0')->orderby('brand_id', 'desc')->get();
         return view('pages.thanhtoan.login_checkout')->with('category', $cate_product)->with('brand', $brand_product)->with('meta_desc', $meta_desc)->with('meta_keywords', $meta_keywords)->with('meta_title', $meta_title)
-            ->with('url_canonical', $url_canonical);
+            ->with('url_canonical', $url_canonical)->with('category_post', $category_post)->with('slider', $slider);
     }
     public function add_customer(Request $request)
     {
@@ -63,6 +66,8 @@ class CheckoutController extends Controller
     }
     public function checkout(Request $request)
     {
+        $category_post = CatePost::orderBy('cate_post_id', 'DESC')->get();
+        $slider = Slider::orderBy('slider_id', 'DESC')->where('slider_status', '1')->take(4)->get();
 
         $meta_desc = "Đăng nhập thanh toán";
         $meta_keywords = "Đăng nhập thanh toán";
@@ -74,7 +79,7 @@ class CheckoutController extends Controller
         $city = City::orderby('matp', 'ASC')->get();
         return view('pages.thanhtoan.thanhtoan')->with('category', $cate_product)->with('brand', $brand_product)->with('meta_desc', $meta_desc)
             ->with('meta_keywords', $meta_keywords)->with('meta_title', $meta_title)
-            ->with('url_canonical', $url_canonical)->with('city', $city);
+            ->with('url_canonical', $url_canonical)->with('city', $city)->with('category_post', $category_post)->with('slider', $slider);
             
     }
     public function save_checkout_customer(Request $request)
