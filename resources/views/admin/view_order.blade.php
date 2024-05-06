@@ -29,9 +29,9 @@
         <tbody>
         
           <tr>
-            <td>{{$customer->customer_name}}</td>
-            <td>{{$customer->customer_phone}}</td>
-            <td>{{$customer->customer_email}}</td>
+            <td>{{$customerr->customer_name}}</td>
+            <td>{{$customerr->customer_phone}}</td>
+            <td>{{$customerr->customer_email}}</td>
           </tr>
      
         </tbody>
@@ -201,38 +201,29 @@
           </tr>
           <tr>
             <td colspan="6">
-              @foreach($order as $key => $or)
+              @foreach($orderr as $key => $or)
                 @if($or->order_status==1)
                 <form>
                    @csrf
                   <select class="form-control order_details">
-                    <option value="">----Chọn hình thức đơn hàng-----</option>
+                  
                     <option id="{{$or->order_id}}" selected value="1">Chưa xử lý</option>
                     <option id="{{$or->order_id}}" value="2">Đã xử lý-Đã giao hàng</option>
-                    <option id="{{$or->order_id}}" value="3">Hủy đơn hàng-tạm giữ</option>
+                   
                   </select>
                 </form>
-                @elseif($or->order_status==2)
+                @else
                 <form>
                   @csrf
                   <select class="form-control order_details">
-                    <option value="">----Chọn hình thức đơn hàng-----</option>
-                    <option id="{{$or->order_id}}" value="1">Chưa xử lý</option>
+                   
+                    <option disabled id="{{$or->order_id}}" value="1">Chưa xử lý</option>
                     <option id="{{$or->order_id}}" selected value="2">Đã xử lý-Đã giao hàng</option>
-                    <option id="{{$or->order_id}}" value="3">Hủy đơn hàng-tạm giữ</option>
+                   
                   </select>
                 </form>
 
-                @else
-                <form>
-                   @csrf
-                  <select class="form-control order_details">
-                    <option value="">----Chọn hình thức đơn hàng-----</option>
-                    <option id="{{$or->order_id}}" value="1">Chưa xử lý</option>
-                    <option id="{{$or->order_id}}"  value="2">Đã xử lý-Đã giao hàng</option>
-                    <option id="{{$or->order_id}}" selected value="3">Hủy đơn hàng-tạm giữ</option>
-                  </select>
-                </form>
+                
                 @endif
                 @endforeach
             </td>

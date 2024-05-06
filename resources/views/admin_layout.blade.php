@@ -784,6 +784,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
         });
     </script>
+    
     <script type="text/javascript">
         $('.update_quantity_order').click(function() {
             var order_product_id = $(this).data('product_id');
@@ -954,7 +955,40 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         });
     </script>
     <!-- //calendar -->
-    
+    <script type="text/javascript">
+        var donut = Morris.Donut({
+            element: 'donut',
+            resize: true,
+            colors: [
+                '#ce616a',
+                '#61a1ce',
+                '#ce8f61',
+                '#f5b942',
+                '#006064'
+            ],
+            data: [{
+                    label: "Sản phẩm",
+                    value: <?php echo $product; ?>,
+                },
+                {
+                    label: "Bài viết",
+                    value: <?php echo $post; ?>,
+                },
+                {
+                    label: "Đơn hàng",
+                    value: <?php echo $order; ?>,
+                },
+                {
+                    label: "Video",
+                    value: <?php echo $video; ?>,
+                },
+                {
+                    label: "Khách hàng",
+                    value: <?php echo $customer; ?>,
+                }
+            ]
+        });
+    </script>
     
 </body>
 

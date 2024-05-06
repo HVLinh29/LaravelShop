@@ -35,7 +35,7 @@
           @php 
           $i = 0;
           @endphp
-          @foreach($order as $key => $ord)
+          @foreach($orderr as $key => $ord)
             @php 
             $i++;
             @endphp
@@ -46,7 +46,7 @@
             <td>@if($ord->order_status==1)
                     Đơn hàng mới
                 @else 
-                    Đã xử lý
+                Đã xử lý-Đã giao hàng
                 @endif
             </td>
            

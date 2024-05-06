@@ -21,119 +21,92 @@
                 <p>Đến ngày: <input type="text" id="datepicker2" class="form-control"></p>
             </div>
             <div class="col-md-2">
-            <p>
-                Loc theo:
-                <select class="dashboard-filter form-control"> 
-                    <option>--Chon--</option> 
-                    <option value="7ngay">7 ngày qua</option>
-                    <option value="thangtruoc">Tháng truóc</option>
-                    <option value="thangnay">Thāng này</option>
-                    <option value="365ngayqua">365 ngày qua</option>
-                </select>
-            </p>
-            <script type="text/javascript">
-                $(document).ready(function() {
-        
-                    chart60daysorder();
-        
-                    var chart = new Morris.Bar({
-                        element: 'chart',
-                        lineColors: ['#819C79', '#fc8710', '#FF6541', '#A4ADD3', '#766856'],
-                        parseTime: false,
-                        hideHover: 'auto',
-                        xkey: 'period',
-                        ykeys: ['order', 'sales', 'profit', 'quantity'],
-                        labels: ['đơn hàng', 'doanh số',
-                            'lợi nhuận', 'số lượng'
-                        ]
-                    });
-        
-                    function chart60daysorder() {
-                        var _token = $('input[name="_token"]').val();
-                        $.ajax({
-                            url: '{{ url('/days-order') }}',
-                            method: 'POST',
-                            dataType: 'JSON',
-                            data: {
-                                _token: _token
-                                
-                            },
-                            success: function(data) {
-                                chart.setData(data);
-                            }
+                <p>
+                    Loc theo:
+                    <select class="dashboard-filter form-control">
+                        <option>--Chon--</option>
+                        <option value="7ngay">7 ngày qua</option>
+                        <option value="thangtruoc">Tháng truóc</option>
+                        <option value="thangnay">Thāng này</option>
+                        <option value="365ngayqua">365 ngày qua</option>
+                    </select>
+                </p>
+                <script type="text/javascript">
+                    $(document).ready(function() {
+
+                        chart60daysorder();
+
+                        var chart = new Morris.Bar({
+                            element: 'chart',
+                            lineColors: ['#819C79', '#fc8710', '#FF6541', '#A4ADD3', '#766856'],
+                            parseTime: false,
+                            hideHover: 'auto',
+                            xkey: 'period',
+                            ykeys: ['order', 'sales', 'profit', 'quantity'],
+                            labels: ['đơn hàng', 'doanh số',
+                                'lợi nhuận', 'số lượng'
+                            ]
                         });
-                    }
-        
-                    $('.dashboard-filter').change(function(){
-                        var dashboard_value = $(this).val();
-                        var _token = $('input[name="_token"]').val();
-                       
-                        $.ajax({
-                            url: '{{ url('/dashboard-filter') }}',
-                            method: 'POST',
-                            dataType: 'JSON',
-                            data: {
-                                _token: _token,
-                                dashboard_value: dashboard_value
-                                
-                            },
-                            success: function(data) {
-                                chart.setData(data);
-                            }
+
+                        function chart60daysorder() {
+                            var _token = $('input[name="_token"]').val();
+                            $.ajax({
+                                url: '{{ url('/days-order') }}',
+                                method: 'POST',
+                                dataType: 'JSON',
+                                data: {
+                                    _token: _token
+
+                                },
+                                success: function(data) {
+                                    chart.setData(data);
+                                }
+                            });
+                        }
+
+                        $('.dashboard-filter').change(function() {
+                            var dashboard_value = $(this).val();
+                            var _token = $('input[name="_token"]').val();
+
+                            $.ajax({
+                                url: '{{ url('/dashboard-filter') }}',
+                                method: 'POST',
+                                dataType: 'JSON',
+                                data: {
+                                    _token: _token,
+                                    dashboard_value: dashboard_value
+
+                                },
+                                success: function(data) {
+                                    chart.setData(data);
+                                }
+                            });
+                        });
+
+                        $('#btn-dashboard-filter').click(function() {
+                            var _token = $('input[name="_token"]').val();
+                            var from_date = $('#datepicker').val();
+                            var to_date = $('#datepicker2').val();
+
+                            $.ajax({
+                                url: '{{ url('/filter-by-date') }}',
+                                method: 'POST',
+                                dataType: 'JSON',
+                                data: {
+                                    _token: _token,
+                                    from_date: from_date,
+                                    to_date: to_date
+                                },
+                                success: function(data) {
+                                    chart.setData(data);
+                                }
+                            });
                         });
                     });
-        
-                    $('#btn-dashboard-filter').click(function() {
-                        var _token = $('input[name="_token"]').val();
-                        var from_date = $('#datepicker').val();
-                        var to_date = $('#datepicker2').val();
-        
-                        $.ajax({
-                            url: '{{ url('/filter-by-date') }}',
-                            method: 'POST',
-                            dataType: 'JSON',
-                            data: {
-                                _token: _token,
-                                from_date: from_date,
-                                to_date: to_date
-                            },
-                            success: function(data) {
-                                chart.setData(data);
-                            }
-                        });
-                    });
-                });
-            </script>
-             <script type="text/javascript">
-             var colorDanger = "#FF1744";
-Morris.Donut({
-  element: 'donut-example',
-  resize: true,
-  colors: [
-    '#E0F7FA',
-    '#B2EBF2',
-    '#80DEEA',
-    '#4DD0E1',
-    '#26C6DA',
-    '#00BCD4',
-    '#00ACC1',
-    '#0097A7',
-    '#00838F',
-    '#006064'
-  ],
-  //labelColor:"#cccccc", // text color
-  //backgroundColor: '#333333', // border color
-  data: [
-    {label:"Dato Ej.1", value:123, color:colorDanger},
-    {label:"Dato Ej.2", value:369},
-    {label:"Dato Ej.3", value:246},
-    {label:"Dato Ej.4", value:159},
-    {label:"Dato Ej.5", value:357}
-  ]
-});
-              </script>
-        
-        </div>
+                </script>
+                
+
+            </div>
         </form>
         <div class="col-md-12">
             <div id="chart" style="height:250px;"></div>
@@ -144,7 +117,7 @@ Morris.Donut({
             table.table.table-bordered.table-dark {
                 background: brown;
             }
-    
+
             table.table.table-bordered.table-dark tr th {
                 color: #fff;
             }
@@ -161,13 +134,48 @@ Morris.Donut({
                 </tr>
             </thead>
             <tbody>
-                <td>{{$visitor_count}}</td>
-                <td>{{$visitor_last_month_count}}</td>
-                <td>{{$visitor_this_month_count}}</td>
-                <td>{{$visitor_year_count}}</td>
-                <td>{{$visitors_total}}</td>
+                <td>{{ $visitor_count }}</td>
+                <td>{{ $visitor_last_month_count }}</td>
+                <td>{{ $visitor_this_month_count }}</td>
+                <td>{{ $visitor_year_count }}</td>
+                <td>{{ $visitors_total }}</td>
             </tbody>
         </table>
     </div>
-    
+    <div class="row">
+        <div class="col-md-4 col-xs-12">
+            <p class="title_thongke">Thống kê tổng sản phẩm bài viết đơn hàng</p>
+            <div id="donut" class="morris-donut-inverse"></div>
+        </div>
+        <div class="col-md-4 col-xs-12">
+            <h3>Bài viết xem nhiều</h3>
+            <ol class="list_views">
+                @foreach ($post_view as $key => $post)
+                <li>
+                    <a target="_blank" href="{{url('/bai-viet/'.$post->post_slug)}}">{{$post->post_title}} | <span style="color:black">{{$post->post_view}}</span> </a>
+                </li>
+                @endforeach
+            </ol>
+        </div>
+        <div class="col-md-4 col-xs-12">
+            <style>
+                ul.list_views{
+                    margin: 10px 0;
+                    color: #fff;
+                }
+                ul.list_views a{
+                    color: orange;
+                    font-weight: 400;
+                }
+            </style>
+            <h3>Sản phẩm xem nhiều</h3>
+            <ol class="list_views">
+                @foreach ($product_view as $key => $product)
+                <li>
+                    <a target="_blank" href="{{url('/chi-tiet-san-pham/'.$product->product_slug)}}">{{$product->product_name}} | <span style="color:black">{{$product->product_view}}</span> </a>
+                </li>
+                @endforeach
+            </ol>
+        </div>
+    </div>
 @endsection

@@ -181,12 +181,17 @@ class ProductController extends Controller
         //gallery
         $gallery = Gallery::where('product_id', $product_id)->get();
 
+        //update view
+        $product = Product::where('product_id', $product_id)->first();
+        $product->product_view = $product->product_view + 1;
+        $product->save();
+
         $splienquan = DB::table('tbl_product')
             ->join('tbl_category_product', 'tbl_category_product.category_id', '=', 'tbl_product.category_id')
             ->join('tbl_brand', 'tbl_brand.brand_id', '=', 'tbl_product.brand_id')
             ->where('tbl_category_product.category_id', $category_id)->whereNotIn('tbl_product.product_slug', [$product_slug])->get();
 
-        $rating = Rating::where('product_id',$product_id)->avg('rating');
+        $rating = Rating::where('product_id', $product_id)->avg('rating');
         $rating = round($rating);
         $ratingCount = Rating::where('product_id', $product_id)->count();
 
@@ -259,8 +264,8 @@ class ProductController extends Controller
     {
         $product_id = $request->product_id;
 
-        $comment = Comment::where('comment_product_id', $product_id)->where('comment_parent_comment','=',0)->where('comment_status', 0)->get();
-        $comment_rep = Comment::with('product')->where('comment_parent_comment','>',0)->get();
+        $comment = Comment::where('comment_product_id', $product_id)->where('comment_parent_comment', '=', 0)->where('comment_status', 0)->get();
+        $comment_rep = Comment::with('product')->where('comment_parent_comment', '>', 0)->get();
         $output = '';
         foreach ($comment as $key => $com) {
             $output .= '
@@ -304,15 +309,15 @@ class ProductController extends Controller
         $comment->comment_product_id = $product_id;
         $comment->comment_name = $comment_name;
         $comment->comment = $comment_content;
-        $comment->comment_status = 1;   
+        $comment->comment_status = 1;
         $comment->comment_parent_comment = 0;
         $comment->save();
     }
     public function list_comment()
     {
         $comment = Comment::with('product')->orderBy('comment_status', 'desc')->get();
-        $comment_rep = Comment::with('product')->where('comment_parent_comment','>',0)->get();
-        return view('admin.comment.list_comment')->with(compact('comment','comment_rep'));
+        $comment_rep = Comment::with('product')->where('comment_parent_comment', '>', 0)->get();
+        return view('admin.comment.list_comment')->with(compact('comment', 'comment_rep'));
     }
     public function duyet_comment(Request $request)
     {
@@ -332,12 +337,13 @@ class ProductController extends Controller
         $comment->comment_status = 0;
         $comment->save();
     }
-    public function delete_comment($comment_id){
+    public function delete_comment($comment_id)
+    {
         // Kiểm tra xem comment_id có tồn tại không
         if ($comment_id) {
             // Xóa bình luận từ CSDL
             $deleted = Comment::where('comment_id', $comment_id)->delete();
-            
+
             // Kiểm tra xem xóa bình luận thành công hay không
             if ($deleted) {
                 // Nếu xóa thành công, chuyển hướng về trang trước đó hoặc trang chính của ứng dụng của bạn
@@ -360,5 +366,4 @@ class ProductController extends Controller
         $rating->save();
         return 'done';
     }
-    
 }

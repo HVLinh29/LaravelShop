@@ -127,57 +127,64 @@ class PostController extends Controller
     }
     public function danh_muc_bai_viet(Request $request, $post_slug)
     {
-        $category_post = CatePost::orderBy('cate_post_id','DESC')->get();
+        $category_post = CatePost::orderBy('cate_post_id', 'DESC')->get();
 
         $slider = Slider::orderBy('slider_id', 'desc')->where('slider_status', '1')->take(3)->get();
 
-    
-  
+
+
         $cate_product = DB::table('tbl_category_product')->where('category_status', '0')->orderby('category_id', 'desc')->get();
         $brand_product = DB::table('tbl_brand')->where('brand_status', '0')->orderby('brand_id', 'desc')->get();
 
         $catepost = CatePost::where('cate_post_slug', $post_slug)->take(1)->get();
 
-        foreach ($catepost as $key =>$cate){
+        foreach ($catepost as $key => $cate) {
             $meta_desc = $cate->cate_post_desc;
             $meta_keywords = $cate->cate_post_slug;
             $meta_title = $cate->cate_post_name;
             $cate_id = $cate->cate_post_id;
             $url_canonical = $request->url();
         }
-       
-       $post = Post::with('cate_post')->where('post_status', 0)->where('cate_post_id',$cate_id)->get();
+
+        $postt = Post::with('cate_post')->where('post_status', 0)->where('cate_post_id', $cate_id)->get();
 
 
         return view('pages.baiviet.danhmucbaiviet')->with('category', $cate_product)->with('brand', $brand_product)
             ->with('meta_desc', $meta_desc)->with('meta_keywords', $meta_keywords)->with('meta_title', $meta_title)
-            ->with('url_canonical', $url_canonical)->with('slider',$slider)->with('category_post',$category_post)
-            ->with('post',$post);
+            ->with('url_canonical', $url_canonical)->with('slider', $slider)->with('category_post', $category_post)
+            ->with('postt', $postt);
     }
-    public function bai_viet(Request $request, $post_slug){
-        $category_post = CatePost::orderBy('cate_post_id','DESC')->get();
+    public function bai_viet(Request $request, $post_slug)
+    {
+        $category_post = CatePost::orderBy('cate_post_id', 'DESC')->get();
 
         $slider = Slider::orderBy('slider_id', 'desc')->where('slider_status', '1')->take(3)->get();
 
         $cate_product = DB::table('tbl_category_product')->where('category_status', '0')->orderby('category_id', 'desc')->get();
         $brand_product = DB::table('tbl_brand')->where('brand_status', '0')->orderby('brand_id', 'desc')->get();
 
-        $post = Post::with('cate_post')->where('post_status', 0)->where('post_slug',$post_slug)->take(1)->get();
-        foreach ($post as $key =>$p){
+        $postt = Post::with('cate_post')->where('post_status', 0)->where('post_slug', $post_slug)->take(1)->get();
+        foreach ($postt as $key => $p) {
             $meta_desc = $p->post_meta_desc;
             $meta_keywords = $p->post_meta_keywords;
             $meta_title = $p->post_title;
             $cate_id = $p->cate_post_id;
             $url_canonical = $request->url();
             $cate_post_id = $p->cate_post_id;
-        }   
+            $post_id = $p->post_id;
+        }
 
-        $related = Post::with('cate_post')->where('post_status',0)->where('cate_post_id',$cate_post_id)
-        ->whereNotIn('post_slug',[$post_slug])->take(5)->get();
-       
+        //update view 
+        $post = Post::where('post_id', $post_id)->first();
+        $post->post_view = $post->post_view + 1;
+        $post->save();
+
+        $related = Post::with('cate_post')->where('post_status', 0)->where('cate_post_id', $cate_post_id)
+            ->whereNotIn('post_slug', [$post_slug])->take(5)->get();
+
         return view('pages.baiviet.baiviet')->with('category', $cate_product)->with('brand', $brand_product)
             ->with('meta_desc', $meta_desc)->with('meta_keywords', $meta_keywords)->with('meta_title', $meta_title)
-            ->with('url_canonical', $url_canonical)->with('slider',$slider)->with('category_post',$category_post)
-            ->with('post',$post)->with('related',$related);
+            ->with('url_canonical', $url_canonical)->with('slider', $slider)->with('category_post', $category_post)
+            ->with('postt', $postt)->with('related', $related);
     }
 }
