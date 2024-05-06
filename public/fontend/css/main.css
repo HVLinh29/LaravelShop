@@ -175,7 +175,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .shop-menu ul li a {
   background: #FFFFFF;
-  color: #696763;
+  color: black;
   font-family: 'Roboto', sans-serif;
   font-size: 14px;
   font-weight: 300;
@@ -215,9 +215,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .mainmenu ul li a {
-	color: #696763;
+	color: black;
 	font-family: 'Roboto', sans-serif;
-	font-size: 17px;
+	font-size: 20px;
 	font-weight: 300;
 	padding: 0;
 	padding-bottom: 10px;
@@ -691,7 +691,7 @@ h2.title:before{
 }
 
 .category-products .panel-default .panel-heading .panel-title a {
-  color: #696763;
+  color: black;
   font-family: 'Roboto', sans-serif;
   font-size: 14px;
   text-decoration: none;
@@ -738,7 +738,7 @@ h2.title:before{
 
 .brands-name .nav-stacked li a {
   background-color: #FFFFFF;
-  color: #696763;
+  color: black;
   font-family: 'Roboto', sans-serif;
   font-size: 14px;
   padding: 5px 25px;
@@ -957,7 +957,7 @@ h2.title {
 }
 
 .category-tab ul  li  a:hover{
-	background:#FE980F;
+	/* background:#FE980F; */
 	color:#fff;
 }
 
@@ -1054,8 +1054,8 @@ h2.title {
 }
 
 .pagination  .active  a, .pagination  .active  span, .pagination  .active  a:hover, .pagination  .active  span:hover, .pagination  .active  a:focus, .pagination  .active  span:focus {
-  background-color: #FE980F;
-  border-color: #FE980F;
+  /* background-color: #FE980F;
+  border-color: #FE980F; */
   color: #FFFFFF;
   cursor: default;
   z-index: 2;
@@ -1274,7 +1274,7 @@ h2.title {
 
 #reviews ul li a:hover{
 	background:#fff;
-	color:#FE980F;
+	/* color:#FE980F; */
 }
 
 #reviews p{
@@ -2017,7 +2017,7 @@ h2.title {
 .pagination li a:hover,
 .pagination-area 
 .pagination li .active {
-  background:#FE980F;
+  /* background:#FE980F; */
   color: #fff
 }
 
@@ -2045,7 +2045,7 @@ h2.title {
 
 .pager-area 
 .pager li a:hover {
-  background: #FE980F;
+  /* background: #FE980F; */
   color: #fff
 }
 
@@ -2172,7 +2172,7 @@ h2.title {
 
 .blog-socials ul li a:hover {
   color: #fff;
-  background:#FE980F
+  /* background:#FE980F */
 }
 
 
@@ -2289,7 +2289,7 @@ h2.title {
 
 .replay-box form input:hover, 
 .text-area textarea:hover {
-  border: 1px solid #FE980F;
+  /* border: 1px solid #FE980F; */
 }
 
 .text-area {
@@ -2376,7 +2376,7 @@ h2.title {
 #contact-page .form-control:focus, 
 #contact-page .form-control:hover {
   box-shadow: inherit;
-  border-color: #FDB45E;
+  /* border-color: #FDB45E; */
 }
 
 #contact-page .contact-info {
@@ -2427,7 +2427,7 @@ h2.title {
 }
 
 .contact-info .social-networks ul li a:hover{
-  color: #FE980F;
+  /* color: #FE980F; */
 }
 
 

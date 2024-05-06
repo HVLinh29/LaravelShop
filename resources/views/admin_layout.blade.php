@@ -32,6 +32,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.6/css/dataTables.dataTables.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
 
 
     <!-- //font-awesome icons -->
@@ -267,6 +268,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <script src="{{ asset('public/backend/js/jquery.form-validator.min.js') }}"></script>
     <script src="{{ asset('public/backend/js/bootstrap-tagsinput.min.js') }}"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+   
+
     <script type="text/javascript">
         $(document).ready(function() {
             $('#myTable').DataTable();
@@ -308,20 +313,20 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <script>
         $(function() {
             $("#datepicker").datepicker({
-                prevText:"Tháng trước",
-                nextText:"Tháng sau",
-                dayNamesMin: ["Tháng 1","Tháng 2","Tháng 3","Tháng 4","Tháng 5","Tháng 6","Tháng 7","Tháng 8","Tháng 9","Tháng 10","Tháng 11","Tháng 12"],
+                prevText: "Tháng trước",
+                nextText: "Tháng sau",
+                dayNamesMin: ["Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7", "Chủ nhật"],
                 dateFormat: "yy-mm-dd",
-                duration:"slow"
+                duration: "slow"
             });
         });
         $(function() {
             $("#datepicker2").datepicker({
-                prevText:"Tháng trước",
-                nextText:"Tháng sau",
-                dayNamesMin: ["Tháng 1","Tháng 2","Tháng 3","Tháng 4","Tháng 5","Tháng 6","Tháng 7","Tháng 8","Tháng 9","Tháng 10","Tháng 11","Tháng 12"],
+                prevText: "Tháng trước",
+                nextText: "Tháng sau",
+                dayNamesMin: ["Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7", "Chủ nhật"],
                 dateFormat: "yy-mm-dd",
-                duration:"slow"
+                duration: "slow"
             });
         });
     </script>
@@ -336,10 +341,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             var comment_status = $(this).data('comment_status');
             var comment_id = $(this).data('comment_id');
             var comment_product_id = $(this).attr('id');
-            if(comment_status == 0){
-                var alert ='Duyet thanh cong binh luan';
-            }else{
-                var alert ='Huy duyet thanh cong binh luan';
+            if (comment_status == 0) {
+                var alert = 'Duyet thanh cong binh luan';
+            } else {
+                var alert = 'Huy duyet thanh cong binh luan';
             }
             $.ajax({
                 url: "{{ url('/duyet-comment') }}",
@@ -348,18 +353,22 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 
                 },
-                data: {comment_status:comment_status, comment_id:comment_id, comment_product_id:comment_product_id},
+                data: {
+                    comment_status: comment_status,
+                    comment_id: comment_id,
+                    comment_product_id: comment_product_id
+                },
                 success: function(data) {
-                   location.reload();
-                    $('#notify_comment').html('<span class="text text-alert">'+alert+'</span>');
+                    location.reload();
+                    $('#notify_comment').html('<span class="text text-alert">' + alert + '</span>');
                 }
             });
         });
         $('.btn-reply-comment').click(function() {
             var comment_id = $(this).data('comment_id');
-            var comment = $('.reply_comment_'+comment_id).val();
+            var comment = $('.reply_comment_' + comment_id).val();
             var comment_product_id = $(this).data('product_id');
-            
+
             $.ajax({
                 url: "{{ url('/reply-comment') }}",
                 method: "POST",
@@ -367,14 +376,18 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 
                 },
-                data: {comment:comment, comment_id:comment_id, comment_product_id:comment_product_id},
+                data: {
+                    comment: comment,
+                    comment_id: comment_id,
+                    comment_product_id: comment_product_id
+                },
                 success: function(data) {
-                    $('.reply_comment_'+comment_id).val('');
-                    $('#notify_comment').html('<span class="text text-alert">Tra loi binh luan thanh cong</span>');
+                    $('.reply_comment_' + comment_id).val('');
+                    $('#notify_comment').html(
+                        '<span class="text text-alert">Tra loi binh luan thanh cong</span>');
                 }
             });
         });
-
     </script>
     <script type="text/javascript">
         $(document).ready(function() {
@@ -808,7 +821,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         CKEDITOR.replace('cheditor4');
     </script>
 
-
     <script src="js/jquery.scrollTo.js"></script>
     <!-- morris JavaScript -->
     <script>
@@ -942,29 +954,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         });
     </script>
     <!-- //calendar -->
-    <script type="text/javascript">
-    $(document).ready(function() {
-        $('#btn-dashboard-filter').click(function(){
-            var _token = $('input[name="_token"]').val();
-            var from_date = $('#from_date').val();
-            var to_date = $('#to_date').val();
-
-            $.ajax({
-                url: '{{ url('/filter-by-date') }}',
-                method: 'POST',
-                dataType: 'json',
-                data: {
-                    _token: _token,
-                    from_date: from_date,
-                    to_date: to_date
-                },
-                success: function(data) {
-                  chart.setData(data);
-                }
-            });
-        })
-    })
-     </script>
+    
+    
 </body>
 
 </html>

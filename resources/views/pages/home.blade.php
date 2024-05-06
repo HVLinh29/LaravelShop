@@ -66,7 +66,7 @@
                                         }
 
                                         .add-to-cart:hover {
-                                            background-color: #333;
+                                            background-color: white;
                                             transform: scale(1.1);
                                         }
                                     </style>
