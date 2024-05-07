@@ -48,6 +48,10 @@
                             <input type="text" class="form-control"  name="product_price"  id="exampleInputEmail1" >
                         </div>
                         <div class="form-group">
+                            <label for="exampleInputEmail1">Gía gốc</label>
+                            <input type="text" class="form-control"  name="product_cost"  id="exampleInputEmail1" >
+                        </div>
+                        <div class="form-group">
                             <label for="exampleInputPassword1">Danh mục sản phẩm</label>
                             <select name="product_cate" class="form-control input-sm m-bot15">
                                 @foreach($cate_product as $key =>$cate)

@@ -125,7 +125,8 @@
             <th style="color:brown">Mã giảm giá</th>
             <th style="color:brown">Phí ship hàng</th>
             <th style="color:brown">Số lượng</th>
-            <th style="color:brown">Giá sản phẩm</th>
+            <th style="color:brown">Giá bán</th>
+            <th style="color:brown">Giá gốc</th>
             <th style="color:brown">Tổng tiền</th>
             
             <th style="width:30px;"></th>
@@ -173,6 +174,7 @@
 
             </td>
             <td>{{number_format($details->product_price ,0,',','.')}}đ</td>
+            <td>{{number_format($details->product->product_cost ,0,',','.')}}đ</td>
             <td>{{number_format($subtotal ,0,',','.')}}đ</td>
           </tr>
         @endforeach

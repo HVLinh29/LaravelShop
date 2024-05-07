@@ -26,6 +26,7 @@
               <th style="color: brown">Slug</th>
               <th style="color: brown">Số lượng</th>
               <th style="color: brown">Gía</th>
+              <th style="color: brown">Gía gốc</th>
               <th style="color: brown">Danh mục</th>
               <th style="color: brown">Thương hiệu</th>
               <th style="color: brown">Hiển thị</th>
@@ -37,11 +38,12 @@
             @foreach($all_product as $key =>$pr)
             <tr>
               <td>{{$pr->product_name}}</td>
-              <td><a href="{{url('add-gallery/'.$pr->product_id)}}">Them thu vien anh</a></td>
+              <td><a href="{{url('add-gallery/'.$pr->product_id)}}">Thêm thư viện ảnh</a></td>
               <td><img src ="public/uploads/product/{{$pr->product_image}}" height="100" width="100"></td>
               <td>{{$pr->product_slug}}</td>
               <td>{{$pr->product_quantity}}</td>
-              <td>{{$pr->product_price}}</td>
+              <td>{{ number_format($pr->product_price,0,',','.')}}đ</td>
+              <td>{{ number_format($pr->product_cost,0,',','.')}}đ</td>
               <td>{{$pr->category_name}}</td>
               <td>{{$pr->brand_name}}</td>
               <td><span class="text-ellipsis">

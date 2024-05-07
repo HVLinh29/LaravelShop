@@ -353,6 +353,7 @@ class OrderController extends Controller
 				$product_quantity = $product->product_quantity;
 				$product_sold = $product->product_sold;
 				$product_price = $product->product_price;
+				$product_cost = $product->product_cost;
 				$qty = $data['quantity'][$key];
 	
 				// Cập nhật thông tin sản phẩm
@@ -364,7 +365,7 @@ class OrderController extends Controller
 				$quantity += $qty;
 				$total_order++;
 				$sales += $product_price * $qty;
-				$profit += $sales - 1000; // Giả sử 1000 là chi phí cố định
+				$profit = $sales - ($product_cost * $qty); // Giả sử 1000 là chi phí cố định
 			}
 	
 			// Cập nhật thông tin thống kê
