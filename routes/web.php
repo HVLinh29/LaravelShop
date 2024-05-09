@@ -136,7 +136,13 @@ Route::post('/select-feeship','DeliveryController@select_feeship');
 Route::post('/update-delivery','DeliveryController@update_delivery');
 
 //SenD Mail
-Route::get('/send-mail','HomeController@send_mail');
+Route::get('/send-mail','MailController@send_mail');
+Route::get('/send-coupon-vip/{coupon_time}/{coupon_condition}/{coupon_number}/{coupon_code}','MailController@send_coupon_vip');
+Route::get('/send-coupon/{coupon_time}/{coupon_condition}/{coupon_number}/{coupon_code}','MailController@send_coupon');
+Route::get('/quen-mk','MailController@quen_mk');
+Route::get('/new-pass','MailController@new_pass');
+Route::post('/new-pass-new','MailController@new_pass_new');
+Route::post('/recover-pass','MailController@recover_pass');
 
 //Login google
 Route::get('/login-google','AdminController@login_google');

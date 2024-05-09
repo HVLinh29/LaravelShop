@@ -267,11 +267,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <script src="{{ asset('public/backend/ckeditor/ckeditor.js') }}"></script>
     <script src="{{ asset('public/backend/js/jquery.form-validator.min.js') }}"></script>
     <script src="{{ asset('public/backend/js/bootstrap-tagsinput.min.js') }}"></script>
+    <script src="{{ asset('public/backend/js/simple.money.format.js') }}"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
-   
 
+   
     <script type="text/javascript">
         $(document).ready(function() {
             $('#myTable').DataTable();
@@ -326,6 +327,26 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 nextText: "Tháng sau",
                 dayNamesMin: ["Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7", "Chủ nhật"],
                 dateFormat: "yy-mm-dd",
+                duration: "slow"
+            });
+        });
+    </script>
+     <script>
+        $(function() {
+            $("#coupon_start").datepicker({
+                prevText: "Tháng trước",
+                nextText: "Tháng sau",
+                dayNamesMin: ["Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7", "Chủ nhật"],
+                dateFormat: "dd/mm/yy",
+                duration: "slow"
+            });
+        });
+        $(function() {
+            $("#coupon_end").datepicker({
+                prevText: "Tháng trước",
+                nextText: "Tháng sau",
+                dayNamesMin: ["Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7", "Chủ nhật"],
+                dateFormat: "dd/mm/yy",
                 duration: "slow"
             });
         });
@@ -923,6 +944,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
         });
     </script>
+     <script type="text/javascript">
+        $('.money').simpleMoneyFormat();
+        $('.money_cost').simpleMoneyFormat();
+    </script>
     <!-- calendar -->
     <script type="text/javascript" src="{{ asset('public/backend/js/monthly.js') }}"></script>
     <script type="text/javascript">
@@ -954,6 +979,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
         });
     </script>
+   
     <!-- //calendar -->
     <script type="text/javascript">
         var donut = Morris.Donut({
@@ -989,6 +1015,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             ]
         });
     </script>
+   
     
 </body>
 

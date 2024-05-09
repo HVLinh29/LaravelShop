@@ -7,7 +7,7 @@
       <div class="panel-heading">
        Liệt kê mã giảm giá
       </div>
-      
+     
       <div class="table-responsive">
         <table class="table table-striped b-t b-light">
           <?php
@@ -25,6 +25,11 @@
               <th style="color: brown">Số lượng mã</th>
               <th style="color: brown">Diều kiện giảm giá</th>
               <th style="color: brown">Số lượng</th>
+              <th style="color: brown">Ngày bắt đầu</th>
+              <th style="color: brown">Ngày kết thúc</th>
+              <th style="color: brown">Tình trạng</th>
+              <th style="color: brown">Hết hạn</th>
+              <th style="color: brown">Gửi mã</th>
               <th style="color: brown">Quản lý</th>
             
               <th style="width:30px;"></th>
@@ -66,9 +71,48 @@
 
                 ?>
               </span></td>
-              
+              <td>{{$cou->coupon_date_start}}</td>
+              <td>{{$cou->coupon_date_end}}</td>
+              <td><span class="text-ellipsis">
+                <?php
+                  if($cou->coupon_status==1){
+                  ?>
+                    Đang kích hoạt
+                <?php
+                  }else{
+                   ?>
+                   Đã khóa
+                    <?php
+                  }
+
+                ?>
+              </span></td>
               <td>
-                
+              
+                  @if($cou->coupon_date_end > $today)
+                  <span style="color:red">Còn hạn</span>
+                  @else 
+                  <span style="color:green">Đã hết hạn</span>
+                  @endif
+              </td>
+              <td>
+                <p><a href="{{ url('/send-coupon-vip', [
+                  
+                  'coupon_time' => $cou->coupon_time,
+                  'coupon_condition' => $cou->coupon_condition, // Thêm dấu phẩy ở đây
+                  'coupon_number' => $cou->coupon_number,
+                  'coupon_code' => $cou->coupon_code
+              ]) }}" class="btn btn-success">Gửi mã VIP</a></p><br>
+              <p><a href="{{ url('/send-coupon', [
+                  
+                  'coupon_time' => $cou->coupon_time,
+                  'coupon_condition' => $cou->coupon_condition, // Thêm dấu phẩy ở đây
+                  'coupon_number' => $cou->coupon_number,
+                  'coupon_code' => $cou->coupon_code
+              ]) }}" class="btn btn-success">Gửi mã thường</a></p>
+              
+              </td>
+              <td>
                 <a onclick="return confirm('Bạn có muốn xóa mã giảm giá này?')" href="{{URL::to('/delete-coupon/'.$cou->coupon_id)}}" class="active" ui-toggle-class="">
                   <i class="fa-solid fa-delete-left"></i></a></a>
               </td>

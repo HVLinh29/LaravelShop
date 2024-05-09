@@ -8,10 +8,10 @@ use Symfony\Component\Console\Helper\Table;
 use Session;
 use Illuminate\Support\Facades\Redirect;
 session_start();
-use Mail;
 use App\Slider;
 use App\CatePost;
 use App\Product;
+
 class HomeController extends Controller
 {
 
@@ -62,20 +62,7 @@ class HomeController extends Controller
 
 
     }
-    public function send_mail(){
-                $to_name = "VLinh 10C8";
-                
-               $to_email ="linhmui1999@gmail.com";
-             
-                $data = array("name"=>"Mail từ tài khoản Khách hàng","body"=>'Mail gửi về vấn về hàng hóa'); 
-                
-                Mail::send('pages.send_mail',$data,function($message) use ($to_name,$to_email){
-
-                    $message->to($to_email)->subject('Test thử gửi mail google');
-                    $message->from($to_email,$to_name);
-                });
-                 return redirect('/')->with('message','');
-    }
+   
     public function autocomplete_ajax(Request $request){
         $data = $request->all();
 
@@ -89,5 +76,6 @@ class HomeController extends Controller
             echo $output;
         }
     }
+    
 
 }

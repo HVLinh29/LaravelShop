@@ -156,6 +156,7 @@
 							<form method="POST" action="{{url('/check-coupon')}}">
 								@csrf
 									<input type="text" class="form-control" name="coupon" placeholder="Nhập mã giảm giá"><br>
+									
 	                          		<input type="submit" class="btn btn-success check_coupon" name="check_coupon" value="Tính mã giảm giá">
 	                          	
                           		</form>

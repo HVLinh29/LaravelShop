@@ -21,6 +21,7 @@ use App\Order;
 use App\OrderDetails;
 use App\CatePost;
 use App\Slider;
+use App\Coupon;
 
 class CheckoutController extends Controller
 {
@@ -80,7 +81,6 @@ class CheckoutController extends Controller
         return view('pages.thanhtoan.thanhtoan')->with('category', $cate_product)->with('brand', $brand_product)->with('meta_desc', $meta_desc)
             ->with('meta_keywords', $meta_keywords)->with('meta_title', $meta_title)
             ->with('url_canonical', $url_canonical)->with('city', $city)->with('category_post', $category_post)->with('slider', $slider);
-            
     }
     public function save_checkout_customer(Request $request)
     {
@@ -114,7 +114,8 @@ class CheckoutController extends Controller
     }
     public function logout_checkout()
     {
-        Session::flush();
+        Session::forget('customer_id');
+        Session::forget('coupon');
         return Redirect::to('/login-checkout');
     }
     public function login_customer(Request $request)
@@ -122,12 +123,17 @@ class CheckoutController extends Controller
         $email = $request->email_account;
         $password = md5($request->password_account);
         $result = DB::table('tbl_customers')->where('customer_email', $email)->where('customer_password', $password)->first();
+        if(Session::get('coupon')==true){
+            Session::forget('coupon');
+        }
         if ($result) {
             Session::put('customer_id', $result->customer_id);
             return Redirect::to('/thanhtoan');
         } else {
             return Redirect::to('/login-checkout');
         }
+        Session::save();
+    
     }
     public function order_place(Request $request)
     {
@@ -246,6 +252,14 @@ class CheckoutController extends Controller
     {
         $data = $request->all();
 
+        $coupon = Coupon::where('coupon_code', $data['order_coupon'])->first();
+        $coupon->coupon_used = $coupon->coupon_used.','.Session::get('customer_id');
+        $coupon->coupon_time = $coupon->coupon_time - 1;
+
+
+        $coupon->save();
+
+
         $shipping = new Shipping();
         $shipping->shipping_name = $data['shipping_name'];
         $shipping->shipping_email = $data['shipping_email'];
@@ -290,7 +304,6 @@ class CheckoutController extends Controller
         Session::forget('coupon');
         Session::forget('fee');
         Session::forget('cart');
-        
     }
     public function vnpay_payment(Request $request)
     {
@@ -389,7 +402,7 @@ class CheckoutController extends Controller
     public function momo_payment(Request $request)
     {
 
-       
+
 
         $endpoint = "https://test-payment.momo.vn/gw_payment/transactionProcessor";
 
@@ -405,47 +418,46 @@ class CheckoutController extends Controller
         $notifyurl = "http://localhost:8000/atm/ipn_momo.php";
         // Lưu ý: link notifyUrl không phải là dạng localhost
         $bankCode = "SML";
-            
-            $requestId = time() . "";
-            $requestType = "payWithMoMoATM";
-            $extraData = "";
-            //before sign HMAC SHA256 signature
-            $rawHashArr =  array(
-                'partnerCode' => $partnerCode,
-                'accessKey' => $accessKey,
-                'requestId' => $requestId,
-                'amount' => $amount,
-                'orderId' => $orderId,
-                'orderInfo' => $orderInfo,
-                'bankCode' => $bankCode,
-                'returnUrl' => $returnUrl,
-                'notifyUrl' => $notifyurl,
-                'extraData' => $extraData,
-                'requestType' => $requestType
-            );
-            // echo $serectkey;die;
-            $rawHash = "partnerCode=" . $partnerCode . "&accessKey=" . $accessKey . "&requestId=" . $requestId . "&bankCode=" . $bankCode . "&amount=" . $amount . "&orderId=" . $orderId . "&orderInfo=" . $orderInfo . "&returnUrl=" . $returnUrl . "&notifyUrl=" . $notifyurl . "&extraData=" . $extraData . "&requestType=" . $requestType;
-            $signature = hash_hmac("sha256", $rawHash, $secretKey);
 
-            $data =  array(
-                'partnerCode' => $partnerCode,
-                'accessKey' => $accessKey,
-                'requestId' => $requestId,
-                'amount' => $amount,
-                'orderId' => $orderId,
-                'orderInfo' => $orderInfo,
-                'returnUrl' => $returnUrl,
-                'bankCode' => $bankCode,
-                'notifyUrl' => $notifyurl,
-                'extraData' => $extraData,
-                'requestType' => $requestType,
-                'signature' => $signature
-            );
-            $result = $this->execPostRequest($endpoint, json_encode($data));
-            $jsonResult = json_decode($result, true);  // decode json
+        $requestId = time() . "";
+        $requestType = "payWithMoMoATM";
+        $extraData = "";
+        //before sign HMAC SHA256 signature
+        $rawHashArr =  array(
+            'partnerCode' => $partnerCode,
+            'accessKey' => $accessKey,
+            'requestId' => $requestId,
+            'amount' => $amount,
+            'orderId' => $orderId,
+            'orderInfo' => $orderInfo,
+            'bankCode' => $bankCode,
+            'returnUrl' => $returnUrl,
+            'notifyUrl' => $notifyurl,
+            'extraData' => $extraData,
+            'requestType' => $requestType
+        );
+        // echo $serectkey;die;
+        $rawHash = "partnerCode=" . $partnerCode . "&accessKey=" . $accessKey . "&requestId=" . $requestId . "&bankCode=" . $bankCode . "&amount=" . $amount . "&orderId=" . $orderId . "&orderInfo=" . $orderInfo . "&returnUrl=" . $returnUrl . "&notifyUrl=" . $notifyurl . "&extraData=" . $extraData . "&requestType=" . $requestType;
+        $signature = hash_hmac("sha256", $rawHash, $secretKey);
 
-            error_log(print_r($jsonResult, true));
-            header('Location: ' . $jsonResult['payUrl']);
-        }
+        $data =  array(
+            'partnerCode' => $partnerCode,
+            'accessKey' => $accessKey,
+            'requestId' => $requestId,
+            'amount' => $amount,
+            'orderId' => $orderId,
+            'orderInfo' => $orderInfo,
+            'returnUrl' => $returnUrl,
+            'bankCode' => $bankCode,
+            'notifyUrl' => $notifyurl,
+            'extraData' => $extraData,
+            'requestType' => $requestType,
+            'signature' => $signature
+        );
+        $result = $this->execPostRequest($endpoint, json_encode($data));
+        $jsonResult = json_decode($result, true);  // decode json
+
+        error_log(print_r($jsonResult, true));
+        header('Location: ' . $jsonResult['payUrl']);
     }
-
+}
