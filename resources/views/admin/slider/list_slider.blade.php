@@ -21,10 +21,10 @@
             <tr>
               
               <th style="color: brown">Tên Slider</th>
-              <th style="color: brown">Hinh anh</th>
-              <th style="color: brown">Mo ta</th>
-              <th style="color: brown">Tinh trang</th>
-              <th style="color: brown">Quan ly</th>
+              <th style="color: brown">Hình ảnh</th>
+              <th style="color: brown">Mô tả</th>
+              <th style="color: brown">Tình trạng</th>
+              <th style="color: brown">Quản lý</th>
             
               <th style="width:30px;"></th>
             </tr>
@@ -55,8 +55,9 @@
               
               <td>
               
-                <a onclick="return confirm('Bạn có muốn xóa Slide này?')" href="{{URL::to('/delete-slider/'.$sli->slider_id)}}" class="active" ui-toggle-class="">
-                  <i class="fa-solid fa-delete-left"></i></a>
+                <a onclick="return confirm('Bạn có muốn xóa Slide này?')" href="{{URL::to('/delete-slider/'.$sli->slider_id)}}" 
+                  class="active btn btn-danger" ui-toggle-class="">Xóa
+                 </a>
               </td>
             </tr>
             @endforeach

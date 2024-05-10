@@ -600,7 +600,7 @@
                             });
 
                             window.setTimeout(function() {
-                                location.reload();
+                                window.location.href = "{{ url('/lichsudh') }}";
                             }, 3000);
 
                         } else {
@@ -954,7 +954,30 @@
                 "#slider-range").slider("values", 1)));
         });
     </script>
+     <script type="text/javascript">
+        function huydh(id){
+            var order_code = id;
+            var lydohuy = $('.lydohuy').val();
+          
+            var _token = $('input[name="_token"]').val();
 
+            $.ajax({
+                url: "{{ url('huy-don-hang') }}",
+                method: 'POST',
+                data: {
+                    order_code:order_code,
+                    lydohuy:lydohuy,
+                   
+                    _token: _token
+                },
+                success: function(data) {
+                   alert('Hủy đơn hàng thành công');
+                   location.reload();
+
+                }
+            });
+        }
+    </script>
 </body>
 
 </html>

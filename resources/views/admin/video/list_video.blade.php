@@ -33,7 +33,7 @@
                         </div>
                     
                         <div class="form-group">
-                            <label for="exampleInputPassword1">Hinh anh video</label>
+                            <label for="exampleInputPassword1">Hình ảnh video</label>
                             <input type="file" class="form-control" id="file_img_video" name="file" accept="image/*" multiple>
                          
                         </div>
@@ -64,16 +64,16 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Ten video</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Tên video</h5>
                         {{-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button> --}}
                     </div>
                     <div class="modal-body">
-                        Video o day
+                        Video ở đây
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Dong</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
                        
                     </div>
                 </div>

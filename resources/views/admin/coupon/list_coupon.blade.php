@@ -113,8 +113,9 @@
               
               </td>
               <td>
-                <a onclick="return confirm('Bạn có muốn xóa mã giảm giá này?')" href="{{URL::to('/delete-coupon/'.$cou->coupon_id)}}" class="active" ui-toggle-class="">
-                  <i class="fa-solid fa-delete-left"></i></a></a>
+                <a onclick="return confirm('Bạn có muốn xóa mã giảm giá này?')" href="{{URL::to('/delete-coupon/'.$cou->coupon_id)}}"
+                   class="active btn btn-danger" ui-toggle-class="">
+                 Xóa</a>
               </td>
             </tr>
             @endforeach

@@ -54,10 +54,11 @@
               </span></td>
               
               <td>
-                <a href="{{URL::to('/edit-brand-product/'.$br->brand_id)}}" class="active" ui-toggle-class="">
-                  <i class="fa-regular fa-pen-to-square"></i></a>
-                <a onclick="return confirm('Bạn có muốn xóa thương hiệu này?')" href="{{URL::to('/delete-brand-product/'.$br->brand_id)}}" class="active" ui-toggle-class="">
-                  <i class="fa-solid fa-delete-left"></i></a>
+                <a href="{{URL::to('/edit-brand-product/'.$br->brand_id)}}" class="active btn btn-success" ui-toggle-class="">
+                 Sửa</a>
+                <a onclick="return confirm('Bạn có muốn xóa thương hiệu này?')" href="{{URL::to('/delete-brand-product/'.$br->brand_id)}}" 
+                  class="active btn btn-danger" ui-toggle-class="">
+                 Xóa</a>
               </td>
             </tr>
             @endforeach

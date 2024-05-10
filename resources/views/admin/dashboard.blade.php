@@ -14,7 +14,7 @@
         <form autocomplete="off">
             @csrf
             <div class="col-md-2">
-                <p>Từ ngày: <input type="text" id="datepicker" class="form-control"></p>
+                <p>Từ ngày: <input type="text" id="datepicker" class="form-control"></p></br>
                 <input type="button" id="btn-dashboard-filter" class="btn btn-primary btn-sm" value="Lọc kết quá"></p>
             </div>
             <div class="col-md-2">
@@ -22,9 +22,9 @@
             </div>
             <div class="col-md-2">
                 <p>
-                    Loc theo:
+                    Lọc theo
                     <select class="dashboard-filter form-control">
-                        <option>--Chon--</option>
+                        <option>Chọn</option>
                         <option value="7ngay">7 ngày qua</option>
                         <option value="thangtruoc">Tháng truóc</option>
                         <option value="thangnay">Thāng này</option>

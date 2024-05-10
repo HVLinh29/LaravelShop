@@ -5,7 +5,7 @@
 <div class="table-agile-info">
     <div class="panel panel-default">
       <div class="panel-heading">
-    Liệt kê bai viet
+    Liệt kê bài viết
       </div>
       
       <div class="table-responsive">
@@ -20,12 +20,12 @@
           <thead>
             <tr>
               
-              <th style="color: brown">Tên bai viet</th>
+              <th style="color: brown">Tên bài viết</th>
               <th style="color: brown">Slug</th>
-              <th style="color: brown">Mo ta bai viet</th>
-              <th style="color: brown">Hình ảnh bai viet</th>
-              <th style="color: brown">Tu khoa bai viet</th>
-              <th style="color: brown">Danh muc bai viet</th>
+              <th style="color: brown">Mô tả bài viết</th>
+              <th style="color: brown">Hình ảnh bài viết</th>
+              <th style="color: brown">Từ khóa bài viết</th>
+              <th style="color: brown">Danh mục bài viết</th>
               <th style="color: brown">Hiển thị</th>
               <th style="color: brown">Quản lý</th>
 
@@ -42,17 +42,18 @@
               <td>{{$post->cate_post->cate_post_name}}</td>
               <td>
                 @if($post->post_status==0)
-                An
+                Ẩn
                 @else
-                Hien thi
+                Hiển thị
                 @endif
               </td>
               
               <td>
-                <a href="{{URL::to('/edit-post/'.$post->post_id)}}" class="active" ui-toggle-class="">
-                  <i class="fa-regular fa-pen-to-square"></i></a>
-                <a onclick="return confirm('Bạn có muốn xóa bai viet này  ?')" href="{{URL::to('/delete-post/'.$post->post_id)}}" class="active" ui-toggle-class="">
-                  <i class="fa-solid fa-delete-left"></i></a>
+                <a href="{{URL::to('/edit-post/'.$post->post_id)}}" class="active btn btn-success" ui-toggle-class="">
+               Sửa</a>
+                <a onclick="return confirm('Bạn có muốn xóa bai viet này  ?')" href="{{URL::to('/delete-post/'.$post->post_id)}}" 
+                  class="active btn btn-danger" ui-toggle-class="">Xóa
+                </a>
               </td>
             </tr>
             @endforeach
@@ -64,6 +65,7 @@
         <input type="file" name="file" accept=".xlsx"><br>
        <input type="submit" value="Import Excel" name="import_csv" class="btn btn-warning">
         </form>
+      </br>
        <form action="{{url('export-csv-postoduct')}}" method="POST">
           @csrf
        <input type="submit" value="Export Excel" name="export_csv" class="btn btn-success">

@@ -50,9 +50,9 @@
               <td>
                   
                     
-                <p><input type="submit" value="Phan quyen" class="btn btn-sm btn-default"></p>
-                <p><a style="margin: 5px 0" class="btn btn-sm btn-danger" href="{{url('/delete-user-roles/'.$user->admin_id)}}">Xoa User</a></p>
-                <p><a style="margin: 5px 0" class="btn btn-sm btn-success" href="{{url('/transferrights/'.$user->admin_id)}}">Chuyen quyen</a></p>
+                <p><input type="submit" value="Phân quyền" class="btn btn-sm btn-default"></p>
+                <p><a style="margin: 5px 0" class="btn btn-sm btn-danger" href="{{url('/delete-user-roles/'.$user->admin_id)}}">Xóa User</a></p>
+                <p><a style="margin: 5px 0" class="btn btn-sm btn-success" href="{{url('/transferrights/'.$user->admin_id)}}">Chuyển quyền</a></p>
               </td> 
               </td> 
 

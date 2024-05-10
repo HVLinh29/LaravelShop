@@ -41,14 +41,14 @@ class VideoController extends Controller
         <table class="table table-striped b-t b-light">
           <thead>
             <tr>
-            <th style="color: brown">Thu tu</th>
+            <th style="color: brown">Thứ tự</th>
               <th style="color: brown">Tên Video</th>
               <th style="color: brown">Slug Video</th>
-              <th style="color: brown">Hinh anh Video</th>
+              <th style="color: brown">Hình ảnh Video</th>
               <th style="color: brown">Link</th>
               <th style="color: brown">Mô tả</th>
               <th style="color: brown">Demo Video</th>
-              <th style="color: brown">Quan li</th>
+              <th style="color: brown">Quản lí</th>
             
             
               <th style="width:30px;"></th>
@@ -85,13 +85,13 @@ class VideoController extends Controller
                 title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; 
                 encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" 
                 allowfullscreen></iframe></td>
-              <td><button type="button" data-video_id="' . $vid->video_id . '" class=" btn btn-danger btn-delete-video">Xoa video</button></td>
+              <td><button type="button" data-video_id="' . $vid->video_id . '" class=" btn btn-danger btn-delete-video">Xóa video</button></td>
             </tr>
                     ';
             }
         } else {
             $output .= '<tr>
-                <td colspan="4"Chua co video </td>
+                <td colspan="4"Chưa có video </td>
             </tr>';
         }
         $output .= '</tbody></table> </form>';

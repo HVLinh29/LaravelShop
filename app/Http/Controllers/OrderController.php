@@ -54,7 +54,7 @@ class OrderController extends Controller
 			$coupon_number = 0;
 		}
 
-		return view('admin.view_order')->with(compact('order_details', 'customerr', 'shipping', 'order_details', 'coupon_condition', 'coupon_number', 'orderr', 'order_status'));
+		return view('admin.view_order')->with(compact('order_details', 'customerr', 'shipping', 'coupon_condition', 'coupon_number', 'orderr', 'order_status'));
 	}
 	public function print_order($checkout_code)
 	{
@@ -319,7 +319,7 @@ class OrderController extends Controller
 	// 			$statistic_new->save();
 	// 		}
 	// 	} 
-		
+
 	// }
 	public function update_order_qty(Request $request)
 	{
@@ -331,60 +331,62 @@ class OrderController extends Controller
 
 		//da gui mail xac nhan
 		$now = Carbon::now('Asia/Ho_Chi_Minh')->format('d-m-Y H:i:s');
-        $title_mail = "Đơn hàng đã đặt được xác nhận ngày: ".''.$now;
-        $customer = Customer::where('customer_id',$order->customer_id)->first();;
-        $data['email'][] = $customer->customer_email;
-     
+		$title_mail = "Đơn hàng đã đặt được xác nhận ngày: " . '' . $now;
+		$customer = Customer::where('customer_id', $order->customer_id)->first();;
+		$data['email'][] = $customer->customer_email;
+
 		//lay san pham
-		foreach($data['order_product_id'] as $key => $product){
+		foreach ($data['order_product_id'] as $key => $product) {
 			$product_mail = Product::find($product);
-				foreach($data['quantity'] as $key2 => $qty){
-					if($key == $key2){
-                       $cart_array[] = array(
+			foreach ($data['quantity'] as $key2 => $qty) {
+				if ($key == $key2) {
+					$cart_array[] = array(
 						'product_name' => $product_mail['product_name'],
-                        'product_price' => $product_mail['product_price'],
-                        'product_qty' => $qty
-					   );
-                    }
+						'product_price' => $product_mail['product_price'],
+						'product_qty' => $qty
+					);
 				}
-			
+			}
 		}
-        
+
 		//lay shipping
-		$details = OrderDetails::where('order_code',$order->order_code)->first();
+		$details = OrderDetails::where('order_code', $order->order_code)->first();
 		$fee_ship = $details->product_feeship;
 		$coupon_mail = $details->product_coupon;
 
-       $shipping = Shipping::where('shipping_id',$order->shipping_id)->first();
-        $shipping_array = array(
-            'fee_ship'=>$fee_ship,
-            'customer_name' => $customer->customer_name,
-           'shipping_name' => $shipping['shipping_name'],
-           'shipping_email' => $shipping['shipping_email'],
-           'shipping_phone' => $shipping['shipping_phone'],
-           'shipping_address' => $shipping['shipping_address'],
-           'shipping_notes' => $shipping['shipping_notes'],
-           'shipping_method' => $shipping['shipping_method'],
-           
-        );
-        //lay ma giam gia va ma code cua ma giam gia
-        $ordercode_mail = array(
-            'coupon_code' =>$coupon_mail,
-            'order_code' =>$details->order_code
-        );
+		$shipping = Shipping::where('shipping_id', $order->shipping_id)->first();
+		$shipping_array = array(
+			'fee_ship' => $fee_ship,
+			'customer_name' => $customer->customer_name,
+			'shipping_name' => $shipping['shipping_name'],
+			'shipping_email' => $shipping['shipping_email'],
+			'shipping_phone' => $shipping['shipping_phone'],
+			'shipping_address' => $shipping['shipping_address'],
+			'shipping_notes' => $shipping['shipping_notes'],
+			'shipping_method' => $shipping['shipping_method'],
 
-        Mail::send('admin.xacnhandon', ['cart_array' => $cart_array,'shipping_array'=>$shipping_array,'code'=>$ordercode_mail], 
-        function ($message) use ($title_mail, $data) {
-            $message->to($data['email'])->subject($title_mail);
-            $message->from($data['email'], $title_mail);
-        });
-	
+		);
+		//lay ma giam gia va ma code cua ma giam gia
+		$ordercode_mail = array(
+			'coupon_code' => $coupon_mail,
+			'order_code' => $details->order_code
+		);
+
+		Mail::send(
+			'admin.xacnhandon',
+			['cart_array' => $cart_array, 'shipping_array' => $shipping_array, 'code' => $ordercode_mail],
+			function ($message) use ($title_mail, $data) {
+				$message->to($data['email'])->subject($title_mail);
+				$message->from($data['email'], $title_mail);
+			}
+		);
+
 		// Lấy ngày đơn hàng
 		$order_date = $order->order_date;
-	
+
 		// Tìm thống kê cho ngày hiện tại
 		$statistic = Statistic::where('order_date', $order_date)->first();
-	
+
 		// Nếu không có thống kê, tạo mới
 		if (!$statistic) {
 			$statistic = new Statistic();
@@ -394,14 +396,14 @@ class OrderController extends Controller
 			$statistic->profit = 0;
 			$statistic->total_order = 0;
 		}
-	
+
 		if ($order->order_status == 2) {
 			// Khởi tạo các biến
 			$total_order = 0;
 			$sales = 0;
 			$profit = 0;
 			$quantity = 0;
-	
+
 			// Lặp qua các sản phẩm trong đơn hàng
 			foreach ($data['order_product_id'] as $key => $product_id) {
 				$product = Product::find($product_id);
@@ -410,19 +412,19 @@ class OrderController extends Controller
 				$product_price = $product->product_price;
 				$product_cost = $product->product_cost;
 				$qty = $data['quantity'][$key];
-	
+
 				// Cập nhật thông tin sản phẩm
 				$product->product_quantity -= $qty;
 				$product->product_sold += $qty;
 				$product->save();
-	
+
 				// Cập nhật thông tin doanh thu và số lượng
 				$quantity += $qty;
 				$total_order++;
 				$sales += $product_price * $qty;
 				$profit = $sales - ($product_cost * $qty); // Giả sử 1000 là chi phí cố định
 			}
-	
+
 			// Cập nhật thông tin thống kê
 			$statistic->sales += $sales;
 			$statistic->quantity += $quantity;
@@ -431,7 +433,7 @@ class OrderController extends Controller
 			$statistic->save();
 		}
 	}
-	
+
 
 	public function delete_order($orderCode)
 	{
@@ -444,31 +446,94 @@ class OrderController extends Controller
 			return redirect('manage-order')->with('error', 'Không tìm thấy đơn hàng.');
 		}
 	}
-	public function lichsudh(Request $request){
-		if(!Session::get('customer_id')){
-			return redirect('login-checkout')->with('error','Vui lòng đăng nhập để xem lịch sử đơn hàng');
-		}else{
-			
-			 //post
-			 $category_post = CatePost::orderBy('cate_post_id','DESC')->get();
+	public function lichsudh(Request $request)
+	{
+		if (!Session::get('customer_id')) {
+			return redirect('login-checkout')->with('error', 'Vui lòng đăng nhập để xem lịch sử đơn hàng');
+		} else {
 
-			 //slider
-			 $slider = Slider::orderBy('slider_id','desc')->where('slider_status','1')->take(3)->get();
-			
-			 //seo 
-			 $meta_desc = "Lịch sử đơn hàng";
-			 $meta_keywords = "Lịch sử đơn hàng";
-			 $meta_title = " Lịch sử đơn hàng";
-			 $url_canonical = $request->url();
-	 
-			 $cate_product = DB::table('tbl_category_product')->where('category_status','0')->orderby('category_id','desc')->get();
-			 $brand_product = DB::table('tbl_brand')->where('brand_status','0')->orderby('brand_id','desc')->get();
-			
-			 $orderr = Order::where('customer_id',Session::get('customer_id'))->orderby('order_id','DESC')->get();
-			
-			 return view('pages.lichsudonhang.donhang')->with('category',$cate_product)->with('brand',$brand_product)
-			 ->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)
-			 ->with('url_canonical',$url_canonical)->with('slider',$slider)->with('category_post',$category_post)->with('orderr',$orderr);
+			//post
+			$category_post = CatePost::orderBy('cate_post_id', 'DESC')->get();
+
+			//slider
+			$slider = Slider::orderBy('slider_id', 'desc')->where('slider_status', '1')->take(3)->get();
+
+			//seo 
+			$meta_desc = "Lịch sử đơn hàng";
+			$meta_keywords = "Lịch sử đơn hàng";
+			$meta_title = " Lịch sử đơn hàng";
+			$url_canonical = $request->url();
+
+			$cate_product = DB::table('tbl_category_product')->where('category_status', '0')->orderby('category_id', 'desc')->get();
+			$brand_product = DB::table('tbl_brand')->where('brand_status', '0')->orderby('brand_id', 'desc')->get();
+
+			$orderr = Order::where('customer_id', Session::get('customer_id'))->orderby('order_id', 'DESC')->get();
+
+			return view('pages.lichsudonhang.donhang')->with('category', $cate_product)->with('brand', $brand_product)
+				->with('meta_desc', $meta_desc)->with('meta_keywords', $meta_keywords)->with('meta_title', $meta_title)
+				->with('url_canonical', $url_canonical)->with('slider', $slider)->with('category_post', $category_post)->with('orderr', $orderr);
 		}
+	}
+	public function lich_su_don_hang(Request $request, $order_code)
+	{
+		if (!Session::get('customer_id')) {
+			return redirect('login-checkout')->with('error', 'Vui lòng đăng nhập để xem lịch sử đơn hàng');
+		} else {
+
+			//post
+			$category_post = CatePost::orderBy('cate_post_id', 'DESC')->get();
+
+			//slider
+			$slider = Slider::orderBy('slider_id', 'desc')->where('slider_status', '1')->take(3)->get();
+
+			//seo 
+			$meta_desc = "Lịch sử đơn hàng";
+			$meta_keywords = "Lịch sử đơn hàng";
+			$meta_title = " Lịch sử đơn hàng";
+			$url_canonical = $request->url();
+
+			$cate_product = DB::table('tbl_category_product')->where('category_status', '0')->orderby('category_id', 'desc')->get();
+			$brand_product = DB::table('tbl_brand')->where('brand_status', '0')->orderby('brand_id', 'desc')->get();
+
+			//xem lich su don hang
+			$order_details = OrderDetails::with('product')->where('order_code', $order_code)->get();
+			$orderr = Order::where('order_code', $order_code)->first();
+
+			$customer_id = $orderr->customer_id;
+			$shipping_id = $orderr->shipping_id;
+			$order_status = $orderr->order_status;
+
+			$customerr = Customer::where('customer_id', $customer_id)->first();
+			$shipping = Shipping::where('shipping_id', $shipping_id)->first();
+
+			$order_details_product = OrderDetails::with('product')->where('order_code', $order_code)->get();
+
+			foreach ($order_details_product as $key => $order_d) {
+
+				$product_coupon = $order_d->product_coupon;
+			}
+			if ($product_coupon != 'no') {
+				$coupon = Coupon::where('coupon_code', $product_coupon)->first();
+				$coupon_condition = $coupon->coupon_condition;
+				$coupon_number = $coupon->coupon_number;
+			} else {
+				$coupon_condition = 2;
+				$coupon_number = 0;
+			}
+			
+			return view('pages.lichsudonhang.lichsudonhang')->with('category', $cate_product)->with('brand', $brand_product)
+				->with('meta_desc', $meta_desc)->with('meta_keywords', $meta_keywords)->with('meta_title', $meta_title)
+				->with('url_canonical', $url_canonical)->with('slider', $slider)->with('category_post', $category_post)->with('order_details', $order_details)
+				->with('customerr', $customerr)->with('shipping', $shipping)->with('coupon_condition', $coupon_condition)
+				->with('coupon_number', $coupon_number)->with('orderr', $orderr)->with('order_status', $order_status);
+		}
+	}
+	public function huy_don_hang(Request $request){
+		$data = $request->all();
+		$orderr = Order::where('order_code',$data['order_code'])->first();
+		$orderr->order_destroy = $data['lydohuy'];
+		$orderr->order_status = 3;
+		$orderr->save();
+
 	}
 }

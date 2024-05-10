@@ -21,7 +21,7 @@
             <tr>
               <th style="color:brown">Tên danh mục</th>
               <th style="color:brown">Slug</th>
-              <th style="color:brown">Thụoc danh muc</th>
+              <th style="color:brown">Thuộc danh muc</th>
               <th style="color:brown">Hiển thị</th>
               <th style="color:brown">Quản lý</th>
             
@@ -63,10 +63,11 @@
               </span></td>
               
               <td>
-                <a href="{{URL::to('/edit-category-product/'.$cate_pro->category_id)}}" class="active" ui-toggle-class="">
-                  <i class="fa-regular fa-pen-to-square"></i></a>
-                <a onclick="return confirm('Bạn có muốn xóa danh mục này?')" href="{{URL::to('/delete-category-product/'.$cate_pro->category_id)}}" class="active" ui-toggle-class="">
-                  <i class="fa-solid fa-delete-left"></i></a>
+                <a href="{{URL::to('/edit-category-product/'.$cate_pro->category_id)}}" class="active btn btn-success" ui-toggle-class="">
+                 Sửa</a>
+                <a onclick="return confirm('Bạn có muốn xóa danh mục này?')" href="{{URL::to('/delete-category-product/'.$cate_pro->category_id)}}"
+                   class="active btn btn-danger" ui-toggle-class="">
+                 Xóa</a>
               </td>
             </tr>
             @endforeach
@@ -74,11 +75,13 @@
         </table>
 
         {{-- Xuat nhap excel --}}
+      </br>
         <form action="{{url('import-csv')}}" method="POST" enctype="multipart/form-data">
           @csrf
         <input type="file" name="file" accept=".xlsx"><br>
-       <input type="submit" value="Import Excel" name="import_csv" class="btn btn-warning">
+       <input type="submit" value="Import Excel" name="import_csv" class="btn btn-danger">
         </form>
+      </br>
        <form action="{{url('export-csv')}}" method="POST">
           @csrf
        <input type="submit" value="Export Excel" name="export_csv" class="btn btn-success">

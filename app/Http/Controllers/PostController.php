@@ -122,7 +122,7 @@ class PostController extends Controller
         }
 
         $post->save();
-        Session::put('message', 'Cap nhat bai viet thành công');
+        Session::put('message', 'Cập nhật bai viet thành công');
         return redirect('/list-post');
     }
     public function danh_muc_bai_viet(Request $request, $post_slug)

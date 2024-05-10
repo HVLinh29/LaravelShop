@@ -18,7 +18,7 @@
                         <form role="form" action="{{ URL::to('/save-post') }}" method="POST" enctype="multipart/form-data">
                             {{ csrf_field() }}
                             <div class="form-group">
-                                <label for="">Tên bai viet</label>
+                                <label for="">Tên bài viết</label>
                                 <input type="text" class="form-control" name="post_title"  id="slug" onkeyup="ChangeToSlug();" >
                             </div>
                             <div class="form-group">
@@ -26,27 +26,27 @@
                                 <input type="text" name="post_slug" class="form-control" id="convert_slug" placeholder="Slug">
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputPassword1">Tom tat bai viet</label>
+                                <label for="exampleInputPassword1">Tóm tắt bài viết</label>
                                 <textarea style="resize: none"rows="5"  name="post_desc" class="form-control" id="cheditor" ></textarea>
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputPassword1">Noi dung bai viet</label>
+                                <label for="exampleInputPassword1">Nội dung bài viết</label>
                                 <textarea style="resize: none"rows="5"  name="post_content" class="form-control" id="cheditor1" ></textarea>
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputPassword1">Meta tu khoa</label>
+                                <label for="exampleInputPassword1">Meta từ khóa</label>
                                 <textarea style="resize: none"rows="5"  name="post_meta_keywords" class="form-control" id="" ></textarea>
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputPassword1">Meta noi dung</label>
+                                <label for="exampleInputPassword1">Meta nội dung</label>
                                 <textarea style="resize: none"rows="5"  name="post_meta_desc" class="form-control" id="" ></textarea>
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputEmail1">Hình ảnh bai viet</label>
+                                <label for="exampleInputEmail1">Hình ảnh bài viết</label>
                                 <input type="file" class="form-control"  name="post_image"  id="exampleInputEmail1">
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputPassword1">Danh muc bai viet</label>
+                                <label for="exampleInputPassword1">Danh mục bài viết</label>
                                 <select name="cate_post_id" class="form-control input-sm m-bot15">
                                  @foreach($cate_post as $key =>$cate)
                                     <option value="{{$cate->cate_post_id}}">{{$cate->cate_post_name}}</option>
@@ -61,7 +61,7 @@
 
                                 </select>
                             </div>
-                            <button type="submit" name="add_brand_product" class="btn btn-success">Thêm bai viet</button>
+                            <button type="submit" name="add_brand_product" class="btn btn-success">Thêm bài viết</button>
                         </form>
                     </div>
 

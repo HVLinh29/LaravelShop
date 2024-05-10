@@ -121,6 +121,7 @@ Route::post('/confirm-order','CheckoutController@confirm_order');
 Route::get('/handcash','CheckoutController@handcash');
 
 //Don hang dat 
+Route::get('/lich-su-don-hang/{order_code}','OrderController@lich_su_don_hang');
 Route::get('/lichsudh','OrderController@lichsudh');
 Route::get('/print-order/{checkout_code}','OrderController@print_order');
 Route::get('/manage-order','OrderController@manage_order');
@@ -128,6 +129,7 @@ Route::get('/delete-order/{orderCode}','OrderController@delete_order');
 Route::get('/view-order/{order_code}','OrderController@view_order');
 Route::post('/update-order-qty','OrderController@update_order_qty');
 Route::post('/update-qty','OrderController@update_qty');
+Route::post('/huy-don-hang','OrderController@huy_don_hang');
 
 //Van chuyen
 Route::get('/delivery','DeliveryController@delivery');

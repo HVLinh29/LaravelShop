@@ -21,12 +21,12 @@
                     <thead>
                         <tr>
 
-                            <th style="color: brown">Duyet</th>
-                            <th style="color: brown">Ten nguoi gui</th>
-                            <th style="color: brown">Binh luan</th>
-                            <th style="color: brown">Ngay gui</th>
-                            <th style="color: brown">San pham</th>
-                            <th style="color: brown">Quan ly</th>
+                            <th style="color: brown">Duyệt</th>
+                            <th style="color: brown">Tên người gửi</th>
+                            <th style="color: brown">Bình luận</th>
+                            <th style="color: brown">Ngày gửi</th>
+                            <th style="color: brown">Sản phẩm</th>
+                            <th style="color: brown">Quản lý</th>
 
                         </tr>
                     </thead>
@@ -67,7 +67,7 @@
                                         <textarea class="form-control reply_comment_{{ $comm->comment_id }}" row="5"></textarea>
                                         <br /><button class="btn btn-default btn-xs btn-reply-comment"
                                             data-product_id="{{ $comm->comment_product_id }}"
-                                            data-comment_id="{{ $comm->comment_id }}">Tra loi binh luan</textarea>
+                                            data-comment_id="{{ $comm->comment_id }}">Trả lời</textarea>
                                     @endif
 
                                 </td>
@@ -78,8 +78,8 @@
                                 <td>
                                     
                                     <a onclick="return confirm('Bạn có muốn xóa binh luan này  ?')" href="{{URL::to('/delete-comment/'.$comm->comment_id)}}"
-                                        class="active" ui-toggle-class="">
-                                        <i class="fa-solid fa-delete-left"></i></a>
+                                        class="active btn btn-danger" ui-toggle-class="">Xóa
+                                       </a>
                                 </td>
                             </tr>
                         @endforeach
@@ -91,6 +91,7 @@
                     <input type="file" name="file" accept=".xlsx"><br>
                     <input type="submit" value="Import Excel" name="import_csv" class="btn btn-warning">
                 </form>
+            </br>
                 <form action="{{ url('export-csv-product') }}" method="POST">
                     @csrf
                     <input type="submit" value="Export Excel" name="export_csv" class="btn btn-success">
