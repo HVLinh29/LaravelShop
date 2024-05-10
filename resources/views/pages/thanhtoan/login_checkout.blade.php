@@ -6,15 +6,16 @@
         <div class="row">
             <div class="col-sm-4 col-sm-offset-1">
                 <div class="login-form">
-                    @if (session()->has('messages'))
-                    <div class="alert alert-success ">
-                        {!! session()->get('messages') !!}
-                    </div>
-                @elseif(session()->has('error'))
-                    <div class="alert alert-danger ">
-                        {!! session()->get('error') !!}
-                    </div>
-                @endif
+                    @if (session()->has('message'))
+    <div class="alert alert-success">
+        {!! session()->get('message') !!}
+    </div>
+@elseif(session()->has('error'))
+    <div class="alert alert-danger">
+        {!! session()->get('error') !!}
+    </div>
+@endif
+
                     <h2>Đăng nhập tài khoản</h2>
                     <form action="{{URL::to('/login-customer')}}" method="POST">
                         {{ csrf_field() }}
@@ -25,6 +26,19 @@
                         </span>
                         <button type="submit" class="btn btn-success">Đăng nhập</button>
                     </form>
+                    <style>
+                        ul.list-login{
+                            margin: 10px;
+                            padding: 0;
+                        }
+                        ul.list-login li{
+                            display: inline;
+                            margin: 5px;
+                        }
+                    </style>
+                    <ul class="list-login">
+                        <li><a href="{{url('login-customer-gg')}}"><img width="10%" alt="Đăng nhập Google" src="{{asset('public/fontend/images/gg.png')}}"></li>
+                    </ul>
                 </div>
             </div>
             <div class="col-sm-1">

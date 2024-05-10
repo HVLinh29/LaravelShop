@@ -14,6 +14,11 @@ use App\Coupon;
 use PDF;
 use App\Product;
 use App\Statistic;
+use Mail;
+use Session;
+use Illuminate\Support\Facades\DB;
+use App\Slider;
+use App\CatePost;
 
 class OrderController extends Controller
 {
@@ -323,6 +328,56 @@ class OrderController extends Controller
 		$order = Order::find($data['order_id']);
 		$order->order_status = $data['order_status'];
 		$order->save();
+
+		//da gui mail xac nhan
+		$now = Carbon::now('Asia/Ho_Chi_Minh')->format('d-m-Y H:i:s');
+        $title_mail = "Đơn hàng đã đặt được xác nhận ngày: ".''.$now;
+        $customer = Customer::where('customer_id',$order->customer_id)->first();;
+        $data['email'][] = $customer->customer_email;
+     
+		//lay san pham
+		foreach($data['order_product_id'] as $key => $product){
+			$product_mail = Product::find($product);
+				foreach($data['quantity'] as $key2 => $qty){
+					if($key == $key2){
+                       $cart_array[] = array(
+						'product_name' => $product_mail['product_name'],
+                        'product_price' => $product_mail['product_price'],
+                        'product_qty' => $qty
+					   );
+                    }
+				}
+			
+		}
+        
+		//lay shipping
+		$details = OrderDetails::where('order_code',$order->order_code)->first();
+		$fee_ship = $details->product_feeship;
+		$coupon_mail = $details->product_coupon;
+
+       $shipping = Shipping::where('shipping_id',$order->shipping_id)->first();
+        $shipping_array = array(
+            'fee_ship'=>$fee_ship,
+            'customer_name' => $customer->customer_name,
+           'shipping_name' => $shipping['shipping_name'],
+           'shipping_email' => $shipping['shipping_email'],
+           'shipping_phone' => $shipping['shipping_phone'],
+           'shipping_address' => $shipping['shipping_address'],
+           'shipping_notes' => $shipping['shipping_notes'],
+           'shipping_method' => $shipping['shipping_method'],
+           
+        );
+        //lay ma giam gia va ma code cua ma giam gia
+        $ordercode_mail = array(
+            'coupon_code' =>$coupon_mail,
+            'order_code' =>$details->order_code
+        );
+
+        Mail::send('admin.xacnhandon', ['cart_array' => $cart_array,'shipping_array'=>$shipping_array,'code'=>$ordercode_mail], 
+        function ($message) use ($title_mail, $data) {
+            $message->to($data['email'])->subject($title_mail);
+            $message->from($data['email'], $title_mail);
+        });
 	
 		// Lấy ngày đơn hàng
 		$order_date = $order->order_date;
@@ -387,6 +442,33 @@ class OrderController extends Controller
 			return redirect('manage-order')->with('success', 'Đơn hàng đã được xóa thành công.');
 		} else {
 			return redirect('manage-order')->with('error', 'Không tìm thấy đơn hàng.');
+		}
+	}
+	public function lichsudh(Request $request){
+		if(!Session::get('customer_id')){
+			return redirect('login-checkout')->with('error','Vui lòng đăng nhập để xem lịch sử đơn hàng');
+		}else{
+			
+			 //post
+			 $category_post = CatePost::orderBy('cate_post_id','DESC')->get();
+
+			 //slider
+			 $slider = Slider::orderBy('slider_id','desc')->where('slider_status','1')->take(3)->get();
+			
+			 //seo 
+			 $meta_desc = "Lịch sử đơn hàng";
+			 $meta_keywords = "Lịch sử đơn hàng";
+			 $meta_title = " Lịch sử đơn hàng";
+			 $url_canonical = $request->url();
+	 
+			 $cate_product = DB::table('tbl_category_product')->where('category_status','0')->orderby('category_id','desc')->get();
+			 $brand_product = DB::table('tbl_brand')->where('brand_status','0')->orderby('brand_id','desc')->get();
+			
+			 $orderr = Order::where('customer_id',Session::get('customer_id'))->orderby('order_id','DESC')->get();
+			
+			 return view('pages.lichsudonhang.donhang')->with('category',$cate_product)->with('brand',$brand_product)
+			 ->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)
+			 ->with('url_canonical',$url_canonical)->with('slider',$slider)->with('category_post',$category_post)->with('orderr',$orderr);
 		}
 	}
 }

@@ -91,12 +91,24 @@
                                 <?php
 								}
 								?>
-
-
                                 {{-- <li><a href="{{ URL::to('show-cart') }}"><i class="fa fa-shopping-cart"></i> Gio
                                         hang</a></li> --}}
                                 <li><a href="{{ URL::to('/gio-hang') }}"><i class="fa fa-shopping-cart"></i> Giỏ
                                         hàng</a></li>
+                                @php
+                                        $customer_id = Session::get('customer_id');
+                                        if($customer_id!=NULL){
+                                            @endphp
+                                <li><a href="{{ URL::to('lichsudh') }}"><i class="fa fa-shopping-cart"></i> Lịch sử đơn hàng</a>
+                                </li>
+
+                                @php
+                                        }
+                                @endphp
+
+
+
+
 
                                 <?php
 								$customer_id = Session::get('customer_id');
@@ -919,28 +931,30 @@
             $("#slider-range").slider({
                 orientation: "horizontal",
                 range: true,
-                min: {{$min_price}},
-                max: {{$max_price}},
+                min: {{ $min_price }},
+                max: {{ $max_price }},
                 step: 10000, // Adjust the step size according to your needs
-                values: [{{$min_price}}, {{$max_price}}],
+                values: [{{ $min_price }}, {{ $max_price }}],
                 slide: function(event, ui) {
                     // Format the price range with commas for better readability
-                    $("#amount").val(formatCurrency(ui.values[0]) + " - " + formatCurrency(ui.values[1]));
+                    $("#amount").val(formatCurrency(ui.values[0]) + " - " + formatCurrency(ui.values[
+                        1]));
                     $("#start_price").val(ui.values[0]);
                     $("#end_price").val(ui.values[1]);
                 }
             });
-    
+
             // Function to format currency with commas
             function formatCurrency(value) {
                 return "đ" + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             }
-    
+
             // Set initial price range value
-            $("#amount").val(formatCurrency($("#slider-range").slider("values", 0)) + " - " + formatCurrency($("#slider-range").slider("values", 1)));
+            $("#amount").val(formatCurrency($("#slider-range").slider("values", 0)) + " - " + formatCurrency($(
+                "#slider-range").slider("values", 1)));
         });
     </script>
-    
+
 </body>
 
 </html>

@@ -114,6 +114,40 @@ class MailController extends Controller
          ->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)
          ->with('url_canonical',$url_canonical)->with('slider',$slider)->with('category_post',$category_post);
     }
+    // public function recover_pass(Request $request){
+    //     $data = $request->all();
+    //     $now = Carbon::now('Asia/Ho_Chi_Minh')->format('d-m-Y');
+    //     $title_mail ="Lấy lại mật khẩu".' '.$now;
+    //     $customer = Customer::where('customer_email','=',$data['email_account'])->get();
+    //     foreach($customer as $key =>$value){
+    //         $customer_id = $value->customer_id;
+    //     }
+
+    //     if($customer){
+    //         $count_customer =  $customer->count();
+    //         if($count_customer==0){
+    //             return redirect()->with('message','Tài khoản không tồn tại');
+    //         }
+    //         else{
+    //             $token_random = Str::random();
+    //             $customer = Customer::find($customer_id);
+    //             $customer->customer_rpass = $token_random;
+    //             $customer->save();
+
+    //             $to_email = $data['email_account'];
+    //             $link_reset_pass = url('new-pass?email='.$to_email.'&token='.$token_random);
+
+    //             $data = array("name" => $title_mail, "body" => $link_reset_pass, 'email' => $data['email_account']);
+
+    //             Mail::send('pages.thanhtoan.quenpass_notify', ['data'=>$data], function ($message) use ($title_mail, $data) {
+    //                 $message->to($data['email'])->subject($title_mail);
+    //                 $message->from($data['email'], $title_mail);
+    //             });
+
+    //             return redirect()->with('message','Gửi mail thành công');
+    //         }
+    //     }
+    // }
     public function recover_pass(Request $request){
         $data = $request->all();
         $now = Carbon::now('Asia/Ho_Chi_Minh')->format('d-m-Y');
@@ -122,32 +156,35 @@ class MailController extends Controller
         foreach($customer as $key =>$value){
             $customer_id = $value->customer_id;
         }
-
+    
         if($customer){
             $count_customer =  $customer->count();
             if($count_customer==0){
-                return redirect()->back()->with('message','Tài khoản không tồn tại');
+                session()->flash('message','Tài khoản không tồn tại');
+                return redirect()->back();
             }
             else{
                 $token_random = Str::random();
                 $customer = Customer::find($customer_id);
                 $customer->customer_rpass = $token_random;
                 $customer->save();
-
+    
                 $to_email = $data['email_account'];
                 $link_reset_pass = url('new-pass?email='.$to_email.'&token='.$token_random);
-
+    
                 $data = array("name" => $title_mail, "body" => $link_reset_pass, 'email' => $data['email_account']);
-
+    
                 Mail::send('pages.thanhtoan.quenpass_notify', ['data'=>$data], function ($message) use ($title_mail, $data) {
                     $message->to($data['email'])->subject($title_mail);
                     $message->from($data['email'], $title_mail);
                 });
-
-                return redirect()->with('message','Gửi mail thành công');
+    
+                session()->flash('message','Gửi mail thành công');
+                return redirect()->back();
             }
         }
     }
+    
     public function new_pass(Request $request){
          //post
          $category_post = CatePost::orderBy('cate_post_id','DESC')->get();
@@ -185,9 +222,11 @@ class MailController extends Controller
            $reset->customer_password =  md5($data['pass_account']);
            $reset->customer_rpass = $token_random;
            $reset->save();
-           return redirect('login-checkout')->with('message','Đổi mật khẩu thành công');
+           session()->flash('message', 'Đổi mật khẩu thành công');
+       return redirect('login-checkout');
         }else{
-            return redirect('quen-mk')->with('error','Đổi mật khẩu thất bại');
+            session()->flash('error', 'Đổi mật khẩu thất bại');
+        return redirect('quen-mk');
         }
        
    }

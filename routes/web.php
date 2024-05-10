@@ -121,6 +121,7 @@ Route::post('/confirm-order','CheckoutController@confirm_order');
 Route::get('/handcash','CheckoutController@handcash');
 
 //Don hang dat 
+Route::get('/lichsudh','OrderController@lichsudh');
 Route::get('/print-order/{checkout_code}','OrderController@print_order');
 Route::get('/manage-order','OrderController@manage_order');
 Route::get('/delete-order/{orderCode}','OrderController@delete_order');
@@ -214,6 +215,10 @@ Route::post('/update-video','VideoController@update_video');
 Route::post('/delete-video','VideoController@delete_video');
 Route::post('/update-video-image','VideoController@update_video_image');
 Route::post('/watch-video','VideoController@watch_video');
+
+//Dang nhap khach hang bang google
+Route::get('/login-customer-gg','AdminController@login_customer_gg');
+Route::get('/customer/google/callback','AdminController@callback_google_customer');
 
 
 

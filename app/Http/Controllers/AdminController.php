@@ -251,6 +251,11 @@ class AdminController extends Controller
         }
         echo json_encode($chart_data);
     }
+    public function login_customer_gg(){
+        config(['services.google.redirect' => env('GOOGLE_CLIENT_URL')]);
+        return Socialite::driver('google')->redirect();
+
+    }
 
     
 }

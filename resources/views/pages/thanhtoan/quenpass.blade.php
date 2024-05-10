@@ -4,15 +4,16 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-12 col-sm-offset-1">
-                    @if (session()->has('messages'))
-                        <div class="alert alert-success ">
-                            {!! session()->get('messages') !!}
-                        </div>
-                    @elseif(session()->has('error'))
-                        <div class="alert alert-danger ">
-                            {!! session()->get('error') !!}
-                        </div>
-                    @endif
+                    @if (session()->has('message'))
+                    <div class="alert alert-success">
+                        {!! session()->get('message') !!}
+                    </div>
+                @elseif(session()->has('error'))
+                    <div class="alert alert-danger">
+                        {!! session()->get('error') !!}
+                    </div>
+                @endif
+                
                     <div class="login-form">
                         <h2>Nhập Email lấy Pass</h2>
                         <form action="{{ url('/recover-pass') }}" method="POST">

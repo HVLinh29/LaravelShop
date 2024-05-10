@@ -22,6 +22,8 @@ use App\OrderDetails;
 use App\CatePost;
 use App\Slider;
 use App\Coupon;
+use App\Customer;
+use Mail;
 
 class CheckoutController extends Controller
 {
@@ -251,14 +253,16 @@ class CheckoutController extends Controller
     public function confirm_order(Request $request)
     {
         $data = $request->all();
+        if($data['order_coupon']!= 'no'){
+            $coupon = Coupon::where('coupon_code', $data['order_coupon'])->first();
+            $coupon->coupon_used = $coupon->coupon_used.','.Session::get('customer_id');
+            $coupon->coupon_time = $coupon->coupon_time - 1;
+            $coupon_mail = $coupon->coupon_code;
+            $coupon->save();
 
-        $coupon = Coupon::where('coupon_code', $data['order_coupon'])->first();
-        $coupon->coupon_used = $coupon->coupon_used.','.Session::get('customer_id');
-        $coupon->coupon_time = $coupon->coupon_time - 1;
-
-
-        $coupon->save();
-
+        }else{
+            $coupon_mail ='Không có';
+        }
 
         $shipping = new Shipping();
         $shipping->shipping_name = $data['shipping_name'];
@@ -301,6 +305,49 @@ class CheckoutController extends Controller
                 $order_details->save();
             }
         }
+        $now = Carbon::now('Asia/Ho_Chi_Minh')->format('d-m-Y');
+        $title_mail = "Đơn hàng xác nhận ngày".''.$now;
+        $customer = Customer::find(Session::get('customer_id'));
+        $data['email'][] = $customer->customer_email;
+     
+        //lay gio hang
+        if(Session::get('cart')==true) {
+            foreach(Session::get('cart') as $key => $cart_mail) {
+                $cart_array[] = array(
+                    'product_name' => $cart_mail['product_name'],
+                    'product_price' => $cart_mail['product_price'],
+                    'product_qty' => $cart_mail['product_qty']
+                   
+                );
+            }
+        }
+        //lay phi van chuyen
+        if(Session::get('fee')==true) {
+            $fee =Session::get('fee');
+        }
+       
+        $shipping_array = array(
+            'fee'=>$fee,
+            'customer_name' => $customer->customer_name,
+           'shipping_name' => $data['shipping_name'],
+           'shipping_email' => $data['shipping_email'],
+           'shipping_phone' => $data['shipping_phone'],
+           'shipping_address' => $data['shipping_address'],
+           'shipping_notes' => $data['shipping_notes'],
+           'shipping_method' => $data['shipping_method'],
+           
+        );
+        //lay ma giam gia va ma code cua ma giam gia
+        $ordercode_mail = array(
+            'coupon_code' =>$coupon_mail,
+            'order_code' =>$checkout_code
+        );
+
+        Mail::send('pages.mail.mail_order', ['cart_array' => $cart_array,'shipping_array'=>$shipping_array,'code'=>$ordercode_mail], 
+        function ($message) use ($title_mail, $data) {
+            $message->to($data['email'])->subject($title_mail);
+            $message->from($data['email'], $title_mail);
+        });
         Session::forget('coupon');
         Session::forget('fee');
         Session::forget('cart');
