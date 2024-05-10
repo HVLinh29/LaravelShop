@@ -1,4 +1,7 @@
 @extends('layout')
+@section('sliderbar')
+@include('pages.include.sliderbar')
+@endsection
 @section('content')
     <div class="features_items">
         <h2 class="title text-center">{{$meta_title}}</h2>

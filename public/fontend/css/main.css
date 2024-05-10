@@ -1160,7 +1160,7 @@ h2.title {
   overflow: hidden;
   padding-bottom: 60px;
   padding-left: 60px;
-  padding-top: 60px;
+
   position: relative;
 }
 
@@ -2428,6 +2428,15 @@ h2.title {
 
 .contact-info .social-networks ul li a:hover{
   /* color: #FE980F; */
+}
+span.badges {
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 50%;
+  padding: 4px 8px;
+  font-size: 12px;
+
+  transform: translate(50%, -50%);
 }
 
 

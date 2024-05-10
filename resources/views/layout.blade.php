@@ -91,10 +91,13 @@
                                 <?php
 								}
 								?>
-                                {{-- <li><a href="{{ URL::to('show-cart') }}"><i class="fa fa-shopping-cart"></i> Gio
-                                        hang</a></li> --}}
-                                <li><a href="{{ URL::to('/gio-hang') }}"><i class="fa fa-shopping-cart"></i> Giỏ
-                                        hàng</a></li>
+                               
+                                <li><a href="{{ URL::to('/gio-hang') }}"><i class="fa fa-shopping-cart"></i> Giỏ hàng 
+                                   
+                                            <span class="show-cart"></span>
+                                    </a>
+                                </li>
+
                                 @php
                                         $customer_id = Session::get('customer_id');
                                         if($customer_id!=NULL){
@@ -105,10 +108,6 @@
                                 @php
                                         }
                                 @endphp
-
-
-
-
 
                                 <?php
 								$customer_id = Session::get('customer_id');
@@ -158,7 +157,11 @@
                                         @endforeach
                                     </ul>
                                 </li>
-                                <li><a href="{{ URL::to('/gio-hang') }}">Giỏ hàng</a></li>
+                                <li><a href="{{ URL::to('/gio-hang') }}">Giỏ hàng 
+                                    <span class="show-cart">
+                            </span></a>
+                                   
+                                </li>
                                 <li class="dropdown"><a href="#">Tin tức<i class="fa fa-angle-down"></i></a>
                                     <ul role="menu" class="sub-menu">
                                         @foreach ($category_post as $key => $danhmucbaiviet)
@@ -228,115 +231,19 @@
         </div><!--/header-bottom-->
     </header><!--/header-->
 
-    <section id="slider"><!--slider-->
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12">
-                    <div id="slider-carousel" class="carousel slide" data-ride="carousel" data-interval="3000">
-                        <ol class="carousel-indicators">
-                            <li data-target="#slider-carousel" data-slide-to="0" class="active"></li>
-                            <li data-target="#slider-carousel" data-slide-to="1"></li>
-                            <li data-target="#slider-carousel" data-slide-to="2"></li>
-                        </ol>
-
-                        <div class="carousel-inner">
-                            @php
-                                $i = 0;
-                            @endphp
-                            @foreach ($slider as $key => $slide)
-                                @php
-                                    $i++;
-                                @endphp
-                                <div class="item {{ $i == 1 ? 'active' : '' }}">
-
-                                    <div class="col-sm-12">
-                                        <img alt="{{ $slide->slider_desc }}"
-                                            src="{{ asset('public/uploads/slider/' . $slide->slider_image) }}"
-                                            height="450" width="100%" class="img img-reponsive">
-                                    </div>
-                                </div>
-                            @endforeach
-
-                        </div>
-
-
-                        <a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">
-                            <i class="fa fa-angle-left"></i>
-                        </a>
-                        <a href="#slider-carousel" class="right control-carousel hidden-xs" data-slide="next">
-                            <i class="fa fa-angle-right"></i>
-                        </a>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </section><!--/slider-->
+{{-- /slider --}}
+@yield('slider')
 
     <section>
         <div class="container">
             <div class="row">
-                <div class="col-sm-3">
-                    <div class="left-sidebar">
-                        <h2>DANH MỤC SẢN PHẨM</h2>
-                        <div class="panel-group category-products" id="accordian">
-                            @foreach ($category as $key => $cate)
-                                <div class="panel panel-default">
-                                    @if ($cate->category_parent == 0)
-                                        <div class="panel-heading">
-                                            <h4 class="panel-title">
-                                                <a data-toggle="collapse" data-parent="#accordian"
-                                                    href="#{{ $cate->category_id }}"><span
-                                                        class="badge pull-right"><i class="fa fa-plus"></i></span>
-                                                    {{ $cate->category_name }}</a>
-                                            </h4>
-                                        </div>
-                                        <div id="{{ $cate->category_id }}" class="panel-collapse collapse">
-                                            <div class="panel-body">
-                                                <ul>
-                                                    @foreach ($category as $key => $cate_sub)
-                                                        @if ($cate_sub->category_parent == $cate->category_id)
-                                                            <li><a
-                                                                    href="{{ URL::to('/danh-muc-san-pham/' . $cate_sub->category_slug) }}">
-                                                                    {{ $cate_sub->category_name }} </a></li>
-                                                        @endif
-                                                    @endforeach
+                
+                <div class="col-sm-12 padding-right">
 
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    @endif
-                                </div>
-                            @endforeach
+                    @yield('content_thu2')
 
-                        </div>
-
-                        <div class="brands_products">
-                            <h2>THƯƠNG HIỆU SẢN PHẨM</h2>
-                            @foreach ($brand as $key => $brand)
-                                <div class="brands-name">
-                                    <ul class="nav nav-pills nav-stacked">
-                                        <li><a href="{{ URL::to('/thuong-hieu-san-pham/' . $brand->brand_slug) }}">
-                                                <span class="pull-right"></span>{{ $brand->brand_name }}</a></li>
-
-                                    </ul>
-                                </div>
-                            @endforeach
-                        </div>
-                        <div class="brands_products">
-                            <h2>SẢN PHẨM YÊU THÍCH</h2>
-
-                            <div class="brands-name">
-                                <div id="row_wishlist" class="row">
-
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
                 </div>
-
+                @yield('sliderbar')
                 <div class="col-sm-9 padding-right">
 
                     @yield('content')
@@ -444,6 +351,17 @@
         nonce="HvSWG6qx"></script>
     <script type="text/javascript">
         $(document).ready(function() {
+            show_cart();
+            //dem so luong gio hang
+            function show_cart(){
+                $.ajax({
+                    url: '{{ url('/show-cart') }}',
+                    method: 'GET',
+                    success: function(data) {
+                        $('.show-cart').html(data);
+                    }
+                });
+            }
             $('.add-to-cart').click(function() {
 
                 var id = $(this).data('id_product');
@@ -486,6 +404,7 @@
                                 function() {
                                     window.location.href = "{{ url('/gio-hang') }}";
                                 });
+                                show_cart();
 
                         }
 

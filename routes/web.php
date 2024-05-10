@@ -95,6 +95,8 @@ Route::get('/gio-hang','CartController@gio_hang');
 Route::post('/update-cart','CartController@update_cart');
 Route::get('/del-product/{session_id}','CartController@delete_product');
 Route::get('/del-all-product','CartController@delete_all_product');
+Route::get('/show-cart','CartController@show_cart_qty');
+
 
 //Ma giam gia
 Route::post('/check-coupon','CartController@check_coupon');

@@ -1,66 +1,70 @@
 @extends('layout')
-@section('content')
+@section('slider')
+@include('pages.include.slider');
+@endsection
+@section('content_thu2')
+    <div class="features_items">
 
-<div class="features_items">
-   
-     <div class="fb-like" data-href="{{$url_canonical}}" data-width="" 
-     data-layout="" data-action="" data-size="" data-share="true"></div>
-    @foreach($category_name as $key =>$name)
-   
-    <h2 class="title text-center">Danh mục: {{$name->category_name}}</h2>
-    @endforeach
+        <div class="fb-like" data-href="{{ $url_canonical }}" data-width="" data-layout="" data-action="" data-size=""
+            data-share="true"></div>
+        @foreach ($category_name as $key => $name)
+            <h2 class="title text-center">Danh mục: {{ $name->category_name }}</h2>
+        @endforeach
 
-    <div class="row">
-        <div class="col-md-4">
-            <label for="amount">Sắp xếp theo</label>    
-            <form>
-                @csrf
-                <select name="sort" id="sort" class="form-control">
-                    <option value="{{Request::url()}}?sort_by=none">Lọc</option>
-                    <option value="{{Request::url()}}?sort_by=tang_dan">Gía tăng dần</option>
-                    <option value="{{Request::url()}}?sort_by=giam_dan">Gía giảm dần</option>
-                    <option value="{{Request::url()}}?sort_by=kytu_az">A đến Z</option>
-                    <option value="{{Request::url()}}?sort_by=kytu_za">Z đến A</option>
-                </select>
-            </form>
-        </div>
-        <div class="col-md-4">
-            <label for="amount">Lọc giá theo</label>    
-            <form>
-                <div id="slider-range"></div>
-                <input type="text" id="amount" readonly="" style="border:0; color:#f6931f; font-weight:bold;">
-                <input type="hidden" name="start_price" id="start_price" >
-                <input type="hidden" name="end_price" id="end_price" >
-
-                <input type="submit" name="filter_price" value="Lọc giá" class="btn btn-sm btn-primary">
-            </form> 
-        </div>
-    </div>
-
-
-    @foreach($category_by_id as $key =>$product)
-    <a href="{{URL::to('chi-tiet-san-pham/'.$product->product_slug)}}">
-    <div class="col-sm-4">
-        <div class="product-image-wrapper">
-            <div class="single-products">
-                    <div class="productinfo text-center">
-                        <img src="{{URL::to('public/uploads/product/'.$product->product_image)}}" alt="" />
-                        <p style="margin: 20px">{{$product->product_name}}</p>
-                        <h2>{{number_format($product->product_price,0,',','.')}}đ</h2>
-                        
-                        <input type="button" value="Xem sản phẩm" class="btn btn-danger btn-sm add-to-cart" data-id_product="{{$product->product_id}}" name="add-to-cart">
-                    </div>
+        <div class="row">
+            <div class="col-md-4">
+                <label for="amount">Sắp xếp theo</label>
+                <form>
+                    @csrf
+                    <select name="sort" id="sort" class="form-control">
+                        <option value="{{ Request::url() }}?sort_by=none">Lọc</option>
+                        <option value="{{ Request::url() }}?sort_by=tang_dan">Gía tăng dần</option>
+                        <option value="{{ Request::url() }}?sort_by=giam_dan">Gía giảm dần</option>
+                        <option value="{{ Request::url() }}?sort_by=kytu_az">A đến Z</option>
+                        <option value="{{ Request::url() }}?sort_by=kytu_za">Z đến A</option>
+                    </select>
+                </form>
             </div>
-           
-        </div>
-    </div>
-    </a>
-    @endforeach
-   
-    
-</div>
+            <div class="col-md-4">
+                <label for="amount">Lọc giá theo</label>
+                <form>
+                    <div id="slider-range"></div>
+                    <input type="text" id="amount" readonly="" style="border:0; color:#f6931f; font-weight:bold;">
+                    <input type="hidden" name="start_price" id="start_price">
+                    <input type="hidden" name="end_price" id="end_price">
 
-<div class="fb-comments" data-href="http://vulinh.com/laravel_shopTMDT/danh-muc-san-pham/4" data-width="" data-numposts="20"></div>
+                    <input type="submit" name="filter_price" value="Lọc giá" class="btn btn-sm btn-primary">
+                </form>
+            </div>
+        </div>
+
+
+        @foreach ($category_by_id as $key => $product)
+            <a href="{{ URL::to('chi-tiet-san-pham/' . $product->product_slug) }}">
+                <div class="col-md-3">
+                    <div class="product-image-wrapper">
+                        <div class="single-products">
+                            <div class="productinfo text-center">
+                                <img src="{{ URL::to('public/uploads/product/' . $product->product_image) }}"
+                                    alt="" />
+                                <p style="margin: 20px">{{ $product->product_name }}</p>
+                                <h2>{{ number_format($product->product_price, 0, ',', '.') }}đ</h2>
+
+                                <input type="button" value="Xem sản phẩm" class="btn btn-danger btn-sm add-to-cart"
+                                    data-id_product="{{ $product->product_id }}" name="add-to-cart">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </a>
+        @endforeach
+
+
+    </div>
+
+    <div class="fb-comments" data-href="http://vulinh.com/laravel_shopTMDT/danh-muc-san-pham/4" data-width=""
+        data-numposts="20"></div>
 @endsection
 
 <style>
@@ -68,7 +72,7 @@
         margin-bottom: 20px;
         border-radius: 10px;
         /* Bo tròn góc */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);   
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         /* Đổ bóng */
         transition: transform 0.3s ease;
         /* Thêm hiệu ứng chuyển đổi */
@@ -160,14 +164,26 @@
         border: none;
         /* Loại bỏ viền */
         padding: 5px 10px;
-       
+
     }
 
     .add-to-cart:hover {
         background-color: darkred;
         /* Đổi màu nền khi di chuột qua */
     }
+
     input.btn.btn-danger.btn-sm.add-to-cart {
-    margin-bottom: 10px;
-}
+        margin-bottom: 10px;
+    }
+    /* Định dạng sản phẩm */
+    .col-md-3 {
+        width: 25%;
+        /* Sử dụng 25% chiều rộng của container cha */
+        float: left;
+        /* Float để các cột nằm cạnh nhau */
+        box-sizing: border-box;
+        /* Không tính padding và border vào kích thước của cột */
+        padding: 0 15px;
+        /* Khoảng cách giữa các cột */
+    }
 </style>

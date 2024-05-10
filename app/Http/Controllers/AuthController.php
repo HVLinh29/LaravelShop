@@ -20,7 +20,7 @@ class AuthController extends Controller
         $admin->admin_email = $data['admin_email'];
         $admin->admin_password = md5($data['admin_password']);
         $admin->save();
-        return redirect('/register-auth')->with('message','Đăng ký thành công');
+        return redirect('/admin')->with('message','Đăng ký thành công');
 
     }
     public function validation($request)

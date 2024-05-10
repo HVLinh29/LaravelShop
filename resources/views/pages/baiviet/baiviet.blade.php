@@ -1,4 +1,5 @@
 @extends('layout')
+
 @section('content')
 <style type="text/css">
     .baiviet ul li{

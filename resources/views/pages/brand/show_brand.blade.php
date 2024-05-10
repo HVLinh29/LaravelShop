@@ -1,39 +1,42 @@
 @extends('layout')
-@section('content')
+@section('slider')
+@include('pages.include.slider');
+@endsection
+@section('content_thu2')
     <div class="features_items">
         @foreach ($brand_name as $key => $name)
             <h2 class="title text-center">Thương hiệu: {{ $name->brand_name }}</h2>
-            @foreach ($brand_by_id as $key => $product)
-                <a href="{{ URL::to('chi-tiet-san-pham/' . $product->product_slug) }}">
-                    <div class="col-sm-4">
-                        <div class="product-image-wrapper">
-                            <div class="single-products">
-                                <div class="productinfo text-center">
-                                    <img src="{{ URL::to('public/uploads/product/' . $product->product_image) }}"
-                                        alt="" />
-                                    <p style="margin-top: 20px">{{ $product->product_name }}</p>
-                                    <h2>{{ number_format($product->product_price, 0, ',', '.') }}đ</h2>
-
-                                    <input type="button" value="Xem sản phẩm" class="btn btn-danger btn-sm add-to-cart"
-                                        data-id_product="{{ $product->product_id }}" name="add-to-cart">
+            <div class="row">
+                @foreach ($brand_by_id as $key => $product)
+                    <div class="col-md-3">
+                        <a href="{{ URL::to('chi-tiet-san-pham/' . $product->product_slug) }}">
+                            <div class="product-image-wrapper">
+                                <div class="single-products">
+                                    <div class="productinfo text-center">
+                                        <img src="{{ URL::to('public/uploads/product/' . $product->product_image) }}"
+                                            alt="" />
+                                        <p style="margin-top: 20px">{{ $product->product_name }}</p>
+                                        <h2>{{ number_format($product->product_price, 0, ',', '.') }}đ</h2>
+                                        <input type="button" value="Xem sản phẩm" class="btn btn-danger btn-sm add-to-cart"
+                                            data-id_product="{{ $product->product_id }}" name="add-to-cart">
+                                    </div>
                                 </div>
-
                             </div>
-
-                        </div>
+                        </a>
                     </div>
-                </a>
-            @endforeach
+                @endforeach
+            </div>
         @endforeach
     </div>
-    <div class="fb-comments" data-href="http://vulinh.com/laravel_shopTMDT/danh-muc-san-pham/4" data-width="" data-numposts="20"></div>
+    <div class="fb-comments" data-href="http://vulinh.com/laravel_shopTMDT/danh-muc-san-pham/4" data-width=""
+        data-numposts="20"></div>
 @endsection
 <style>
     .product-image-wrapper {
         margin-bottom: 20px;
         border-radius: 10px;
         /* Bo tròn góc */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);   
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         /* Đổ bóng */
         transition: transform 0.3s ease;
         /* Thêm hiệu ứng chuyển đổi */
@@ -125,14 +128,27 @@
         border: none;
         /* Loại bỏ viền */
         padding: 5px 10px;
-       
+
     }
 
     .add-to-cart:hover {
         background-color: darkred;
         /* Đổi màu nền khi di chuột qua */
     }
+
     input.btn.btn-danger.btn-sm.add-to-cart {
-    margin-bottom: 10px;
-}
+        margin-bottom: 10px;
+    }
+
+    /* Định dạng sản phẩm */
+    .col-md-3 {
+        width: 25%;
+        /* Sử dụng 25% chiều rộng của container cha */
+        float: left;
+        /* Float để các cột nằm cạnh nhau */
+        box-sizing: border-box;
+        /* Không tính padding và border vào kích thước của cột */
+        padding: 0 15px;
+        /* Khoảng cách giữa các cột */
+    }
 </style>

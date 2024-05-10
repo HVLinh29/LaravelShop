@@ -19,16 +19,25 @@ use App\Slider;
 
 class CartController extends Controller
 {
+
+    public function show_cart_qty()
+    {
+
+        $cart = count(Session::get('cart'));
+        $output ='';
+        $output.=' <span class="badges">'.$cart.'</span>';
+        echo $output;
+    }
     public function check_coupon(Request $request)
     {
         $today = Carbon::now('Asia/Ho_Chi_Minh')->format('d/m/Y');
         $data = $request->all();
         if (Session::get('customer_id')) {
             $coupon = Coupon::where('coupon_code', $data['coupon'])->where('coupon_status', 1)->where('coupon_date_end', '>=', $today)
-            ->where('coupon_used','LIKE','%'.Session::get('customer_id').'%')->first();
-            if($coupon){
+                ->where('coupon_used', 'LIKE', '%' . Session::get('customer_id') . '%')->first();
+            if ($coupon) {
                 return redirect()->back()->with('error', 'Mã giảm giá đã sử dung, quý khách vui lòng nhập mã khác');
-            }else{
+            } else {
                 $coupon_login = Coupon::where('coupon_code', $data['coupon'])->where('coupon_status', 1)->where('coupon_date_end', '>=', $today)->first();
                 if ($coupon_login) {
                     $count_coupon = $coupon_login->count();
@@ -59,8 +68,7 @@ class CartController extends Controller
                     return redirect()->back()->with('error', 'Mã giảm giá không tồn tại, hoặc đã hết hạn');
                 }
             }
-
-        } 
+        }
         //day la su  dung cho viec chua dang nhap
         else {
             $coupon = Coupon::where('coupon_code', $data['coupon'])->where('coupon_status', 1)->where('coupon_date_end', '>=', $today)->first();
