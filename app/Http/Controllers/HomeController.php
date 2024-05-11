@@ -7,75 +7,203 @@ use Illuminate\Support\Facades\DB;
 use Symfony\Component\Console\Helper\Table;
 use Session;
 use Illuminate\Support\Facades\Redirect;
+
 session_start();
+
 use App\Slider;
 use App\CatePost;
 use App\Product;
 
 class HomeController extends Controller
 {
-
- 
     public function index(Request $request)
     {
         //post
-        $category_post = CatePost::orderBy('cate_post_id','DESC')->get();
+        $category_post = CatePost::orderBy('cate_post_id', 'DESC')->get();
 
         //slider
-        $slider = Slider::orderBy('slider_id','desc')->where('slider_status','1')->take(3)->get();
-       
+        $slider = Slider::orderBy('slider_id', 'desc')->where('slider_status', '1')->take(3)->get();
+
         //seo 
-        $meta_desc = "Chuyen ban dong ho";
-        $meta_keywords = "Dong ho dep lam, phu kien nua";
-        $meta_title = " ABCD";
+        $meta_desc = "LINHWATCH";
+        $meta_keywords = "LINHWATCH";
+        $meta_title = " LINHWATCH";
         $url_canonical = $request->url();
 
-        $cate_product = DB::table('tbl_category_product')->where('category_status','0')->orderby('category_id','desc')->get();
-        $brand_product = DB::table('tbl_brand')->where('brand_status','0')->orderby('brand_id','desc')->get();
+        $cate_product = DB::table('tbl_category_product')->where('category_status', '0')->orderby('category_id', 'desc')->get();
+        $brand_product = DB::table('tbl_brand')->where('brand_status', '0')->orderby('brand_id', 'desc')->get();
 
-        $all_product = DB::table('tbl_product')->where('product_status','0')->orderby('product_id','desc')->limit(9)->get();
+        $all_product = DB::table('tbl_product')->where('product_status', '0')->orderby('product_id', 'desc')->limit(9)->get();
 
-        return view('pages.home')->with('category',$cate_product)->with('brand',$brand_product)->with('all_product',$all_product)
-        ->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)
-        ->with('url_canonical',$url_canonical)->with('slider',$slider)->with('category_post',$category_post);
-        // return view('pages.home')->with(compact('cate_product','brand_product','all_product'));
+        return view('pages.home')->with('category', $cate_product)->with('brand', $brand_product)->with('all_product', $all_product)
+            ->with('meta_desc', $meta_desc)->with('meta_keywords', $meta_keywords)->with('meta_title', $meta_title)
+            ->with('url_canonical', $url_canonical)->with('slider', $slider)->with('category_post', $category_post);
     }
-    public function search(Request $request){
+    public function search(Request $request)
+    {
 
-        $category_post = CatePost::orderBy('cate_post_id','DESC')->get();
-        $slider = Slider::orderBy('slider_id','DESC')->where('slider_status','1')->take(4)->get();
+        $category_post = CatePost::orderBy('cate_post_id', 'DESC')->get();
+        $slider = Slider::orderBy('slider_id', 'DESC')->where('slider_status', '1')->take(4)->get();
         //seo 
-        $meta_desc = "Tim kiem san pham";
-        $meta_keywords = "Tim kiem san pham";
-        $meta_title = " Tim kiem san pham";
+        $meta_desc = "Tìm kiếm sản phẩm";
+        $meta_keywords = "Tìm kiếm sản phẩm";
+        $meta_title = "Tìm kiếm sản phẩm";
         $url_canonical = $request->url();
 
         $keywords = $request->keywords_submit;
-        $cate_product = DB::table('tbl_category_product')->where('category_status','0')->orderby('category_id','desc')->get();
-        $brand_product = DB::table('tbl_brand')->where('brand_status','0')->orderby('brand_id','desc')->get();
+        $cate_product = DB::table('tbl_category_product')->where('category_status', '0')->orderby('category_id', 'desc')->get();
+        $brand_product = DB::table('tbl_brand')->where('brand_status', '0')->orderby('brand_id', 'desc')->get();
 
-        $search_product = DB::table('tbl_product')->where('product_name','like','%'.$keywords.'%')->get();
+        $search_product = DB::table('tbl_product')->where('product_name', 'like', '%' . $keywords . '%')->get();
 
-        return view('pages.sanpham.search')->with('category',$cate_product)->with('brand',$brand_product)
-        ->with('search_product',$search_product)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)
-        ->with('url_canonical',$url_canonical)->with('category_post',$category_post)->with('slider',$slider);
-
-
+        return view('pages.sanpham.search')->with('category', $cate_product)->with('brand', $brand_product)
+            ->with('search_product', $search_product)->with('meta_desc', $meta_desc)->with('meta_keywords', $meta_keywords)->with('meta_title', $meta_title)
+            ->with('url_canonical', $url_canonical)->with('category_post', $category_post)->with('slider', $slider);
     }
-   
-    public function autocomplete_ajax(Request $request){
+    public function autocomplete_ajax(Request $request)
+    {
         $data = $request->all();
 
-        if($data['query']){
-            $product = Product::where('product_status','0')->where('product_name','LIKE','%'.$data['query'].'%')->get();
+        if ($data['query']) {
+            $product = Product::where('product_status', '0')->where('product_name', 'LIKE', '%' . $data['query'] . '%')->get();
             $output = '<ul class="dropdown-menu" style="display:block; position:relative">';
-            foreach($product as $key => $val){
-                $output.='<li><a href="#">'.$val->product_name.'</a></li>';
+            foreach ($product as $key => $val) {
+                $output .= '<li><a href="#">' . $val->product_name . '</a></li>';
             }
-            $output.='</ul>';
+            $output .= '</ul>';
             echo $output;
         }
     }
-    
+    public function load_more(Request $request)
 
+    {
+        $data = $request->all();
+        // $all_product = Product::where('product_status', '0')->orderby(DB::raw('RAND()'))->take(6)->get();
+        if ($data['id'] > 0) {
+            $all_product = Product::where('product_status', '0')->where('product_id', '<', $data['id'])->orderby('product_id', 'DESC')->take(3)->get();
+        } else {
+            $all_product = Product::where('product_status', '0')->orderby('product_id', 'DESC')->take(9)->get();
+        }
+
+        $output = '';
+        if (!$all_product->isEmpty()) {
+            foreach ($all_product as $key => $pro) {
+                $last_id = $pro->product_id;
+                $output .= ' <div class="col-sm-4">
+                <div class="product-image-wrapper">
+                    <div class="single-products">
+                        <div class="productinfo text-center">
+                           
+                                <input type="hidden" value="' . $pro->product_id . '"
+                                    class="cart_product_id_' . $pro->product_id . '">
+    
+                                <input type="hidden" id="wishlist_productname' . $pro->product_id . '"
+                                    value="' . $pro->product_name . '"
+                                    class="cart_product_name_' . $pro->product_id . '">
+    
+                                <input type="hidden" value="' . $pro->product_quantity . '"
+                                    class="cart_product_quantity_' . $pro->product_id . '">
+    
+                                <input type="hidden" value="' . $pro->product_image . '"
+                                    class="cart_product_image_' . $pro->product_id . '">
+    
+                                <input type="hidden" id="wishlist_productprice' . $pro->product_id . '"
+                                    value="' . number_format($pro->product_price, 0, ',', '.') . 'VND">
+    
+                                   
+    
+                                    <input type="hidden" value="' . $pro->product_price . '"
+                                    class="cart_product_price_' . $pro->product_id . '">
+    
+                                <input type="hidden" value="1"
+                                    class="cart_product_qty_' . $pro->product_id . '">
+    
+                                <a id="wishlist_producturl' . $pro->product_id . '"
+                                    href="' . url('chi-tiet-san-pham/' . $pro->product_slug) . '">
+    
+                                    <img id="wishlist_productimage' . $pro->product_id . '"
+                                        src="' . url('public/uploads/product/' . $pro->product_image) . '" 
+                                        alt="' . $pro->product_name . '" />
+    
+                                    <p style="margin-top: 30px">' . $pro->product_name . '</p>
+                                    <h2 style="color: red">' . number_format($pro->product_price, 0, ',', '.') . 'VNDđ
+                                    </h2>
+    
+    
+                                </a>
+                                
+                                <style>
+                                .load-more-btn {
+                                    transition: all 0.3s ease;
+                                }
+                                
+                                .load-more-btn:hover {
+                                    background-color: #28a745; /* Change background color on hover */
+                                    color: #fff; /* Change text color on hover */
+                                    transform: scale(1.05); /* Scale button slightly on hover */
+                                }
+                                
+                                .load-more-btn:disabled {
+                                    opacity: 0.7; /* Reduce opacity for disabled button */
+                                    cursor: not-allowed; /* Change cursor for disabled button */
+                                }
+                                .btn-danger {
+                                   
+                                    font-size: 19px;
+                                }
+                                  
+                                </style>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <button type="button" class="btn btn-a btn-danger"
+                                            id="' . $pro->product_id . '" onclick="Addtocart(this.id);">
+                                            <i class="fas fa-shopping-cart"></i>
+                                        </button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="button" data-toggle="modal" onclick="Xemnhanh(this.id);" data-target="#xemnhanh"
+                                            class="btn btn-success" id="' . $pro->product_id . '" name="add-to-cart" value="Xem nhanh">
+                                    </div>
+                                </div>
+                          
+                        </div>
+                    </div>
+                    </br>
+                    <div class="choose">
+                        <ul class="nav nav-pills nav-justified">
+                            <li>
+                                <i class="fa fa-heart"></i>
+                                <button class="button_wishlist" id="' . $pro->product_id . '"
+                                    onclick="add_wishlist(this.id);">
+                                    <span>Yêu thích</span>
+                                </button>
+                            </li>
+                            <li><a href="#"><i class="fa fa-plus-square"></i>So sanh</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>';
+            }
+            $output .= '
+            <div class="text-center mt-4">
+                <button type="button" name="load_more_button" class="btn btn-success btn-lg load-more-btn"
+                    id="load_more_button" data-id="' . $last_id . '">
+                    Xem thêm <i class="fas fa-arrow-down"></i>
+                </button>
+            </div>';
+        } else {
+            $output .= '
+            <div class="text-center mt-4">
+                <button type="button" name="load_more_button" class="btn btn-danger btn-lg" disabled>
+                    Đang cập nhật
+                </button>
+            </div>';
+        }
+        
+
+
+        echo $output;
+    }
+    
 }
+

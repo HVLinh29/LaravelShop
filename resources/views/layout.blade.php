@@ -21,9 +21,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.3/themes/base/jquery-ui.min.css">
 
-
-
-
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
 
@@ -349,6 +346,96 @@
     <div id="fb-root"></div>
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v19.0"
         nonce="HvSWG6qx"></script>
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+                load_more(); // Gọi hàm khi tài liệu được tải
+            });
+        
+            function load_more(id ='') {
+                $.ajax({
+                    url: '{{ url('/load-more') }}',
+                    method: 'POST',
+                    headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+                },
+                data:{id:id},
+                    success: function(data) {
+                        $('#load_more_button').remove();
+                        $('#all_product').append(data);
+                        
+                    }
+                });
+            }
+            $(document).on('click', '#load_more_button',function(){
+                var id = $(this).data('id');
+                load_more(id);
+            });
+        </script>
+    <script type="text/javascript">
+       show_cart();
+            //dem so luong gio hang
+            function show_cart(){
+                $.ajax({
+                    url: '{{ url('/show-cart') }}',
+                    method: 'GET',
+                    success: function(data) {
+                        $('.show-cart').html(data);
+                    }
+                });
+            }
+    function Addtocart($product_id){
+        var id = $product_id;
+                // alert(id);
+                var cart_product_id = $('.cart_product_id_' + id).val();
+                var cart_product_name = $('.cart_product_name_' + id).val();
+                var cart_product_image = $('.cart_product_image_' + id).val();
+                var cart_product_quantity = $('.cart_product_quantity_' + id).val();
+                var cart_product_price = $('.cart_product_price_' + id).val();
+                var cart_product_qty = $('.cart_product_qty_' + id).val();
+
+                var _token = $('input[name="_token"]').val();
+                if (parseInt(cart_product_qty) > parseInt(cart_product_quantity)) {
+                    alert('Làm ơn đặt nhỏ hơn ' + cart_product_quantity);
+                } else {
+
+                    $.ajax({
+                        url: '{{ url('/add-cart-ajax') }}',
+                        method: 'POST',
+                        data: {
+                            cart_product_id: cart_product_id,
+                            cart_product_name: cart_product_name,
+                            cart_product_image: cart_product_image,
+                            cart_product_price: cart_product_price,
+                            cart_product_qty: cart_product_qty,
+                            _token: _token,
+                            cart_product_quantity: cart_product_quantity
+                        },
+                        success: function() {
+
+                            swal({
+                                    title: "Đã thêm sản phẩm vào giỏ hàng",
+                                    text: "Bạn có thể mua hàng tiếp hoặc tới giỏ hàng để tiến hành thanh toán",
+                                    showCancelButton: true,
+                                    cancelButtonText: "Xem tiếp",
+                                    confirmButtonClass: "btn-success",
+                                    confirmButtonText: "Đi đến giỏ hàng",
+                                    closeOnConfirm: false
+                                },
+                                function() {
+                                    window.location.href = "{{ url('/gio-hang') }}";
+                                });
+                                show_cart();
+
+                        }
+
+                    });
+                }
+    }
+      </script>
+
+
     <script type="text/javascript">
         $(document).ready(function() {
             show_cart();
@@ -656,6 +743,34 @@
             $('#search_ajax').fadeOut();
         })
     </script>
+     <script type="text/javascript">
+     function Xemnhanh(id){
+        var product_id = id;
+            var _token = $('input[name="_token"]').val();
+            $.ajax({
+                url: '{{ url('/quickview') }}',
+                method: "POST",
+                dataType: "JSON",
+                data: {
+                    product_id: product_id,
+                    _token: _token
+                },
+                success: function(data) {
+                    $('#product_quickview_title').html(data.product_name);
+                    $('#product_quickview_price').html(data.product_price);
+                    $('#product_quickview_image').html(data.product_image);
+                    $('#product_quickview_id').html(data.product_id);
+                    $('#product_quickview_gallery').html(data.product_gallery);
+                    $('#product_quickview_desc').html(data.product_desc);
+                    $('#product_quickview_content').html(data.product_content);
+                    $('#product_quickview_value').html(data.product_quickview_value);
+                    $('#product_quickview_button').html(data.product_button);
+
+
+                }
+            });
+     }
+     </script>
     <script type="text/javascript">
         $('.xemnhanh').click(function() {
             var product_id = $(this).data('id_product');
@@ -715,11 +830,11 @@
                     },
                     beforeSend: function() {
                         $("#beforesend_quickview").html(
-                            "<p class='text text-primary'>Dang them san pham vao gio hang</p>");
+                            "<p class='text text-primary'>Đang thêm sản phẩm vào giỏ hàng</p>");
                     },
                     success: function() {
                         $("#beforesend_quickview").html(
-                            "<p class='text text-success'>Da them san pham vao gio hang</p>");
+                            "<p class='text text-success'>Đã thêm sản phẩm vào giỏ hàng</p>");
                     }
 
                 });

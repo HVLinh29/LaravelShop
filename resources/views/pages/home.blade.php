@@ -11,10 +11,12 @@
 @section('content')
     <div class="features_items">
         <h2 class="title text-center">SẢN PHẨM MỚI NHẤT</h2>
-        <div class="row"> <!-- Thêm lớp row ở đây -->
+        <div class="row"> 
+            <div id="all_product"></div>
+
             @foreach ($all_product as $key => $product)
                 <div class="col-sm-4">
-                    <div class="product-image-wrapper">
+                    {{-- <div class="product-image-wrapper">
                         <div class="single-products">
                             <div class="productinfo text-center">
                                 <form>
@@ -42,26 +44,8 @@
                                         <p style="margin-top: 30px">{{ $product->product_name }}</p>
                                         <h2 style="color: red">{{ number_format($product->product_price, 0, ',', '.') }}đ
                                         </h2>
-
-
                                     </a>
-                                    {{-- <style>
-                                        .xemnhanh{
-                                            background: #f5f5ED;
-                                            border: 0 none;
-                                            border-radius: 0;
-                                            color: #696763;
-                                            font-family: 'ROBOTO',sans-serif;
-                                            font-size: 15px;
-                                            margin-bottom: 25px;
-                                        }
-                                    </style>
-                                    <input type="button" class="btn btn-default add-to-cart"
-                                        data-id_product="{{ $product->product_id }}" name="add-to-cart"
-                                        value="Them gio hang">
-                                    <input type="button" data-toggle="modal" data-target="#xemnhanh"
-                                        class="btn btn-default xemnhanh" data-id_product="{{ $product->product_id }}"
-                                        name="add-to-cart" value="Xem nhanh"> --}}
+                                    
                                     <style>
                                         .add-to-cart {
                                             border-radius: 50%;
@@ -81,9 +65,7 @@
                                     </style>
                                     <div class="row">
                                         <div class="col-md-6">
-                                            {{-- <input type="button" class="btn btn-default add-to-cart"
-                                                data-id_product="{{ $product->product_id }}" name="add-to-cart"
-                                                value="Them gio hang"> --}}
+                                           
                                             <button type="button" class="btn btn-default add-to-cart"
                                                 data-id_product="{{ $product->product_id }}" name="add-to-cart">
                                                 <i class="fas fa-shopping-cart"></i>
@@ -114,7 +96,7 @@
                                 <li><a href="#"><i class="fa fa-plus-square"></i>So sanh</a></li>
                             </ul>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
             @endforeach
         </div>
@@ -188,8 +170,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Dong</button>
-                        <button type="button" class="btn btn-primary redirect-cart">Toi gio hang</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                        <button type="button" class="btn btn-success redirect-cart">Xem giỏ hàng</button>
                     </div>
                 </div>
             </div>

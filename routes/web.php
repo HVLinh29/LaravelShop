@@ -2,6 +2,7 @@
 use Illuminate\Support\Facades\Route;
 //Fontend
 Route::get('/','HomeController@index' );
+Route::post('/load-more','HomeController@load_more' );
 Route::get('/trang-chu','HomeController@index');
 Route::post('/tim-kiem','HomeController@search');
 Route::post('/autocomplete-ajax','HomeController@autocomplete_ajax');
