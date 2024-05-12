@@ -351,6 +351,8 @@ class CheckoutController extends Controller
         Session::forget('coupon');
         Session::forget('fee');
         Session::forget('cart');
+        Session::forget('success_paypal');
+        Session::forget('total_paypal');
     }
     public function vnpay_payment(Request $request)
     {

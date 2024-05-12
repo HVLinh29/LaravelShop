@@ -29,6 +29,8 @@
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/ico/apple-touch-icon-114-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57-precomposed.png">
+
+
 </head>
 
 <body>
@@ -342,11 +344,51 @@
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <script src=" https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.3/jquery-ui.min.js" async defer></script>
 
-
+    
     <div id="fb-root"></div>
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v19.0"
-        nonce="HvSWG6qx"></script>
-
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v19.0" nonce="HvSWG6qx"></script>
+    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+    {{-- <script>
+        var usd = document.getElementById("vnd_to_usd").value;
+        paypal.Button.render({
+          // Configure environment
+          env: 'sandbox',
+          client: {
+            sandbox: 'AYOFOKQNJlDCipof_AG5LW--DzMGDstaU4FfIfUFBEE_g_nTnVSWJ0cZUsiG5MBJ5upZVdr0bayCSxfw',
+            production: 'demo_production_client_id'
+          },
+          // Customize button (optional)
+          locale: 'en_US',
+          style: {
+            size: 'small',
+            color: 'gold',
+            shape: 'pill',
+          },
+      
+          // Enable Pay Now checkout flow (optional)
+          commit: true,
+      
+          // Set up a payment
+          payment: function(data, actions) {
+            return actions.payment.create({
+              transactions: [{
+                amount: {
+                  total: `${usd}`,
+                  currency: 'USD'
+                }
+              }]
+            });
+          },
+          // Execute the payment
+          onAuthorize: function(data, actions) {
+            return actions.payment.execute().then(function() {
+              // Show a confirmation message to the buyer
+              window.alert('Cảm ơn bạn đã mua hàng của chúng tôi');
+            });
+          }
+        }, '#paypal-button');
+      
+      </script> --}}
         <script type="text/javascript">
             $(document).ready(function() {
                 load_more(); // Gọi hàm khi tài liệu được tải

@@ -16,6 +16,14 @@
 				<div class="row">
 					
 					<div class="col-sm-12 clearfix">
+						@if(\Session::has('error'))
+							<div class="alert alert-danger">{{ \Session::get('error') }}</div>
+							{{ \Session::forget('error') }}
+						@endif
+						@if(\Session::has('success'))
+							<div class="alert alert-success">{{ \Session::get('success') }}</div>
+							{{ \Session::forget('success') }}
+						@endif
 						<div class="form-container">
 							<p style="color: red">Điền thông tin gửi hàng</p>
 							<div class="form-one">
@@ -44,10 +52,17 @@
 									<div class="">
 										<div class="form-group">
 											<label for="exampleInputPassword1">Chọn hình thức thanh toán</label>
+											@if(!Session::get('success_paypal')==true)
 											<select name="payment_select" class="form-control input-sm m-bot15 payment_select">
-												<option value="1">Qua chuyển khoản</option>
-												<option value="0">Tiền mặt</option>   
+												<option value="0">Qua chuyển khoản</option>
+												<option value="1">Tiền mặt</option>   
 											</select>
+											@else
+											<select name="payment_select" class="form-control input-sm m-bot15 payment_select">
+												<option value="2">Đã thanh toán bằng PayPal</option>
+												
+											</select>
+											@endif
 										</div>
 									</div>
 									
@@ -137,7 +152,11 @@
 											<div class="cart_quantity_button">
 											
 											
-												<input class="cart_quantity" type="number" min="1" name="cart_qty[{{$cart['session_id']}}]" value="{{$cart['product_qty']}}"  >
+												<input class="cart_quantity" type="number" 
+												@if(Session::get('success_paypal')==true)
+												readonly
+												@endif
+												min="1" name="cart_qty[{{$cart['session_id']}}]" value="{{$cart['product_qty']}}"  >
 											
 												
 											</div>
@@ -149,20 +168,24 @@
 											</p>
 										</td>
 										<td class="cart_delete">
+											@if(!Session::get('success_paypal')==true)
 											<a class="cart_quantity_delete" href="{{url('/del-product/'.$cart['session_id'])}}"><i class="fa fa-times"></i></a>
+											@endif
 										</td>
 									</tr>
 									
 									@endforeach
 									<tr>
+										@if(!Session::get('success_paypal')==true)
 										<td><input type="submit" value="Cập nhật giỏ hàng" name="update_qty" class="check_out btn btn-success btn-sm"></td>
 										<td><a class="btn btn-danger check_out" href="{{url('/del-all-product')}}">Xóa tất cả</a></td>
+										<td><a class="btn btn-success m-3 check_out" href="{{ route('processTransaction') }}">Thanh toán PayPal</a></td>
 										<td>
 											@if(Session::get('coupon'))
 											<a class="btn btn-success check_out" href="{{url('/unset-coupon')}}">Xóa mã khuyến mãi</a>
 											@endif
 										</td>
-
+										@endif
 										
 										<td colspan="2">
 										<li>Tổng tiền :<span>{{number_format($total,0,',','.')}}đ</span></li>
@@ -227,7 +250,19 @@
 											}
 
 										@endphp
+										
 										</li>
+										<div class="col-md-12">
+											@php
+
+												$vnd_to_usd = $total_after/25451;
+												$total_paypal = round($vnd_to_usd,2);
+												\Session::put('total_paypal',$total_paypal);
+											@endphp
+											
+											
+										</div>
+										
 										
 									</td>
 									
@@ -248,14 +283,16 @@
 
 							</form>
 								@if(Session::get('cart'))
+								@if(!Session::get('success_paypal')==true)
 								<tr><td>
-
+									
 										<form method="POST" action="{{url('/check-coupon')}}">
 											@csrf
 												<input type="text" class="form-control" name="coupon" placeholder="Nhập mã giảm giá"><br>
 				                          		<input type="submit" class="btn btn-success check_coupon" name="check_coupon" value="Tính mã giảm giá">
 				                          	
 			                          		</form>
+											
 			                          	</td>
 										  <td>
 											<form action="{{url('/vnpay-payment')}}" method="POST">
@@ -270,6 +307,7 @@
 											</form> --}}
 										</td>
 								</tr>
+								@endif
 								@endif
 
 							</table>

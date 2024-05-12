@@ -74,10 +74,13 @@
             <li>
                 <strong>Phương thức giao hàng:</strong>
                 @if ($shipping_array['shipping_method'] == '0')
+                    Chuyển khoản
+                @elseif($shipping_array['shipping_method'] == '1')
                     Tiền mặt
                 @else
-                    Chuyển khoản
+                Thanh toán PayPal
                 @endif
+                
             </li>
             <li><strong>Phí ship:</strong> {{ number_format($shipping_array['fee'], 0, ',', '.') }} VNĐ</li>
         </ul>

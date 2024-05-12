@@ -113,7 +113,7 @@ Route::get('/login-checkout','CheckoutController@login_checkout');
 Route::get('/logout-checkout','CheckoutController@logout_checkout');
 Route::post('/add-customer','CheckoutController@add_customer');
 Route::post('/login-customer','CheckoutController@login_customer');
-Route::get('/thanhtoan','CheckoutController@checkout');
+Route::get('/thanhtoan','CheckoutController@checkout')->name('thanhtoan');
 Route::get('/payment','CheckoutController@payment');
 Route::post('/save-checkout-customer','CheckoutController@save_checkout_customer');
 Route::post('/order-place','CheckoutController@order_place');
@@ -224,6 +224,12 @@ Route::post('/watch-video','VideoController@watch_video');
 //Dang nhap khach hang bang google
 Route::get('/login-customer-gg','AdminController@login_customer_gg');
 Route::get('/customer/google/callback','AdminController@callback_google_customer');
+
+//Thanh toan paypal
+Route::get('create-transaction', 'PayPalController@createTransaction')->name('createTransaction');
+Route::get('process-transaction', 'PayPalController@processTransaction')->name('processTransaction');
+Route::get('success-transaction', 'PayPalController@successTransaction')->name('successTransaction');
+Route::get('cancel-transaction', 'PayPalController@cancelTransaction')->name('cancelTransaction');
 
 
 

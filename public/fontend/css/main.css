@@ -126,8 +126,8 @@ h1, h2, h3, h4, h5, h6 {
   border-bottom: 1px solid #f5f5f5;
   margin-left: 0;
   margin-right: 0;
-  padding-bottom: 20px;
-  padding-top: 20px;
+  padding-bottom: 10px;
+  padding-top: 10px;
 }
 
 .header-middle .container .row .col-sm-4{
@@ -197,8 +197,8 @@ h1, h2, h3, h4, h5, h6 {
 
 
 .header-bottom {
-  padding-bottom: 30px;
-  padding-top: 30px;
+  padding-bottom: 15px;
+  padding-top: 15px;
 }
 
 .navbar-collapse.collapse{
@@ -2438,5 +2438,22 @@ span.badges {
 
   transform: translate(50%, -50%);
 }
+
+
+
+#header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: #fff; /* Đảm bảo màu nền phù hợp */
+  /* Add any other styling you need */
+}
+
+
+
+#content {
+  padding-top: 200px; /* Đảm bảo không ghi đè phần header */
+}
+
 
 

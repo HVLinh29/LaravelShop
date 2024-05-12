@@ -83,10 +83,12 @@
                             <td>{{ $shipping->shipping_email }}</td>
                             <td>{{ $shipping->shipping_notes }}</td>
                             <td>
-                                @if ($shipping->shipping_method == 1)
+                                @if ($shipping->shipping_method == 0)
                                     Chuyển khoản
-                                @else
+                                @elseif($shipping->shipping_method == 1)
                                     Tiền mặt
+                                @else
+                                    Thanh toán PayPal
                                 @endif
                             </td>
 

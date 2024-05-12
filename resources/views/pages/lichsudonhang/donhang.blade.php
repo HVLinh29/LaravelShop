@@ -24,6 +24,7 @@
 
                             <th style="color:brown">Thứ tự</th>
                             <th style="color:brown">Mã đơn hàng</th>
+                            
                             <th style="color:brown">Ngày tháng đặt hàng</th>
                             <th style="color:brown">Tình trạng đơn hàng</th>
                             <th style="color:brown">Quản lý</th>
