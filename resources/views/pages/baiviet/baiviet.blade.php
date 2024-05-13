@@ -1,6 +1,6 @@
 @extends('layout')
 
-@section('content')
+@section('content_thu2')
 <style type="text/css">
     .baiviet ul li{
         padding: 2px;

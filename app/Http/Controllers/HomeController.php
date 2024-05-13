@@ -33,7 +33,7 @@ class HomeController extends Controller
         $cate_product = DB::table('tbl_category_product')->where('category_status', '0')->orderby('category_id', 'desc')->get();
         $brand_product = DB::table('tbl_brand')->where('brand_status', '0')->orderby('brand_id', 'desc')->get();
 
-        $all_product = DB::table('tbl_product')->where('product_status', '0')->orderby('product_id', 'desc')->limit(9)->get();
+        $all_product = DB::table('tbl_product')->where('product_status', '0')->where('product_view','>','2')->orderby('product_id', 'desc')->limit(4)->get();
 
         return view('pages.home')->with('category', $cate_product)->with('brand', $brand_product)->with('all_product', $all_product)
             ->with('meta_desc', $meta_desc)->with('meta_keywords', $meta_keywords)->with('meta_title', $meta_title)
@@ -80,7 +80,7 @@ class HomeController extends Controller
         $data = $request->all();
         // $all_product = Product::where('product_status', '0')->orderby(DB::raw('RAND()'))->take(6)->get();
         if ($data['id'] > 0) {
-            $all_product = Product::where('product_status', '0')->where('product_id', '<', $data['id'])->orderby('product_id', 'DESC')->take(3)->get();
+            $all_product = Product::where('product_status', '0')->where('product_id', '<', $data['id'])->orderby('product_id', 'DESC')->take(6)->get();
         } else {
             $all_product = Product::where('product_status', '0')->orderby('product_id', 'DESC')->take(9)->get();
         }
@@ -126,7 +126,7 @@ class HomeController extends Controller
                                         alt="' . $pro->product_name . '" />
     
                                     <p style="margin-top: 30px">' . $pro->product_name . '</p>
-                                    <h2 style="color: red">' . number_format($pro->product_price, 0, ',', '.') . 'VNDđ
+                                    <h2 style="color: red">' . number_format($pro->product_price, 0, ',', '.') . ' VNĐ
                                     </h2>
     
     

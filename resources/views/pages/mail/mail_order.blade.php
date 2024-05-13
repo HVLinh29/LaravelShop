@@ -74,7 +74,7 @@
             <li>
                 <strong>Phương thức giao hàng:</strong>
                 @if ($shipping_array['shipping_method'] == '0')
-                    Chuyển khoản
+                    Thanh toán VNPAY, MOMO
                 @elseif($shipping_array['shipping_method'] == '1')
                     Tiền mặt
                 @else

@@ -251,7 +251,22 @@
             </div>
         </div>
     </section>
+    <section>
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-sm-12 padding-right">
 
+                    @yield('content_xemnhieu')
+
+                </div>
+               
+            </div>
+        </div>
+    </section>
+
+
+ 
     <footer id="footer"><!--Footer-->
 
 

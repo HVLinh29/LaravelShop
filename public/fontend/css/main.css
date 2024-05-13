@@ -1683,12 +1683,8 @@ h2.title {
 }
 
 .update, .check_out {
-
-  border-radius: 0;
   color: #FFFFFF;
-  margin-top: 18px;
   border: none;
-  padding: 5px 15px;
 }
 .update{
     margin-left: 40px;
@@ -2454,6 +2450,10 @@ span.badges {
 #content {
   padding-top: 200px; /* Đảm bảo không ghi đè phần header */
 }
+section {
+  margin-top: 18px;
+}
+
 
 
 

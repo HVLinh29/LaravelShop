@@ -84,7 +84,7 @@
                             <td>{{ $shipping->shipping_notes }}</td>
                             <td>
                                 @if ($shipping->shipping_method == 0)
-                                    Chuyển khoản
+                                    Thanh toán VNPAY, MOMO
                                 @elseif($shipping->shipping_method == 1)
                                     Tiền mặt
                                 @else

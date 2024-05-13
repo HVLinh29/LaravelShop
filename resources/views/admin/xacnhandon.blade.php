@@ -74,12 +74,12 @@
             <li>
                 <strong>Phương thức giao hàng:</strong>
                 @if ($shipping_array['shipping_method'] == '0')
-                    Chuyển khoản
-                @elseif($shipping_array['shipping_method'] == '1')
-                    Tiền mặt
-                @else
-                Thanh toán PayPal
-                @endif
+                Thanh toán VNPAY, MOMO
+            @elseif($shipping_array['shipping_method'] == '1')
+                Tiền mặt
+            @else
+            Thanh toán PayPal
+            @endif
             </li>
             <li><strong>Phí ship:</strong> {{ number_format($shipping_array['fee_ship'], 0, ',', '.') }} VNĐ</li>
         </ul>
