@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Symfony\Component\Console\Helper\Table;
 use Session;
 use Illuminate\Support\Facades\Redirect;
-
+use Illuminate\Support\Str;
 session_start();
 
 use Cart;
@@ -386,8 +386,15 @@ if ($request->filled(['partnerCode', 'orderId', 'requestId', 'amount', 'orderInf
         $shipping->save();
         $shipping_id = $shipping->shipping_id;
 
-        $checkout_code = substr(md5(microtime()), rand(0, 26), 5);
-
+        if (Session::has('vnpay_code')) {
+            $checkout_code = Session::get('vnpay_code');
+        } else if (Session::has('momo_code')) {
+            $checkout_code = Session::get('momo_code');
+        } 
+        else{
+            $checkout_code=123;
+        }
+        $checkout_code = 'TM' . Str::random(10);
 
         $order = new Order;
         $order->customer_id = Session::get('customer_id');
@@ -467,6 +474,8 @@ if ($request->filled(['partnerCode', 'orderId', 'requestId', 'amount', 'orderInf
         Session::forget('success_vnpay');
         Session::forget('success_momo');
         Session::forget('total_paypal');
+        
+       
     }
     public function vnpay_payment(Request $request)
 {
@@ -474,7 +483,8 @@ if ($request->filled(['partnerCode', 'orderId', 'requestId', 'amount', 'orderInf
     $data = $request->all();
 
     // Tạo mã thẻ ngẫu nhiên
-    $code_card = rand(0, 9999);
+    $code_card = 'VNPAY' . Str::random(10);
+    
 
     // Các thông tin cần thiết cho việc gửi yêu cầu thanh toán đến VNPAY
     $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
@@ -541,6 +551,7 @@ if ($request->filled(['partnerCode', 'orderId', 'requestId', 'amount', 'orderInf
 
     // Tạo session
     $request->session()->put('success_vnpay', true);
+    $request->session()->put('vnpay_code', $vnp_TxnRef);
 
     // Chuyển hướng đến trang cần thiết sau khi xác nhận thanh toán
     if (isset($_POST['redirect'])) {
@@ -588,7 +599,7 @@ if ($request->filled(['partnerCode', 'orderId', 'requestId', 'amount', 'orderInf
         $secretKey = 'at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa';
         $orderInfo = "Thanh toán qua MoMo";
         $amount = $_POST['total_momo'];
-        $orderId = time() . "";
+        $orderId = 'MM' . Str::random(10);
         $redirectUrl = "http://localhost/laravel_shopTMDT/thanhtoan";
         $ipnUrl = "http://localhost/laravel_shopTMDT/thanhtoan";
         $extraData = "";
@@ -596,7 +607,7 @@ if ($request->filled(['partnerCode', 'orderId', 'requestId', 'amount', 'orderInf
 
 
 
-        $requestId = time() . "";
+        $requestId = 'MM' . Str::random(10);
         $requestType = "payWithATM";
        
         //before sign HMAC SHA256 signature
@@ -621,6 +632,7 @@ if ($request->filled(['partnerCode', 'orderId', 'requestId', 'amount', 'orderInf
         $jsonResult = json_decode($result, true);  // decode json
 
         Session::put('success_momo', true);
+        Session::put('momo_code', $orderId);
 
         //Just a example, please check more in there
         return redirect()->to($jsonResult['payUrl']);

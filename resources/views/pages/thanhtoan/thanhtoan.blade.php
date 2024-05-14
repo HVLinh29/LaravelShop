@@ -85,7 +85,7 @@
                                             @else
                                                 <select name="payment_select"
                                                     class="form-control input-sm m-bot15 payment_select">
-
+                                                   
                                                     <option value="1">Tiền mặt</option>
                                                 </select>
                                             @endif
