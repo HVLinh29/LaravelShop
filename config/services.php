@@ -44,9 +44,10 @@ return [
         ],
     ],
     'google' => [
-        'client_id' => '537509463246-13csjitq58hvu3bqhpj1eutguu0k12tq.apps.googleusercontent.com',
-        'client_secret' => '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',
-        'redirect' => 'http://localhost/laravel_shopTMDT/google/callback' 
+        'client_id' => env('GOOGLE_ID'),
+        'client_secret' => env('GOOGLE_SECRET'),
+        'redirect' => env('GOOGLE_URL'),
     ],
+    
 
 ];

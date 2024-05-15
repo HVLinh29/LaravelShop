@@ -222,8 +222,8 @@ Route::post('/update-video-image','VideoController@update_video_image');
 Route::post('/watch-video','VideoController@watch_video');
 
 //Dang nhap khach hang bang google
-Route::get('/login-customer-gg','AdminController@login_customer_gg');
-Route::get('/customer/google/callback','AdminController@callback_google_customer');
+Route::get('/customer-gg','AdminController@customer_gg');
+Route::get('/google/callback','AdminController@callback_google_customer');
 
 //Thanh toan paypal
 Route::get('create-transaction', 'PayPalController@createTransaction')->name('createTransaction');

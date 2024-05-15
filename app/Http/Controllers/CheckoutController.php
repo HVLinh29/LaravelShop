@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Symfony\Component\Console\Helper\Table;
 use Session;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Str;
+
 session_start();
 
 use Cart;
@@ -388,13 +388,19 @@ if ($request->filled(['partnerCode', 'orderId', 'requestId', 'amount', 'orderInf
 
         if (Session::has('vnpay_code')) {
             $checkout_code = Session::get('vnpay_code');
-        } else if (Session::has('momo_code')) {
+        } elseif (Session::has('momo_code')) {
             $checkout_code = Session::get('momo_code');
-        } 
-        else{
-            $checkout_code=123;
+        } else {
+            // Nếu cả hai session đều không tồn tại, tạo giá trị mặc định
+            $checkout_code = 'TM' . substr(md5(uniqid(mt_rand(), true)), 0, 10);
         }
-        $checkout_code = 'TM' . Str::random(10);
+        
+        // Lưu session để đảm bảo rằng giá trị của $checkout_code không bị mất trong các lần thực thi sau
+        Session::put('checkout_code', $checkout_code);
+        
+   
+
+
 
         $order = new Order;
         $order->customer_id = Session::get('customer_id');
@@ -459,7 +465,7 @@ if ($request->filled(['partnerCode', 'orderId', 'requestId', 'amount', 'orderInf
         //lay ma giam gia va ma code cua ma giam gia
         $ordercode_mail = array(
             'coupon_code' =>$coupon_mail,
-            'order_code' =>$checkout_code
+            'order_code' => Session::get('checkout_code')
         );
 
         Mail::send('pages.mail.mail_order', ['cart_array' => $cart_array,'shipping_array'=>$shipping_array,'code'=>$ordercode_mail], 
@@ -474,6 +480,9 @@ if ($request->filled(['partnerCode', 'orderId', 'requestId', 'amount', 'orderInf
         Session::forget('success_vnpay');
         Session::forget('success_momo');
         Session::forget('total_paypal');
+        Session::forget('momo_code');
+        Session::forget('vnpay_code');
+        Session::forget('checkout_code');
         
        
     }
@@ -483,7 +492,7 @@ if ($request->filled(['partnerCode', 'orderId', 'requestId', 'amount', 'orderInf
     $data = $request->all();
 
     // Tạo mã thẻ ngẫu nhiên
-    $code_card = 'VNPAY' . Str::random(10);
+    $code_card = 'VNPAY' . substr(md5(uniqid(mt_rand(), true)), 0, 10);
     
 
     // Các thông tin cần thiết cho việc gửi yêu cầu thanh toán đến VNPAY
@@ -599,15 +608,15 @@ if ($request->filled(['partnerCode', 'orderId', 'requestId', 'amount', 'orderInf
         $secretKey = 'at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa';
         $orderInfo = "Thanh toán qua MoMo";
         $amount = $_POST['total_momo'];
-        $orderId = 'MM' . Str::random(10);
+        $orderId = 'MM'.substr(md5(uniqid(mt_rand(), true)), 0, 10);
         $redirectUrl = "http://localhost/laravel_shopTMDT/thanhtoan";
         $ipnUrl = "http://localhost/laravel_shopTMDT/thanhtoan";
-        $extraData = "";
+        $extraData = "";    
 
 
 
 
-        $requestId = 'MM' . Str::random(10);
+        $requestId = 'MM'.substr(md5(uniqid(mt_rand(), true)), 0, 10);
         $requestType = "payWithATM";
        
         //before sign HMAC SHA256 signature

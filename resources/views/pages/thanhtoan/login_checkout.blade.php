@@ -37,7 +37,7 @@
                         }
                     </style>
                     <ul class="list-login">
-                        <li><a href="{{url('login-customer-gg')}}"><img width="10%" alt="Đăng nhập Google" src="{{asset('public/fontend/images/gg.png')}}"></li>
+                        <li><a href="{{url('customer-gg')}}"><img width="10%" alt="Đăng nhập Google" src="{{asset('public/fontend/images/gg.png')}}"></li>
                     </ul>
                 </div>
             </div>

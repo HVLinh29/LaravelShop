@@ -113,6 +113,7 @@
 								if($customer_id!=NULL){
 								?>
                                 <li><a href="{{ URL::to('logout-checkout') }}"><i class="fa fa-lock"></i> Đăng xuất</a>
+                                    <p>{{Session::get('customer_name')}}</p>
                                 </li>
                                 <?php
 								}else{
