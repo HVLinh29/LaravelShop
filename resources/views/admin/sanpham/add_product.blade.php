@@ -44,6 +44,10 @@
                             <textarea style="resize: none"rows="5"  name="product_content" id="cheditor1" class="form-control" id="cheditor1"></textarea>
                         </div>
                         <div class="form-group">
+                            <label for="exampleInputEmail1">Gía chưa khuyến mãi</label>
+                            <input type="text" class="form-control money"  name="product_km"  id="exampleInputEmail1" >
+                        </div>
+                        <div class="form-group">
                             <label for="exampleInputEmail1">Gía sản phẩm</label>
                             <input type="text" class="form-control money"  name="product_price"  id="exampleInputEmail1" >
                         </div>

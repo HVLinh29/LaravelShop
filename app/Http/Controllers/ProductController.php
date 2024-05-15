@@ -57,12 +57,14 @@ class ProductController extends Controller
 
         $product_price = filter_var($request->product_price,FILTER_SANITIZE_NUMBER_INT);
         $product_cost = filter_var($request->product_cost,FILTER_SANITIZE_NUMBER_INT);
+        $product_km = filter_var($request->product_km,FILTER_SANITIZE_NUMBER_INT);
 
 
         $data['product_name'] = $request->product_name;
         $data['product_tags'] = $request->product_tags;
         $data['product_slug'] = $request->product_slug;
         $data['product_quantity'] = $request->product_quantity;
+        $data['product_km'] = $product_km;
         $data['product_price'] = $product_price;
         $data['product_cost'] = $product_cost;
         $data['product_desc'] = $request->product_desc;
@@ -124,12 +126,14 @@ class ProductController extends Controller
         $data = array();
         $product_price = filter_var($request->product_price,FILTER_SANITIZE_NUMBER_INT);
         $product_cost = filter_var($request->product_cost,FILTER_SANITIZE_NUMBER_INT);
+        $product_km = filter_var($request->product_km,FILTER_SANITIZE_NUMBER_INT);
         
         $data['product_name'] = $request->product_name;
         $data['product_tags'] = $request->product_tags;
         $data['product_slug'] = $request->product_slug;
         $data['product_quantity'] = $request->product_quantity;
         $data['product_price'] = $product_price;
+        $data['product_km'] = $product_km;
         $data['product_cost'] = $product_cost;
         $data['product_desc'] = $request->product_desc;
         $data['product_content'] = $request->product_content;

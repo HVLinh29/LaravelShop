@@ -26,6 +26,7 @@ use App\Customer;
 use Mail;
 use App\Vnpay;
 use App\Momo;
+
 class CheckoutController extends Controller
 {
     public function AuthLogin()
@@ -54,6 +55,22 @@ class CheckoutController extends Controller
         return view('pages.thanhtoan.login_checkout')->with('category', $cate_product)->with('brand', $brand_product)->with('meta_desc', $meta_desc)->with('meta_keywords', $meta_keywords)->with('meta_title', $meta_title)
             ->with('url_canonical', $url_canonical)->with('category_post', $category_post)->with('slider', $slider);
     }
+    public function dangki(Request $request)
+    {
+        $category_post = CatePost::orderBy('cate_post_id', 'DESC')->get();
+        $slider = Slider::orderBy('slider_id', 'DESC')->where('slider_status', '1')->take(4)->get();
+        //seo 
+        $meta_desc = "Đăng nhập thanh toán";
+        $meta_keywords = "Đăng nhập thanh toán";
+        $meta_title = "Đăng nhập thanh toán";
+        $url_canonical = $request->url();
+        //--seo 
+
+        $cate_product = DB::table('tbl_category_product')->where('category_status', '0')->orderby('category_id', 'desc')->get();
+        $brand_product = DB::table('tbl_brand')->where('brand_status', '0')->orderby('brand_id', 'desc')->get();
+        return view('pages.thanhtoan.add_customer')->with('category', $cate_product)->with('brand', $brand_product)->with('meta_desc', $meta_desc)->with('meta_keywords', $meta_keywords)->with('meta_title', $meta_title)
+            ->with('url_canonical', $url_canonical)->with('category_post', $category_post)->with('slider', $slider);
+    }
     public function add_customer(Request $request)
     {
         $data = array();
@@ -66,136 +83,120 @@ class CheckoutController extends Controller
 
         Session::put('customer_id', $customer_id);
         Session::put('customer_name', $request->customer_name);
-        return Redirect('/thanhtoan');
+        return Redirect('/login-checkout');
     }
-    // public function checkout(Request $request)
-    // {
-    //     $category_post = CatePost::orderBy('cate_post_id', 'DESC')->get();
-    //     $slider = Slider::orderBy('slider_id', 'DESC')->where('slider_status', '1')->take(4)->get();
 
-    //     $meta_desc = "Đăng nhập thanh toán";
-    //     $meta_keywords = "Đăng nhập thanh toán";
-    //     $meta_title = "Đăng nhập thanh toán";
-    //     $url_canonical = $request->url();
-    //     //--seo 
-    //     $cate_product = DB::table('tbl_category_product')->where('category_status', '0')->orderby('category_id', 'desc')->get();
-    //     $brand_product = DB::table('tbl_brand')->where('brand_status', '0')->orderby('brand_id', 'desc')->get();
-    //     $city = City::orderby('matp', 'ASC')->get();
-    //     return view('pages.thanhtoan.thanhtoan')->with('category', $cate_product)->with('brand', $brand_product)->with('meta_desc', $meta_desc)
-    //         ->with('meta_keywords', $meta_keywords)->with('meta_title', $meta_title)
-    //         ->with('url_canonical', $url_canonical)->with('city', $city)->with('category_post', $category_post)->with('slider', $slider);
-    // }
     public function checkout(Request $request)
-{
-    // Lấy danh mục bài viết và slider
-    $category_post = CatePost::orderBy('cate_post_id', 'DESC')->get();
-    $slider = Slider::orderBy('slider_id', 'DESC')->where('slider_status', '1')->take(4)->get();
+    {
+        // Lấy danh mục bài viết và slider
+        $category_post = CatePost::orderBy('cate_post_id', 'DESC')->get();
+        $slider = Slider::orderBy('slider_id', 'DESC')->where('slider_status', '1')->take(4)->get();
 
-    // SEO metadata
-    $meta_desc = "Đăng nhập thanh toán";
-    $meta_keywords = "Đăng nhập thanh toán";
-    $meta_title = "Đăng nhập thanh toán";
-    $url_canonical = $request->url();
+        // SEO metadata
+        $meta_desc = "Đăng nhập thanh toán";
+        $meta_keywords = "Đăng nhập thanh toán";
+        $meta_title = "Đăng nhập thanh toán";
+        $url_canonical = $request->url();
 
-    // Lấy danh mục sản phẩm và thương hiệu
-    $cate_product = DB::table('tbl_category_product')->where('category_status', '0')->orderby('category_id', 'desc')->get();
-    $brand_product = DB::table('tbl_brand')->where('brand_status', '0')->orderby('brand_id', 'desc')->get();
-    $city = City::orderby('matp', 'ASC')->get();
+        // Lấy danh mục sản phẩm và thương hiệu
+        $cate_product = DB::table('tbl_category_product')->where('category_status', '0')->orderby('category_id', 'desc')->get();
+        $brand_product = DB::table('tbl_brand')->where('brand_status', '0')->orderby('brand_id', 'desc')->get();
+        $city = City::orderby('matp', 'ASC')->get();
 
-    // Kiểm tra nếu có dữ liệu thanh toán từ VNPAY
-    if ($request->has('vnp_Amount')) {
-        // Lấy các thông tin từ query string của URL
-        $vnp_Amount = $request->query('vnp_Amount');
-        $vnp_BankCode = $request->query('vnp_BankCode');
-        $vnp_BankTranNo = $request->query('vnp_BankTranNo');
-        $vnp_CardType = $request->query('vnp_CardType');
-        $vnp_OrderInfo = $request->query('vnp_OrderInfo');
-        $vnp_PayDate = $request->query('vnp_PayDate');
-        $payDate = Carbon::createFromFormat('YmdHis', $vnp_PayDate);
-        $vnp_ResponseCode = $request->query('vnp_ResponseCode');
-        $vnp_TmnCode = $request->query('vnp_TmnCode');
-        $vnp_TransactionNo = $request->query('vnp_TransactionNo');
-        $vnp_TransactionStatus = $request->query('vnp_TransactionStatus');
-        $vnp_TxnRef = $request->query('vnp_TxnRef');
-        $vnp_SecureHash = $request->query('vnp_SecureHash');
+        // Kiểm tra nếu có dữ liệu thanh toán từ VNPAY
+        if ($request->has('vnp_Amount')) {
+            // Lấy các thông tin từ query string của URL
+            $vnp_Amount = $request->query('vnp_Amount');
+            $vnp_BankCode = $request->query('vnp_BankCode');
+            $vnp_BankTranNo = $request->query('vnp_BankTranNo');
+            $vnp_CardType = $request->query('vnp_CardType');
+            $vnp_OrderInfo = $request->query('vnp_OrderInfo');
+            $vnp_PayDate = $request->query('vnp_PayDate');
+            $payDate = Carbon::createFromFormat('YmdHis', $vnp_PayDate);
+            $vnp_ResponseCode = $request->query('vnp_ResponseCode');
+            $vnp_TmnCode = $request->query('vnp_TmnCode');
+            $vnp_TransactionNo = $request->query('vnp_TransactionNo');
+            $vnp_TransactionStatus = $request->query('vnp_TransactionStatus');
+            $vnp_TxnRef = $request->query('vnp_TxnRef');
+            $vnp_SecureHash = $request->query('vnp_SecureHash');
 
-        // Lưu thông tin vào cơ sở dữ liệu
-        $payment = new Vnpay();
-        $payment->vnp_Amount = $vnp_Amount;
-        $payment->vnp_BankCode = $vnp_BankCode;
-        $payment->vnp_BankTranNo = $vnp_BankTranNo;
-        $payment->vnp_CardType = $vnp_CardType;
-        $payment->vnp_OrderInfo = $vnp_OrderInfo;
-        $payment->vnp_PayDate = $payDate;
+            // Lưu thông tin vào cơ sở dữ liệu
+            $payment = new Vnpay();
+            $payment->vnp_Amount = $vnp_Amount;
+            $payment->vnp_BankCode = $vnp_BankCode;
+            $payment->vnp_BankTranNo = $vnp_BankTranNo;
+            $payment->vnp_CardType = $vnp_CardType;
+            $payment->vnp_OrderInfo = $vnp_OrderInfo;
+            $payment->vnp_PayDate = $payDate;
 
-        $payment->vnp_ResponseCode = $vnp_ResponseCode;
-        $payment->vnp_TmnCode = $vnp_TmnCode;
-        $payment->vnp_TransactionNo = $vnp_TransactionNo;
-        $payment->vnp_TransactionStatus = $vnp_TransactionStatus;
-        $payment->vnp_TxnRef = $vnp_TxnRef;
-        $payment->vnp_SecureHash = $vnp_SecureHash;
-        $payment->save();
+            $payment->vnp_ResponseCode = $vnp_ResponseCode;
+            $payment->vnp_TmnCode = $vnp_TmnCode;
+            $payment->vnp_TransactionNo = $vnp_TransactionNo;
+            $payment->vnp_TransactionStatus = $vnp_TransactionStatus;
+            $payment->vnp_TxnRef = $vnp_TxnRef;
+            $payment->vnp_SecureHash = $vnp_SecureHash;
+            $payment->save();
 
-        // Kiểm tra mã phản hồi từ VNPAY
-        if ($vnp_ResponseCode == "00") {
-            // Thanh toán thành công
-            \Session::flash('message', 'Thanh toán VNPAY thành công!');
-        } else {
-            // Thanh toán thất bại
-            \Session::flash('message', 'Thanh toán VNNPAY thất bại. Vui lòng thử lại sau.');
+            // Kiểm tra mã phản hồi từ VNPAY
+            if ($vnp_ResponseCode == "00") {
+                // Thanh toán thành công
+                \Session::flash('message', 'Thanh toán VNPAY thành công!');
+            } else {
+                // Thanh toán thất bại
+                \Session::flash('message', 'Thanh toán VNNPAY thất bại. Vui lòng thử lại sau.');
+            }
         }
+        // Kiểm tra nếu có dữ liệu thanh toán từ MoMo
+        if ($request->filled(['partnerCode', 'orderId', 'requestId', 'amount', 'orderInfo', 'transId', 'resultCode', 'message'])) {
+            // Lấy tất cả thông tin từ query string của URL
+            $partnerCode = $request->query('partnerCode');
+            $orderId = $request->query('orderId');
+            $requestId = $request->query('requestId');
+            $amount = $request->query('amount');
+            $orderInfo = $request->query('orderInfo');
+            $transId = $request->query('transId');
+            $resultCode = $request->query('resultCode');
+            $message = $request->query('message');
+
+
+            // Lưu thông tin vào cơ sở dữ liệu
+            $payment = new Momo();
+            $payment->partnerCode = $partnerCode;
+            $payment->orderId = $orderId;
+            $payment->requestId = $requestId;
+            $payment->amount = $amount;
+            $payment->orderInfo = $orderInfo;
+            $payment->transId = $transId;
+            $payment->message = $message;
+            $payment->orderInfo = $orderInfo;
+            $payment->resultCode = $resultCode;
+            // Tiếp tục lưu các thông tin khác tương tự
+            $payment->save();
+
+            // Kiểm tra mã phản hồi từ MoMo
+            if ($resultCode == "0") {
+                // Thanh toán thành công
+                \Session::flash('message', 'Thanh toán MoMo thành công!');
+            } else {
+                // Thanh toán thất bại
+                \Session::flash('message', 'Thanh toán MoMo thất bại. Vui lòng thử lại sau.');
+            }
+        }
+
+
+        // Trả về view trang thanh toán mặc định
+        return view('pages.thanhtoan.thanhtoan', [
+            'category' => $cate_product,
+            'brand' => $brand_product,
+            'meta_desc' => $meta_desc,
+            'meta_keywords' => $meta_keywords,
+            'meta_title' => $meta_title,
+            'url_canonical' => $url_canonical,
+            'city' => $city,
+            'category_post' => $category_post,
+            'slider' => $slider
+        ]);
     }
-    // Kiểm tra nếu có dữ liệu thanh toán từ MoMo
-if ($request->filled(['partnerCode', 'orderId', 'requestId', 'amount', 'orderInfo', 'transId', 'resultCode', 'message'])) {
-    // Lấy tất cả thông tin từ query string của URL
-    $partnerCode = $request->query('partnerCode');
-    $orderId = $request->query('orderId');
-    $requestId = $request->query('requestId');
-    $amount = $request->query('amount');
-    $orderInfo = $request->query('orderInfo');
-    $transId = $request->query('transId');
-    $resultCode = $request->query('resultCode');
-    $message = $request->query('message');
-   
-    
-    // Lưu thông tin vào cơ sở dữ liệu
-    $payment = new Momo();
-    $payment->partnerCode = $partnerCode;
-    $payment->orderId = $orderId;
-    $payment->requestId = $requestId;
-    $payment->amount = $amount;
-    $payment->orderInfo = $orderInfo;
-    $payment->transId = $transId;
-    $payment->message = $message;
-    $payment->orderInfo = $orderInfo;
-    $payment->resultCode = $resultCode;
-    // Tiếp tục lưu các thông tin khác tương tự
-    $payment->save();
-
-    // Kiểm tra mã phản hồi từ MoMo
-    if ($resultCode == "0") {
-        // Thanh toán thành công
-        \Session::flash('message', 'Thanh toán MoMo thành công!');
-    } else {
-        // Thanh toán thất bại
-        \Session::flash('message', 'Thanh toán MoMo thất bại. Vui lòng thử lại sau.');
-    }
-}
-
-
-    // Trả về view trang thanh toán mặc định
-    return view('pages.thanhtoan.thanhtoan', [
-        'category' => $cate_product,
-        'brand' => $brand_product,
-        'meta_desc' => $meta_desc,
-        'meta_keywords' => $meta_keywords,
-        'meta_title' => $meta_title,
-        'url_canonical' => $url_canonical,
-        'city' => $city,
-        'category_post' => $category_post,
-        'slider' => $slider
-    ]);
-}
     public function save_checkout_customer(Request $request)
     {
         $data = array();
@@ -230,6 +231,7 @@ if ($request->filled(['partnerCode', 'orderId', 'requestId', 'amount', 'orderInf
     {
         Session::forget('customer_id');
         Session::forget('coupon');
+        Session::forget('customer_name');
         return Redirect::to('/login-checkout');
     }
     public function login_customer(Request $request)
@@ -237,17 +239,18 @@ if ($request->filled(['partnerCode', 'orderId', 'requestId', 'amount', 'orderInf
         $email = $request->email_account;
         $password = md5($request->password_account);
         $result = DB::table('tbl_customers')->where('customer_email', $email)->where('customer_password', $password)->first();
-        if(Session::get('coupon')==true){
+        if (Session::get('coupon') == true) {
             Session::forget('coupon');
         }
         if ($result) {
             Session::put('customer_id', $result->customer_id);
+            Session::flash('success', 'Đăng nhập thành công!');
             return Redirect::to('/thanhtoan');
         } else {
+            Session::flash('error', 'Đăng nhập thất bại! Vui lòng kiểm tra lại email và mật khẩu.');
             return Redirect::to('/login-checkout');
         }
         Session::save();
-    
     }
     public function order_place(Request $request)
     {
@@ -365,15 +368,14 @@ if ($request->filled(['partnerCode', 'orderId', 'requestId', 'amount', 'orderInf
     public function confirm_order(Request $request)
     {
         $data = $request->all();
-        if($data['order_coupon']!= 'no'){
+        if ($data['order_coupon'] != 'no') {
             $coupon = Coupon::where('coupon_code', $data['order_coupon'])->first();
-            $coupon->coupon_used = $coupon->coupon_used.','.Session::get('customer_id');
+            $coupon->coupon_used = $coupon->coupon_used . ',' . Session::get('customer_id');
             $coupon->coupon_time = $coupon->coupon_time - 1;
             $coupon_mail = $coupon->coupon_code;
             $coupon->save();
-
-        }else{
-            $coupon_mail ='Không có';
+        } else {
+            $coupon_mail = 'Không có';
         }
 
         $shipping = new Shipping();
@@ -394,11 +396,11 @@ if ($request->filled(['partnerCode', 'orderId', 'requestId', 'amount', 'orderInf
             // Nếu cả hai session đều không tồn tại, tạo giá trị mặc định
             $checkout_code = 'TM' . substr(md5(uniqid(mt_rand(), true)), 0, 10);
         }
-        
+
         // Lưu session để đảm bảo rằng giá trị của $checkout_code không bị mất trong các lần thực thi sau
         Session::put('checkout_code', $checkout_code);
-        
-   
+
+
 
 
 
@@ -431,48 +433,51 @@ if ($request->filled(['partnerCode', 'orderId', 'requestId', 'amount', 'orderInf
             }
         }
         $now = Carbon::now('Asia/Ho_Chi_Minh')->format('d-m-Y');
-        $title_mail = "Đơn hàng xác nhận ngày".''.$now;
+        $title_mail = "Đơn hàng xác nhận ngày" . '' . $now;
         $customer = Customer::find(Session::get('customer_id'));
         $data['email'][] = $customer->customer_email;
-     
+
         //lay gio hang
-        if(Session::get('cart')==true) {
-            foreach(Session::get('cart') as $key => $cart_mail) {
+        if (Session::get('cart') == true) {
+            foreach (Session::get('cart') as $key => $cart_mail) {
                 $cart_array[] = array(
                     'product_name' => $cart_mail['product_name'],
                     'product_price' => $cart_mail['product_price'],
                     'product_qty' => $cart_mail['product_qty']
-                   
+
                 );
             }
         }
         //lay phi van chuyen
-        if(Session::get('fee')==true) {
-            $fee =Session::get('fee');
+        if (Session::get('fee') == true) {
+            $fee = Session::get('fee');
         }
-       
+
         $shipping_array = array(
-            'fee'=>$fee,
+            'fee' => $fee,
             'customer_name' => $customer->customer_name,
-           'shipping_name' => $data['shipping_name'],
-           'shipping_email' => $data['shipping_email'],
-           'shipping_phone' => $data['shipping_phone'],
-           'shipping_address' => $data['shipping_address'],
-           'shipping_notes' => $data['shipping_notes'],
-           'shipping_method' => $data['shipping_method'],
-           
+            'shipping_name' => $data['shipping_name'],
+            'shipping_email' => $data['shipping_email'],
+            'shipping_phone' => $data['shipping_phone'],
+            'shipping_address' => $data['shipping_address'],
+            'shipping_notes' => $data['shipping_notes'],
+            'shipping_method' => $data['shipping_method'],
+
         );
         //lay ma giam gia va ma code cua ma giam gia
         $ordercode_mail = array(
-            'coupon_code' =>$coupon_mail,
+            'coupon_code' => $coupon_mail,
             'order_code' => Session::get('checkout_code')
         );
 
-        Mail::send('pages.mail.mail_order', ['cart_array' => $cart_array,'shipping_array'=>$shipping_array,'code'=>$ordercode_mail], 
-        function ($message) use ($title_mail, $data) {
-            $message->to($data['email'])->subject($title_mail);
-            $message->from($data['email'], $title_mail);
-        });
+        Mail::send(
+            'pages.mail.mail_order',
+            ['cart_array' => $cart_array, 'shipping_array' => $shipping_array, 'code' => $ordercode_mail],
+            function ($message) use ($title_mail, $data) {
+                $message->to($data['email'])->subject($title_mail);
+                $message->from($data['email'], $title_mail);
+            }
+        );
         Session::forget('coupon');
         Session::forget('fee');
         Session::forget('cart');
@@ -483,99 +488,97 @@ if ($request->filled(['partnerCode', 'orderId', 'requestId', 'amount', 'orderInf
         Session::forget('momo_code');
         Session::forget('vnpay_code');
         Session::forget('checkout_code');
-        
-       
     }
     public function vnpay_payment(Request $request)
-{
-    // Lấy dữ liệu từ request
-    $data = $request->all();
+    {
+        // Lấy dữ liệu từ request
+        $data = $request->all();
 
-    // Tạo mã thẻ ngẫu nhiên
-    $code_card = 'VNPAY' . substr(md5(uniqid(mt_rand(), true)), 0, 10);
-    
+        // Tạo mã thẻ ngẫu nhiên
+        $code_card = 'VNPAY' . substr(md5(uniqid(mt_rand(), true)), 0, 10);
 
-    // Các thông tin cần thiết cho việc gửi yêu cầu thanh toán đến VNPAY
-    $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-    $vnp_Returnurl = "http://localhost/laravel_shopTMDT/thanhtoan";
-    $vnp_TmnCode = "TFU83QKW"; // Mã website tại VNPAY 
-    $vnp_HashSecret = "ZVXWFOGPSKCLCKCWKJEGDGLRSSXHRFMJ"; // Chuỗi bí mật
 
-    // Mã đơn hàng. Trong thực tế, Merchant cần insert đơn hàng vào DB và gửi mã này sang VNPAY
-    $vnp_TxnRef = $code_card;
+        // Các thông tin cần thiết cho việc gửi yêu cầu thanh toán đến VNPAY
+        $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+        $vnp_Returnurl = "http://localhost/laravel_shopTMDT/thanhtoan";
+        $vnp_TmnCode = "TFU83QKW"; // Mã website tại VNPAY 
+        $vnp_HashSecret = "ZVXWFOGPSKCLCKCWKJEGDGLRSSXHRFMJ"; // Chuỗi bí mật
 
-    // Thông tin đơn hàng
-    $vnp_OrderInfo = 'Thanh toán đơn hàng VNPAY';
-    $vnp_OrderType = 'billpayment';
-    $vnp_Amount = $data['total_vnpay'] * 100;
-    $vnp_Locale = 'vn';
-    $vnp_BankCode = 'NCB';
-    $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
+        // Mã đơn hàng. Trong thực tế, Merchant cần insert đơn hàng vào DB và gửi mã này sang VNPAY
+        $vnp_TxnRef = $code_card;
 
-    // Dữ liệu gửi đi
-    $inputData = array(
-        "vnp_Version" => "2.1.0",
-        "vnp_TmnCode" => $vnp_TmnCode,
-        "vnp_Amount" => $vnp_Amount,
-        "vnp_Command" => "pay",
-        "vnp_CreateDate" => date('YmdHis'),
-        "vnp_CurrCode" => "VND",
-        "vnp_IpAddr" => $vnp_IpAddr,
-        "vnp_Locale" => $vnp_Locale,
-        "vnp_OrderInfo" => $vnp_OrderInfo,
-        "vnp_OrderType" => $vnp_OrderType,
-        "vnp_ReturnUrl" => $vnp_Returnurl,
-        "vnp_TxnRef" => $vnp_TxnRef
-    );
+        // Thông tin đơn hàng
+        $vnp_OrderInfo = 'Thanh toán đơn hàng VNPAY';
+        $vnp_OrderType = 'billpayment';
+        $vnp_Amount = $data['total_vnpay'] * 100;
+        $vnp_Locale = 'vn';
+        $vnp_BankCode = 'NCB';
+        $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
 
-    // Thêm các thông tin nếu có
-    if (isset($vnp_BankCode) && $vnp_BankCode != "") {
-        $inputData['vnp_BankCode'] = $vnp_BankCode;
-    }
-    if (isset($vnp_Bill_State) && $vnp_Bill_State != "") {
-        $inputData['vnp_Bill_State'] = $vnp_Bill_State;
-    }
+        // Dữ liệu gửi đi
+        $inputData = array(
+            "vnp_Version" => "2.1.0",
+            "vnp_TmnCode" => $vnp_TmnCode,
+            "vnp_Amount" => $vnp_Amount,
+            "vnp_Command" => "pay",
+            "vnp_CreateDate" => date('YmdHis'),
+            "vnp_CurrCode" => "VND",
+            "vnp_IpAddr" => $vnp_IpAddr,
+            "vnp_Locale" => $vnp_Locale,
+            "vnp_OrderInfo" => $vnp_OrderInfo,
+            "vnp_OrderType" => $vnp_OrderType,
+            "vnp_ReturnUrl" => $vnp_Returnurl,
+            "vnp_TxnRef" => $vnp_TxnRef
+        );
 
-    // Sắp xếp dữ liệu và tạo chuỗi hash
-    ksort($inputData);
-    $query = "";
-    $i = 0;
-    $hashdata = "";
-    foreach ($inputData as $key => $value) {
-        if ($i == 1) {
-            $hashdata .= '&' . urlencode($key) . "=" . urlencode($value);
-        } else {
-            $hashdata .= urlencode($key) . "=" . urlencode($value);
-            $i = 1;
+        // Thêm các thông tin nếu có
+        if (isset($vnp_BankCode) && $vnp_BankCode != "") {
+            $inputData['vnp_BankCode'] = $vnp_BankCode;
         }
-        $query .= urlencode($key) . "=" . urlencode($value) . '&';
+        if (isset($vnp_Bill_State) && $vnp_Bill_State != "") {
+            $inputData['vnp_Bill_State'] = $vnp_Bill_State;
+        }
+
+        // Sắp xếp dữ liệu và tạo chuỗi hash
+        ksort($inputData);
+        $query = "";
+        $i = 0;
+        $hashdata = "";
+        foreach ($inputData as $key => $value) {
+            if ($i == 1) {
+                $hashdata .= '&' . urlencode($key) . "=" . urlencode($value);
+            } else {
+                $hashdata .= urlencode($key) . "=" . urlencode($value);
+                $i = 1;
+            }
+            $query .= urlencode($key) . "=" . urlencode($value) . '&';
+        }
+
+        // Tạo đường link redirect đến VNPAY
+        $vnp_Url = $vnp_Url . "?" . $query;
+        if (isset($vnp_HashSecret)) {
+            $vnpSecureHash =   hash_hmac('sha512', $hashdata, $vnp_HashSecret);
+            $vnp_Url .= 'vnp_SecureHash=' . $vnpSecureHash;
+        }
+
+        // Tạo session
+        $request->session()->put('success_vnpay', true);
+        $request->session()->put('vnpay_code', $vnp_TxnRef);
+
+        // Chuyển hướng đến trang cần thiết sau khi xác nhận thanh toán
+        if (isset($_POST['redirect'])) {
+            return redirect($vnp_Url);
+        } else {
+            return response()->json([
+                'code' => '00',
+                'message' => 'success',
+                'data' => $vnp_Url
+            ]);
+        }
     }
 
-    // Tạo đường link redirect đến VNPAY
-    $vnp_Url = $vnp_Url . "?" . $query;
-    if (isset($vnp_HashSecret)) {
-        $vnpSecureHash =   hash_hmac('sha512', $hashdata, $vnp_HashSecret);
-        $vnp_Url .= 'vnp_SecureHash=' . $vnpSecureHash;
-    }
-
-    // Tạo session
-    $request->session()->put('success_vnpay', true);
-    $request->session()->put('vnpay_code', $vnp_TxnRef);
-
-    // Chuyển hướng đến trang cần thiết sau khi xác nhận thanh toán
-    if (isset($_POST['redirect'])) {
-        return redirect($vnp_Url);
-    } else {
-        return response()->json([
-            'code' => '00',
-            'message' => 'success',
-            'data' => $vnp_Url
-        ]);
-    }
-}
 
 
-    
     public function execPostRequest($url, $data)
     {
         $ch = curl_init($url);
@@ -608,22 +611,23 @@ if ($request->filled(['partnerCode', 'orderId', 'requestId', 'amount', 'orderInf
         $secretKey = 'at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa';
         $orderInfo = "Thanh toán qua MoMo";
         $amount = $_POST['total_momo'];
-        $orderId = 'MM'.substr(md5(uniqid(mt_rand(), true)), 0, 10);
+        $orderId = 'MM' . substr(md5(uniqid(mt_rand(), true)), 0, 10);
         $redirectUrl = "http://localhost/laravel_shopTMDT/thanhtoan";
         $ipnUrl = "http://localhost/laravel_shopTMDT/thanhtoan";
-        $extraData = "";    
+        $extraData = "";
 
 
 
 
-        $requestId = 'MM'.substr(md5(uniqid(mt_rand(), true)), 0, 10);
+        $requestId = 'MM' . substr(md5(uniqid(mt_rand(), true)), 0, 10);
         $requestType = "payWithATM";
-       
+
         //before sign HMAC SHA256 signature
-        $rawHash = "accessKey=" . $accessKey . "&amount=" . $amount . "&extraData=" . $extraData . "&ipnUrl=" . $ipnUrl . "&orderId=" . $orderId . 
-        "&orderInfo=" . $orderInfo . "&partnerCode=" . $partnerCode . "&redirectUrl=" . $redirectUrl . "&requestId=" . $requestId . "&requestType=" . $requestType;
-        $signature = hash_hmac("sha256", $rawHash, $secretKey);//chu ki so
-        $data = array('partnerCode' => $partnerCode,
+        $rawHash = "accessKey=" . $accessKey . "&amount=" . $amount . "&extraData=" . $extraData . "&ipnUrl=" . $ipnUrl . "&orderId=" . $orderId .
+            "&orderInfo=" . $orderInfo . "&partnerCode=" . $partnerCode . "&redirectUrl=" . $redirectUrl . "&requestId=" . $requestId . "&requestType=" . $requestType;
+        $signature = hash_hmac("sha256", $rawHash, $secretKey); //chu ki so
+        $data = array(
+            'partnerCode' => $partnerCode,
             'partnerName' => "Test",
             "storeId" => "MomoTestStore",
             'requestId' => $requestId,
@@ -635,9 +639,10 @@ if ($request->filled(['partnerCode', 'orderId', 'requestId', 'amount', 'orderInf
             'lang' => 'vi',
             'extraData' => $extraData,
             'requestType' => $requestType,
-            'signature' => $signature);
+            'signature' => $signature
+        );
         $result = $this->execPostRequest($endpoint, json_encode($data));
-       
+
         $jsonResult = json_decode($result, true);  // decode json
 
         Session::put('success_momo', true);
@@ -645,7 +650,5 @@ if ($request->filled(['partnerCode', 'orderId', 'requestId', 'amount', 'orderInf
 
         //Just a example, please check more in there
         return redirect()->to($jsonResult['payUrl']);
-        
-    
-}
+    }
 }

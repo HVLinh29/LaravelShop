@@ -1,6 +1,6 @@
 <div class="col-sm-3">
     <div class="left-sidebar">
-        <h2>DANH MỤC SẢN PHẨM</h2>
+        {{-- <h2>DANH MỤC SẢN PHẨM</h2>
         <div class="panel-group category-products" id="accordian">
             @foreach ($category as $key => $cate)
                 <div class="panel panel-default">
@@ -31,7 +31,7 @@
                 </div>
             @endforeach
 
-        </div>
+        </div> --}}
 
         <div class="brands_products">
             <h2>THƯƠNG HIỆU SẢN PHẨM</h2>

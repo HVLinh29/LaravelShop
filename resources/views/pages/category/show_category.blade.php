@@ -1,6 +1,6 @@
 @extends('layout')
 @section('slider')
-@include('pages.include.slider');
+    @include('pages.include.slider');
 @endsection
 @section('content_thu2')
     <div class="features_items">
@@ -45,10 +45,31 @@
                     <div class="product-image-wrapper">
                         <div class="single-products">
                             <div class="productinfo text-center">
-                                <img src="{{ URL::to('public/uploads/product/' . $product->product_image) }}"
-                                    alt="" />
-                                <p style="margin: 20px">{{ $product->product_name }}</p>
-                                <h2>{{ number_format($product->product_price, 0, ',', '.') }}đ</h2>
+                                <div class="position-relative">
+                                    <img id="wishlist_productimage{{ $product->product_id }}"
+                                        src="{{ URL::to('public/uploads/product/' . $product->product_image) }}"
+                                        alt="" />
+                                    @if ($product->product_km != 0)
+                                        <a style="color:white" class="discount-badge">
+                                            -{{ round((($product->product_km - $product->product_price) / $product->product_km) * 100) }}%
+                                        </a>
+                                    @endif
+                                </div>
+                                <p style="margin-top: 20px">{{ $product->product_name }}</p>
+                                @if ($product->product_km != 0)
+                                    <div>
+                                        <h5 style="display: inline; text-decoration: line-through;">
+                                            {{ number_format($product->product_km, 0, ',', '.') }} VNĐ
+                                        </h5>
+                                        <h4 style="display: inline;color:red">
+                                            {{ number_format($product->product_price, 0, ',', '.') }} VNĐ</h4>
+                                    </div>
+                                @else
+                                    <h4 style="color: red;">
+                                        {{ number_format($product->product_price, 0, ',', '.') }} VNĐ
+                                    </h4>
+                                @endif
+                                <p style="margin-top: 15px;color:brown">Đã bán:{{ $product->product_sold }}</p>
 
                                 <input type="button" value="Xem sản phẩm" class="btn btn-danger btn-sm add-to-cart"
                                     data-id_product="{{ $product->product_id }}" name="add-to-cart">
@@ -68,6 +89,20 @@
 @endsection
 
 <style>
+    .position-relative {
+        position: relative;
+    }
+
+    .discount-badge {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: red;
+        color: white;
+        padding: 5px;
+        border-radius: 5px;
+    }
+
     .product-image-wrapper {
         margin-bottom: 20px;
         border-radius: 10px;
@@ -175,6 +210,7 @@
     input.btn.btn-danger.btn-sm.add-to-cart {
         margin-bottom: 10px;
     }
+
     /* Định dạng sản phẩm */
     .col-md-3 {
         width: 25%;

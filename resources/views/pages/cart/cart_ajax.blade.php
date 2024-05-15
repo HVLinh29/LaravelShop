@@ -61,7 +61,7 @@
 								<p>{{$cart['product_quantity']}}</p>
 							</td>
 							<td class="cart_price">
-								<p style="color: red">{{number_format($cart['product_price'],0,',','.')}}đ</p>
+								<p style="color: red">{{number_format($cart['product_price'],0,',','.')}} VNĐ</p>
 							</td>
 							<td class="cart_quantity">
 								<div class="cart_quantity_button">
@@ -74,7 +74,7 @@
 							</td>
 							<td class="cart_total">
 								<p style="color: red" class="cart_total_price">
-									{{number_format($subtotal,0,',','.')}}đ
+									{{number_format($subtotal,0,',','.')}} VNĐ
 									
 								</p>
 							</td>
@@ -103,7 +103,7 @@
 
 							
 							<td colspan="2">
-							<li>Tổng tiền :<span>{{number_format($total,0,',','.')}}đ</span></li>
+							<h4 style="color: red">Tổng tiền :<span>{{number_format($total,0,',','.')}} VNĐ</span></h4>
 							@if(Session::get('coupon'))
 							<li>
 								
@@ -116,27 +116,23 @@
 												echo '<p><li>Tổng giảm:'.number_format($total_coupon,0,',','.').'đ</li></p>';
 												@endphp
 											</p>
-											<p><li>Tổng đã giảm :{{number_format($total-$total_coupon,0,',','.')}}đ</li></p>
+											<p><li>Tổng đã giảm :{{number_format($total-$total_coupon,0,',','.')}} VNĐ</li></p>
 										@elseif($cou['coupon_condition']==2)
-											Mã giảm : {{number_format($cou['coupon_number'],0,',','.')}} k
+											Mã giảm : {{number_format($cou['coupon_number'],0,',','.')}} VNĐ
 											<p>
 												@php 
 												$total_coupon = $total - $cou['coupon_number'];
 								
 												@endphp
 											</p>
-											<p><li>Tổng đã giảm :{{number_format($total_coupon,0,',','.')}}đ</li></p>
+											<p><li>Tổng đã giảm :{{number_format($total_coupon,0,',','.')}} VNĐ</li></p>
 										@endif
 									@endforeach
 								
 
 
 							</li>
-							@endif 
-						{{-- 	<li>Thuế <span></span></li>
-							<li>Phí vận chuyển <span>Free</span></li> --}}
-							
-							
+							@endif 	
 						</td>
 						</tr>
 						@else 

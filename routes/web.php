@@ -111,6 +111,7 @@ Route::post('/insert-coupon-code','CouponController@insert_coupon_code');
 //Thanh toan
 Route::get('/login-checkout','CheckoutController@login_checkout');
 Route::get('/logout-checkout','CheckoutController@logout_checkout');
+Route::get('/dang-ki','CheckoutController@dangki');
 Route::post('/add-customer','CheckoutController@add_customer');
 Route::post('/login-customer','CheckoutController@login_customer');
 Route::get('/thanhtoan','CheckoutController@checkout')->name('thanhtoan');

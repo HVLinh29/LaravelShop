@@ -34,10 +34,11 @@ class HomeController extends Controller
         $brand_product = DB::table('tbl_brand')->where('brand_status', '0')->orderby('brand_id', 'desc')->get();
 
         $all_product = DB::table('tbl_product')->where('product_status', '0')->where('product_view','>','2')->orderby('product_id', 'desc')->limit(4)->get();
+        $all_product_sl = DB::table('tbl_product')->where('product_status', '0')->where('product_sold','>=','5')->orderby('product_id', 'desc')->limit(4)->get();
 
         return view('pages.home')->with('category', $cate_product)->with('brand', $brand_product)->with('all_product', $all_product)
             ->with('meta_desc', $meta_desc)->with('meta_keywords', $meta_keywords)->with('meta_title', $meta_title)
-            ->with('url_canonical', $url_canonical)->with('slider', $slider)->with('category_post', $category_post);
+            ->with('url_canonical', $url_canonical)->with('slider', $slider)->with('category_post', $category_post)->with('all_product_sl', $all_product_sl);
     }
     public function search(Request $request)
     {
@@ -74,107 +75,215 @@ class HomeController extends Controller
             echo $output;
         }
     }
-    public function load_more(Request $request)
+    // public function load_more(Request $request)
 
+    // {
+    //     $data = $request->all();
+    //     // $all_product = Product::where('product_status', '0')->orderby(DB::raw('RAND()'))->take(6)->get();
+    //     if ($data['id'] > 0) {
+    //         $all_product = Product::where('product_status', '0')->where('product_id', '<', $data['id'])->orderby('product_id', 'DESC')->take(6)->get();
+    //     } else {
+    //         $all_product = Product::where('product_status', '0')->orderby('product_id', 'DESC')->take(6)->get();
+    //     }
+
+    //     $output = '';
+    //     if (!$all_product->isEmpty()) {
+    //         foreach ($all_product as $key => $pro) {
+    //             $last_id = $pro->product_id;
+    //             $output .= ' <div class="col-sm-4">
+    //             <div class="product-image-wrapper">
+    //                 <div class="single-products">
+    //                     <div class="productinfo text-center">
+                           
+    //                             <input type="hidden" value="' . $pro->product_id . '"
+    //                                 class="cart_product_id_' . $pro->product_id . '">
+    
+    //                             <input type="hidden" id="wishlist_productname' . $pro->product_id . '"
+    //                                 value="' . $pro->product_name . '"
+    //                                 class="cart_product_name_' . $pro->product_id . '">
+    
+    //                             <input type="hidden" value="' . $pro->product_quantity . '"
+    //                                 class="cart_product_quantity_' . $pro->product_id . '">
+    
+    //                             <input type="hidden" value="' . $pro->product_image . '"
+    //                                 class="cart_product_image_' . $pro->product_id . '">
+    
+    //                             <input type="hidden" id="wishlist_productprice' . $pro->product_id . '"
+    //                                 value="' . number_format($pro->product_price, 0, ',', '.') . 'VNĐ">
+    
+                                   
+    
+    //                                 <input type="hidden" value="' . $pro->product_price . '"
+    //                                 class="cart_product_price_' . $pro->product_id . '">
+    
+    //                             <input type="hidden" value="1"
+    //                                 class="cart_product_qty_' . $pro->product_id . '">
+    
+    //                             <a id="wishlist_producturl' . $pro->product_id . '"
+    //                                 href="' . url('chi-tiet-san-pham/' . $pro->product_slug) . '">
+    
+    //                                 <img id="wishlist_productimage' . $pro->product_id . '"
+    //                                     src="' . url('public/uploads/product/' . $pro->product_image) . '" 
+    //                                     alt="' . $pro->product_name . '" />
+    
+    //                                 <p style="margin-top: 30px">' . $pro->product_name . '</p>
+    //                                 <h2 style="color: red">' . number_format($pro->product_price, 0, ',', '.') . ' VNĐ
+    //                                 </h2>
+    
+    
+    //                             </a>
+                                
+    //                             <style>
+    //                             .load-more-btn {
+    //                                 transition: all 0.3s ease;
+    //                             }
+                                
+    //                             .load-more-btn:hover {
+    //                                 background-color: #28a745; /* Change background color on hover */
+    //                                 color: #fff; /* Change text color on hover */
+    //                                 transform: scale(1.05); /* Scale button slightly on hover */
+    //                             }
+                                
+    //                             .load-more-btn:disabled {
+    //                                 opacity: 0.7; /* Reduce opacity for disabled button */
+    //                                 cursor: not-allowed; /* Change cursor for disabled button */
+    //                             }
+    //                             .btn-danger {
+                                   
+    //                                 font-size: 19px;
+    //                             }
+                                  
+    //                             </style>
+    //                             <div class="row">
+    //                                 <div class="col-md-6">
+    //                                     <button type="button" class="btn btn-a btn-danger"
+    //                                         id="' . $pro->product_id . '" onclick="Addtocart(this.id);">
+    //                                         <i class="fas fa-shopping-cart"></i>
+    //                                     </button>
+    //                                 </div>
+    //                                 <div class="col-md-6">
+    //                                     <input type="button" data-toggle="modal" onclick="Xemnhanh(this.id);" data-target="#xemnhanh"
+    //                                         class="btn btn-success" id="' . $pro->product_id . '" name="add-to-cart" value="Xem nhanh">
+    //                                 </div>
+    //                             </div>
+                          
+    //                     </div>
+    //                 </div>
+    //                 </br>
+    //                 <div class="choose">
+    //                     <ul class="nav nav-pills nav-justified">
+    //                         <li>
+    //                             <i class="fa fa-heart"></i>
+    //                             <button class="button_wishlist" id="' . $pro->product_id . '"
+    //                                 onclick="add_wishlist(this.id);">
+    //                                 <span>Yêu thích</span>
+    //                             </button>
+    //                         </li>
+    //                         <li><a href="#"><i class="fa fa-plus-square"></i>So sanh</a></li>
+    //                     </ul>
+    //                 </div>
+    //             </div>
+    //         </div>';
+    //         }
+    //         $output .= '
+    //         <div class="text-center mt-4">
+    //             <button type="button" name="load_more_button" class="btn btn-success btn-lg load-more-btn"
+    //                 id="load_more_button" data-id="' . $last_id . '">
+    //                 Xem thêm <i class="fas fa-arrow-down"></i>
+    //             </button>
+    //         </div>';
+    //     } else {
+    //         $output .= '
+    //         <div class="text-center mt-4">
+    //             <button type="button" name="load_more_button" class="btn btn-danger btn-lg" disabled>
+    //                 Đang cập nhật
+    //             </button>
+    //         </div>';
+    //     }
+        
+
+
+    //     echo $output;
+    // }
+
+    public function load_more(Request $request)
     {
         $data = $request->all();
-        // $all_product = Product::where('product_status', '0')->orderby(DB::raw('RAND()'))->take(6)->get();
         if ($data['id'] > 0) {
-            $all_product = Product::where('product_status', '0')->where('product_id', '<', $data['id'])->orderby('product_id', 'DESC')->take(6)->get();
+            $all_product = Product::where('product_status', '0')
+                ->where('product_id', '<', $data['id'])
+                ->orderBy('product_id', 'DESC')
+                ->take(6)
+                ->get();
         } else {
-            $all_product = Product::where('product_status', '0')->orderby('product_id', 'DESC')->take(9)->get();
+            $all_product = Product::where('product_status', '0')
+                ->orderBy('product_id', 'DESC')
+                ->take(6)
+                ->get();
         }
-
+    
         $output = '';
         if (!$all_product->isEmpty()) {
             foreach ($all_product as $key => $pro) {
                 $last_id = $pro->product_id;
-                $output .= ' <div class="col-sm-4">
-                <div class="product-image-wrapper">
-                    <div class="single-products">
-                        <div class="productinfo text-center">
-                           
-                                <input type="hidden" value="' . $pro->product_id . '"
-                                    class="cart_product_id_' . $pro->product_id . '">
-    
-                                <input type="hidden" id="wishlist_productname' . $pro->product_id . '"
-                                    value="' . $pro->product_name . '"
-                                    class="cart_product_name_' . $pro->product_id . '">
-    
-                                <input type="hidden" value="' . $pro->product_quantity . '"
-                                    class="cart_product_quantity_' . $pro->product_id . '">
-    
-                                <input type="hidden" value="' . $pro->product_image . '"
-                                    class="cart_product_image_' . $pro->product_id . '">
-    
-                                <input type="hidden" id="wishlist_productprice' . $pro->product_id . '"
-                                    value="' . number_format($pro->product_price, 0, ',', '.') . 'VND">
-    
-                                   
-    
-                                    <input type="hidden" value="' . $pro->product_price . '"
-                                    class="cart_product_price_' . $pro->product_id . '">
-    
-                                <input type="hidden" value="1"
-                                    class="cart_product_qty_' . $pro->product_id . '">
-    
-                                <a id="wishlist_producturl' . $pro->product_id . '"
-                                    href="' . url('chi-tiet-san-pham/' . $pro->product_slug) . '">
-    
-                                    <img id="wishlist_productimage' . $pro->product_id . '"
-                                        src="' . url('public/uploads/product/' . $pro->product_image) . '" 
-                                        alt="' . $pro->product_name . '" />
-    
-                                    <p style="margin-top: 30px">' . $pro->product_name . '</p>
-                                    <h2 style="color: red">' . number_format($pro->product_price, 0, ',', '.') . ' VNĐ
-                                    </h2>
-    
-    
-                                </a>
-                                
-                                <style>
-                                .load-more-btn {
-                                    transition: all 0.3s ease;
-                                }
-                                
-                                .load-more-btn:hover {
-                                    background-color: #28a745; /* Change background color on hover */
-                                    color: #fff; /* Change text color on hover */
-                                    transform: scale(1.05); /* Scale button slightly on hover */
-                                }
-                                
-                                .load-more-btn:disabled {
-                                    opacity: 0.7; /* Reduce opacity for disabled button */
-                                    cursor: not-allowed; /* Change cursor for disabled button */
-                                }
-                                .btn-danger {
-                                   
-                                    font-size: 19px;
-                                }
-                                  
-                                </style>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <button type="button" class="btn btn-a btn-danger"
-                                            id="' . $pro->product_id . '" onclick="Addtocart(this.id);">
-                                            <i class="fas fa-shopping-cart"></i>
-                                        </button>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="button" data-toggle="modal" onclick="Xemnhanh(this.id);" data-target="#xemnhanh"
-                                            class="btn btn-success" id="' . $pro->product_id . '" name="add-to-cart" value="Xem nhanh">
-                                    </div>
+                $output .= '<div class="col-sm-4">
+                                <div class="product-image-wrapper">
+                                    <div class="single-products">
+                                        <div class="productinfo text-center">
+                                            <input type="hidden" value="' . $pro->product_id . '" class="cart_product_id_' . $pro->product_id . '">
+                                            <input type="hidden" id="wishlist_productname' . $pro->product_id . '" value="' . $pro->product_name . '" class="cart_product_name_' . $pro->product_id . '">
+                                            <input type="hidden" value="' . $pro->product_quantity . '" class="cart_product_quantity_' . $pro->product_id . '">
+                                            <input type="hidden" value="' . $pro->product_image . '" class="cart_product_image_' . $pro->product_id . '">
+                                            <input type="hidden" id="wishlist_productprice' . $pro->product_id . '" value="' . number_format($pro->product_price, 0, ',', '.') . 'VNĐ">
+                                            <input type="hidden" value="' . $pro->product_price . '" class="cart_product_price_' . $pro->product_id . '">
+                                            <input type="hidden" value="1" class="cart_product_qty_' . $pro->product_id . '">
+                                            <a id="wishlist_producturl' . $pro->product_id . '" href="' . url('chi-tiet-san-pham/' . $pro->product_slug) . '">
+                                                <div class="position-relative">
+                                                    <img id="wishlist_productimage' . $pro->product_id . '" src="' . url('public/uploads/product/' . $pro->product_image) . '" alt="' . $pro->product_name . '" />';
+                if ($pro->product_km != 0) {
+                    $output .= '<a style="color:white" class="discount-badge">
+                                    -' . round((($pro->product_km - $pro->product_price) / $pro->product_km) * 100) . '%
+                                </a>';
+                }
+                $output .= '</div>
+                                <p style="margin-top: 30px">' . $pro->product_name . '</p>';
+                if ($pro->product_km != 0) {
+                    $output .= '<div> 
+                                    <h5 style="display: inline; text-decoration: line-through;">
+                                        ' . number_format($pro->product_km, 0, ',', '.') . ' VNĐ
+                                    </h5>
+                                    <h4 style="display: inline;color:red">
+                                        ' . number_format($pro->product_price, 0, ',', '.') . ' VNĐ
+                                    </h4>
+                                </div>';
+                } else {
+                    $output .= '<div>
+                    <h4 style="display: inline;color:red">
+                                    ' . number_format($pro->product_price, 0, ',', '.') . ' VNĐ
+                                </h4>   </div>';
+                }
+                $output .= '</br></a>
+                            <div class="row"><style>
+                            .choose {
+                                margin-top: 10px;
+                                margin-bottom: 10px;
+                            }</style>
+                                <div class="col-md-6">
+                                    <button type="button" class="btn btn-a btn-danger" id="' . $pro->product_id . '" onclick="Addtocart(this.id);">
+                                        <i class="fas fa-shopping-cart"></i>
+                                    </button>
                                 </div>
-                          
+                                <div class="col-md-6">
+                                    <input type="button" data-toggle="modal" onclick="Xemnhanh(this.id);" data-target="#xemnhanh" class="btn btn-success" id="' . $pro->product_id . '" name="add-to-cart" value="Xem nhanh">
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    </br>
                     <div class="choose">
                         <ul class="nav nav-pills nav-justified">
                             <li>
                                 <i class="fa fa-heart"></i>
-                                <button class="button_wishlist" id="' . $pro->product_id . '"
-                                    onclick="add_wishlist(this.id);">
+                                <button class="button_wishlist" id="' . $pro->product_id . '" onclick="add_wishlist(this.id);">
                                     <span>Yêu thích</span>
                                 </button>
                             </li>
@@ -184,26 +293,23 @@ class HomeController extends Controller
                 </div>
             </div>';
             }
-            $output .= '
-            <div class="text-center mt-4">
-                <button type="button" name="load_more_button" class="btn btn-success btn-lg load-more-btn"
-                    id="load_more_button" data-id="' . $last_id . '">
-                    Xem thêm <i class="fas fa-arrow-down"></i>
-                </button>
-            </div>';
+            $output .= '<div class="text-center mt-4">
+                            <button type="button" name="load_more_button" class="btn btn-success btn-lg load-more-btn" id="load_more_button" data-id="' . $last_id . '">
+                                Xem thêm <i class="fas fa-arrow-down"></i>
+                            </button>
+                        </div>';
         } else {
-            $output .= '
-            <div class="text-center mt-4">
-                <button type="button" name="load_more_button" class="btn btn-danger btn-lg" disabled>
-                    Đang cập nhật
-                </button>
-            </div>';
+            $output .= '<div class="text-center mt-4">
+                            <button type="button" name="load_more_button" class="btn btn-danger btn-lg" disabled>
+                                Đang cập nhật
+                            </button>
+                        </div>';
         }
-        
-
-
+    
         echo $output;
     }
+    
+
     
 }
 

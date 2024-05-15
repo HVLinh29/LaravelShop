@@ -1,6 +1,6 @@
 @extends('layout')
 @section('sliderbar')
-@include('pages.include.sliderbar')
+    @include('pages.include.sliderbar')
 @endsection
 @section('content')
     @foreach ($product_details as $key => $value)
@@ -11,18 +11,15 @@
                     height: 140px;
                     max-width: 100%;
                 }
-
-                li.active {
-                    border: 2px solid brown;
-                }
             </style>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb" style="background: none">
-                    <li class="breadcrumb-item"><a href="{{ url('/') }}">Trang chu</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url('/') }}">Trang chủ</a></li>
                     <li class="breadcrumb-item"><a
                             href="{{ url('/danh-muc-san-pham/' . $cate_slug) }}">{{ $product_cate }}</a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">{{ $meta_title }}</li>
+                    <li class="breadcrumb-item" aria-current="page">{{ $meta_title }}</li>
+
                 </ol>
             </nav>
             <div class="col-sm-5">
@@ -30,49 +27,80 @@
                     @foreach ($gallery as $key => $gal)
                         <li data-thumb="{{ asset('public/uploads/gallery/' . $gal->gallery_image) }}"
                             data-src="{{ asset('public/uploads/gallery/' . $gal->gallery_image) }}">
-                            <img width="100%" alt="{{ $gal->gallery_name }}"
+                            <img style="margin-top: 24px;" width="100%" alt="{{ $gal->gallery_name }}"
                                 src="{{ asset('public/uploads/gallery/' . $gal->gallery_image) }}" />
+                            
                         </li>
                     @endforeach
-
-
-
                 </ul>
-
             </div>
             <div class="col-sm-7">
                 <div class="product-information"><!--/product-information-->
-                    <h2 style="color: red; font-size: 28px;">{{ $value->product_name }}</h2>
-            
-                    <p style="font-size: 18px; color: red;">
-                        Giá: <span>{{ number_format($value->product_price, 0, ',', '.') . 'đ' }}</span>
-                    </p>
-            
+                    <h2 style="color: red;">{{ $value->product_name }}</h2>
+                    
+                    @if ($value->product_km != 0)
+                    <div>
+                        <h5 style="display: inline; text-decoration: line-through;">
+                            {{ number_format($value->product_km, 0, ',', '.') }} VNĐ
+                        </h5>
+                        <h4 style="display: inline;color:red">
+                            {{ number_format($value->product_price, 0, ',', '.') }} VNĐ</h4>
+                    </div>
+                    
+                @else
+                    <h4 style="color: red;">
+                        {{ number_format($value->product_price, 0, ',', '.') }} VNĐ
+                    </h4>
+                @endif
+
+                @if ($value->product_km != 0)
+                <h5 style="color:white" class="discount-badge">
+                    Giảm: {{ round((($value->product_km - $value->product_price) / $value->product_km) * 100) }}%
+                </h5>
+                @endif
+                    <h5 style="color: brown">
+                        Đã bán: {{ $value->product_sold }} || Đã xem {{ $value->product_view }}
+                    </h5>
                     <form action="{{ URL::to('/save-cart') }}" method="POST">
                         @csrf
-                        <input type="hidden" value="{{ $value->product_id }}" class="cart_product_id_{{ $value->product_id }}">
-                        <input type="hidden" value="{{ $value->product_name }}" class="cart_product_name_{{ $value->product_id }}">
-                        <input type="hidden" value="{{ $value->product_image }}" class="cart_product_image_{{ $value->product_id }}">
-                        <input type="hidden" value="{{ $value->product_quantity }}" class="cart_product_quantity_{{ $value->product_id }}">
-                        <input type="hidden" value="{{ $value->product_price }}" class="cart_product_price_{{ $value->product_id }}">
-            
+                        <input type="hidden" value="{{ $value->product_id }}"
+                            class="cart_product_id_{{ $value->product_id }}">
+                        <input type="hidden" value="{{ $value->product_name }}"
+                            class="cart_product_name_{{ $value->product_id }}">
+                        <input type="hidden" value="{{ $value->product_image }}"
+                            class="cart_product_image_{{ $value->product_id }}">
+                        <input type="hidden" value="{{ $value->product_quantity }}"
+                            class="cart_product_quantity_{{ $value->product_id }}">
+                        <input type="hidden" value="{{ $value->product_price }}"
+                            class="cart_product_price_{{ $value->product_id }}">
+
                         <div class="mb-3 d-flex align-items-center">
                             <label for="qty" style="font-size: 18px; margin-right: 10px;">Số lượng:</label>
-                            <input type="number" name="qty" id="qty" class="form-control cart_product_qty_{{ $value->product_id }}" value="1" min="1" style="width: 100px;">
+                            <input style="margin-bottom: 10px" type="number" name="qty" id="qty"
+                                class="form-control cart_product_qty_{{ $value->product_id }}" value="1"
+                                min="1" style="width: 100px;">
                             <input type="hidden" name="productid_hidden" value="{{ $value->product_id }}">
-                            <button type="button" class="btn btn-default add-to-cart ml-3" data-id_product="{{ $value->product_id }}" name="add-to-cart">
+                            <button type="button" class="btn btn-default add-to-cart ml-3"
+                                data-id_product="{{ $value->product_id }}" name="add-to-cart">
                                 <i class="fas fa-shopping-cart"></i> Thêm vào giỏ hàng
                             </button>
                         </div>
                     </form>
-            
-                    <p><b>Tình trạng:</b> Còn hàng</p>
+
+                    <p><b>Tình trạng:@php
+                        if ($value->product_quantity == 0) {
+                            echo ' Hết hàng';
+                        } else {
+                            echo ' Còn hàng';
+                        }
+                    @endphp</p>
                     <p><b>Điều kiện:</b> Mới 100%</p>
                     <p><b>Số lượng kho còn:</b> {{ $value->product_quantity }}</p>
                     <p><b>Thương hiệu:</b> {{ $value->brand_name }}</p>
                     <p><b>Danh mục:</b> {{ $value->category_name }}</p>
-                    <a href="#"><img src="images/product-details/share.png" class="share img-responsive" alt="" /></a>
-            
+                    <a href="#"><img src="images/product-details/share.png" class="share img-responsive"
+                            alt="" /></a>
+
                     <fieldset>
                         <legend>Tags</legend>
                         <p><i class="fa fa-tag"></i>
@@ -80,17 +108,18 @@
                                 $tags = $value->product_tags;
                                 $tags = explode(',', $tags);
                             @endphp
-            
+
                             @foreach ($tags as $tag)
-                                <a href="{{ url('/tag/' . str_slug($tag)) }}" class="badge badge-primary">{{ $tag }}</a>
+                                <a href="{{ url('/tag/' . str_slug($tag)) }}"
+                                    class="badge badge-primary">{{ $tag }}</a>
                             @endforeach
                         </p>
                     </fieldset>
                 </div><!--/product-information-->
             </div>
-            
-            
-            
+
+
+
         </div><!--/product-details-->
 
         <div class="category-tab shop-details-tab"><!--category-tab-->
@@ -177,54 +206,95 @@
             </div>
         </div><!--/category-tab-->
     @endforeach
+@endsection
+@section('content_soluong')
     <div class="recommended_items"><!--recommended_items-->
         <h2 class="title text-center">Sản phẩm liên quan</h2>
 
         <div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner">
                 <div class="item active">
-                    @foreach ($splienquan as $key => $lienquan)
-                        <div class="col-md-4">
-                            <div class="product-image-wrapper">
-                                <div class="single-products">
-                                    <div class="productinfo text-center product-related">
-                                        <img src="{{ URL::to('public/uploads/product/' . $lienquan->product_image) }}"
-                                            alt="" />
-                                        <p>{{ $lienquan->product_name }}</p>
-                                        <h2>{{ number_format($lienquan->product_price, 0, ',', '.') }}đ</h2>
-
-                                        {{-- <input type="button" value="Thêm giỏ hàng"
-                                            class="btn btn-danger btn-sm add-to-cart"
-                                            data-id_product="{{ $value->product_id }}" name="add-to-cart"> --}}
-                                        <button type="button" class="btn btn-default add-to-cart"
-                                            data-id_product="{{ $value->product_id }}" name="add-to-cart">
-                                            <i class="fas fa-shopping-cart"></i>
-                                        </button>
-
-
+                    {{-- @foreach ($splienquan as $key => $product)
+                        <a href="{{ URL::to('chi-tiet-san-pham/' . $product->product_slug) }}">
+                            <div class="col-md-3">
+                                <div class="product-image-wrapper">
+                                    <div class="single-products">
+                                        <div class="productinfo text-center">
+                                            <a class="position-relative">
+                                                <img id="wishlist_productimage{{ $product->product_id }}"
+                                                    src="{{ URL::to('public/uploads/product/' . $product->product_image) }}"
+                                                    alt="" />
+                                                @if ($product->product_km != 0)
+                                                    <a style="color:white" class="discount-badge">
+                                                        -{{ round((($product->product_km - $product->product_price) / $product->product_km) * 100) }}%
+                                                @endif
+                                            </a>
+                                            <p style="margin-top: 20px">{{ $product->product_name }}</p>
+                                            @if ($product->product_km != 0)
+                                                <div>
+                                                    <h5 style="display: inline; text-decoration: line-through;">
+                                                        {{ number_format($product->product_km, 0, ',', '.') }} VNĐ
+                                                    </h5>
+                                                    <h4 style="display: inline;color:red">
+                                                        {{ number_format($product->product_price, 0, ',', '.') }} VNĐ</h4>
+                                                </div>
+                                            @else
+                                                <h4 style="color: red;">
+                                                    {{ number_format($product->product_price, 0, ',', '.') }} VNĐ
+                                                </h4>
+                                            @endif
+                                            <p style="margin-top: 15px;color:brown">Đã bán:{{ $product->product_sold }}
+                                            </p>
+                                            <input type="button" style="margin-bottom: 15px" value="Xem sản phẩm"
+                                                class="btn btn-danger btn-sm add-to-cart"
+                                                data-id_product="{{ $product->product_id }}" name="add-to-cart">
+                                        </div>
                                     </div>
 
                                 </div>
                             </div>
+                        </a>
+                    @endforeach --}}
+                    @foreach ($splienquan as $key => $product)
+    <a href="{{ URL::to('chi-tiet-san-pham/' . $product->product_slug) }}">
+        <div class="col-md-3">
+            <div class="product-image-wrapper">
+                <div class="single-products">
+                    <div class="productinfo text-center">
+                        <div class="position-relative">
+                            <img id="wishlist_productimage{{ $product->product_id }}"
+                                src="{{ URL::to('public/uploads/product/' . $product->product_image) }}" alt="" />
+                            @if ($product->product_km != 0)
+                                <a style="color:white" class="discount-badge">
+                                    -{{ round((($product->product_km - $product->product_price) / $product->product_km) * 100) }}%
+                                </a>
+                            @endif
                         </div>
-                        <style>
-                            .add-to-cart {
-                                border-radius: 50%;
-                                background-color: #000;
-                                color: #fff;
-                                padding: 10px;
-                                transition: background-color 0.3s ease;
-                                border: none;
-                                overflow: hidden;
-                                /* Giữ cho phần bên ngoài khu vực hình tròn bị ẩn đi */
-                            }
+                        <p style="margin-top: 20px">{{ $product->product_name }}</p>
+                        @if ($product->product_km != 0)
+                            <div>
+                                <h5 style="display: inline; text-decoration: line-through;">
+                                    {{ number_format($product->product_km, 0, ',', '.') }} VNĐ
+                                </h5>
+                                <h4 style="display: inline;color:red">
+                                    {{ number_format($product->product_price, 0, ',', '.') }} VNĐ</h4>
+                            </div>
+                        @else
+                            <h4 style="color: red;">
+                                {{ number_format($product->product_price, 0, ',', '.') }} VNĐ
+                            </h4>
+                        @endif
+                        <p style="margin-top: 15px;color:brown">Đã bán:{{ $product->product_sold }}</p>
+                        <input type="button" style="margin-bottom: 15px" value="Xem sản phẩm"
+                            class="btn btn-danger btn-sm add-to-cart" data-id_product="{{ $product->product_id }}"
+                            name="add-to-cart">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </a>
+@endforeach
 
-                            .add-to-cart:hover {
-                                background-color: #333;
-                                transform: scale(1.1);
-                            }
-                        </style>
-                    @endforeach
 
 
                 </div>
@@ -235,6 +305,20 @@
     </div>
 @endsection
 <style>
+    .position-relative {
+        position: relative;
+    }
+
+    .discount-badge {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: red;
+        color: white;
+        padding: 5px;
+        border-radius: 5px;
+    }
+
     .product-image-wrapper {
         border-radius: 10px;
         /* Bo tròn góc */
@@ -265,84 +349,84 @@
         transform: scale(1.1);
         /* Phóng to khi di chuột vào */
     }
-/* CSS cho phần product-information */
-.product-information {
-    padding: 20px;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-   
-}
 
-.product-information h2 {
-    font-size: 24px;
-    margin-top: 0;
-}
+    /* CSS cho phần product-information */
+    .product-information {
+        padding: 20px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 5px;
 
-.product-information img.newarrival {
-    position: absolute;
-    width: 60px;
-    margin-left: -10px;
-    margin-top: -10px;
-}
+    }
 
-.product-information p {
-    font-size: 16px;
-}
+    .product-information h2 {
+        font-size: 24px;
+        margin-top: 0;
+    }
 
-.product-information label {
-    font-weight: bold;
-    margin-right: 10px;
-}
+    .product-information img.newarrival {
+        position: absolute;
+        width: 60px;
+        margin-left: -10px;
+        margin-top: -10px;
+    }
 
-.product-information input[type="number"] {
-    width: 60px;
-    margin-right: 10px;
-}
+    .product-information p {
+        font-size: 16px;
+    }
 
-.product-information button.add-to-cart {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    padding: 8px 20px;
-    font-size: 16px;
-    cursor: pointer;
-}
+    .product-information label {
+        font-weight: bold;
+        margin-right: 10px;
+    }
 
-.product-information button.add-to-cart:hover {
-    background-color: #0056b3;
-}
+    .product-information input[type="number"] {
+        width: 60px;
+        margin-right: 10px;
+    }
 
-.product-information fieldset {
-    margin-top: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 10px;
-}
+    .product-information button.add-to-cart {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 8px 20px;
+        font-size: 16px;
+        cursor: pointer;
+    }
 
-.product-information fieldset legend {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
+    .product-information button.add-to-cart:hover {
+        background-color: #0056b3;
+    }
 
-.product-information fieldset p {
-    margin-bottom: 5px;
-}
+    .product-information fieldset {
+        margin-top: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+    }
 
-.product-information a.share {
-    margin-top: 20px;
-    display: block;
-}
+    .product-information fieldset legend {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
 
-.product-information a.badge {
-    margin: 3px;
-    padding: 5px 10px;
-    background-color: #007bff;
-    color: #fff;
-    text-decoration: none;
-   
-}
-    
+    .product-information fieldset p {
+        margin-bottom: 5px;
+    }
+
+    .product-information a.share {
+        margin-top: 20px;
+        display: block;
+    }
+
+    .product-information a.badge {
+        margin: 3px;
+        padding: 5px 10px;
+        background-color: #007bff;
+        color: #fff;
+        text-decoration: none;
+
+    }
 </style>

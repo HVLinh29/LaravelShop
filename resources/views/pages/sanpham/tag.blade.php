@@ -1,7 +1,7 @@
 @extends('layout')
 @section('content')
     <div class="features_items">
-        <h2 class="title text-center">  tag tim kiem: {{$product_tag}}</h2>
+        <h2 class="title text-center">Tag Sản Phẩm: {{$product_tag}}</h2>
         <div class="row"> <!-- Thêm lớp row ở đây -->
         @foreach ($pro_tag as $key => $product)
             <div class="col-sm-4">

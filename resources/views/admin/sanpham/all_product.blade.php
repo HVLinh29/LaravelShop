@@ -25,7 +25,8 @@
               <th style="color: brown">Hình ảnh sản phẩm</th>
               <th style="color: brown">Slug</th>
               <th style="color: brown">Số lượng</th>
-              <th style="color: brown">Gía</th>
+              <th style="color: brown">Gía chưa khuyến mãi</th>
+              <th style="color: brown">Gía bán</th>
               <th style="color: brown">Gía gốc</th>
               <th style="color: brown">Danh mục</th>
               <th style="color: brown">Thương hiệu</th>
@@ -42,6 +43,7 @@
               <td><img src ="public/uploads/product/{{$pr->product_image}}" height="100" width="100"></td>
               <td>{{$pr->product_slug}}</td>
               <td>{{$pr->product_quantity}}</td>
+              <td>{{ number_format($pr->product_km,0,',','.')}}đ</td>
               <td>{{ number_format($pr->product_price,0,',','.')}}đ</td>
               <td>{{ number_format($pr->product_cost,0,',','.')}}đ</td>
               <td>{{$pr->category_name}}</td>

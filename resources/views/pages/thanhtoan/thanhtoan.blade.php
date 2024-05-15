@@ -179,7 +179,7 @@
                                                     </td>
                                                     <td class="cart_price">
                                                         <p style="color: red">
-                                                            {{ number_format($cart['product_price'], 0, ',', '.') }}đ</p>
+                                                            {{ number_format($cart['product_price'], 0, ',', '.') }} VNĐ</p>
                                                     </td>
                                                     <td class="cart_quantity">
                                                         <div class="cart_quantity_button">
@@ -195,16 +195,12 @@
                                                     </td>
                                                     <td class="cart_total">
                                                         <p style="color: red" class="cart_total_price">
-                                                            {{ number_format($subtotal, 0, ',', '.') }}đ
+                                                            {{ number_format($subtotal, 0, ',', '.') }} VNĐ
 
                                                         </p>
                                                     </td>
                                                     <td class="cart_delete">
-                                                        {{-- @if (!Session::get('success_paypal') == true)
-                                                            <a class="cart_quantity_delete"
-                                                                href="{{ url('/del-product/' . $cart['session_id']) }}"><i
-                                                                    class="fa fa-times"></i></a>
-                                                        @endif --}}
+                                                       
                                                         @if (Session::get('success_paypal') || Session::get('success_vnpay') || Session::get('success_momo'))
                                                             {{-- Nếu có ít nhất một trong hai session tồn tại, không hiển thị nút xóa --}}
                                                         @else
@@ -248,7 +244,7 @@
                                                 @endif
 
                                                 <td >
-                                                    <a style="color: green; font-size:18px">Tổng tiền :<span>{{ number_format($total, 0, ',', '.') }}đ</span>
+                                                    <a style="color: green; font-size:18px">Tổng tiền :<span>{{ number_format($total, 0, ',', '.') }} VNĐ</span>
                                                     </a>
                                                     @if (Session::get('coupon'))
                                                         <a>
@@ -307,17 +303,17 @@
                                                         @php
                                                             if (Session::get('fee') && !Session::get('coupon')) {
                                                                 $total_after = $total_after_fee;
-                                                                echo number_format($total_after, 0, ',', '.') . 'đ';
+                                                                echo number_format($total_after, 0, ',', '.') . ' VNĐ';
                                                             } elseif (!Session::get('fee') && Session::get('coupon')) {
                                                                 $total_after = $total_after_coupon;
-                                                                echo number_format($total_after, 0, ',', '.') . 'đ';
+                                                                echo number_format($total_after, 0, ',', '.') . ' VNĐ';
                                                             } elseif (Session::get('fee') && Session::get('coupon')) {
                                                                 $total_after = $total_after_coupon;
                                                                 $total_after = $total_after + Session::get('fee');
-                                                                echo number_format($total_after, 0, ',', '.') . 'đ';
+                                                                echo number_format($total_after, 0, ',', '.') . ' VNĐ';
                                                             } elseif (!Session::get('fee') && !Session::get('coupon')) {
                                                                 $total_after = $total;
-                                                                echo number_format($total_after, 0, ',', '.') . 'đ';
+                                                                echo number_format($total_after, 0, ',', '.') . ' VNĐ';
                                                             }
 
                                                         @endphp
