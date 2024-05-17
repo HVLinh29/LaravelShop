@@ -4,10 +4,138 @@
     @include('pages.include.slider');
 @endsection
 
-@section('sliderbar')
+{{-- @section('sliderbar')
     @include('pages.include.sliderbar')
-@endsection
+@endsection --}}
 
+@section('content_kmai')
+<div class="features_items">
+    <h2 class="title text-center">SẢN PHẨM KHUYẾN MÃI</h2>
+    <div class="row">
+        
+
+        @foreach ($all_product_km as $key => $product)
+            <div class="col-sm-3">
+                <div class="product-image-wrapper">
+                    <div class="single-products">
+                        <div class="productinfo text-center">
+                            <form>
+                                @csrf
+                                <input type="hidden" value="{{ $product->product_id }}"
+                                    class="cart_product_id_{{ $product->product_id }}">
+                                <input type="hidden" id="wishlist_productname{{ $product->product_id }}"
+                                    value="{{ $product->product_name }}"
+                                    class="cart_product_name_{{ $product->product_id }}">
+                                <input type="hidden" value="{{ $product->product_quantity }}"
+                                    class="cart_product_quantity_{{ $product->product_id }}">
+                                <input type="hidden" value="{{ $product->product_image }}"
+                                    class="cart_product_image_{{ $product->product_id }}">
+                                <input type="hidden" id="wishlist_productprice{{ $product->product_id }}"
+                                    value="{{ $product->product_price }}"
+                                    class="cart_product_price_{{ $product->product_id }}">
+                                <input type="hidden" value="1"
+                                    class="cart_product_qty_{{ $product->product_id }}">
+                                <a id="wishlist_producturl{{ $product->product_id }}"
+                                    href="{{ URL::to('chi-tiet-san-pham/' . $product->product_slug) }}">
+                                    <div class="position-relative">
+                                        <img id="wishlist_productimage{{ $product->product_id }}"
+                                            src="{{ URL::to('public/uploads/product/' . $product->product_image) }}"
+                                            alt="" />
+                                        @if ($product->product_km != 0)
+                                            <a style="color:white" class="discount-badge">
+                                                -{{ round((($product->product_km - $product->product_price) / $product->product_km) * 100) }}%
+                                        @endif
+                                    
+                                </a>
+                        </div>
+                        <p style="margin-top: 30px">{{ $product->product_name }}</p>
+                        @if ($product->product_km != 0)
+                            <div>
+                                <h5 style="display: inline; text-decoration: line-through;">
+                                    {{ number_format($product->product_km, 0, ',', '.') }} VNĐ
+                                </h5>
+                                <h4 style="display: inline;color:red">
+                                    {{ number_format($product->product_price, 0, ',', '.') }} VNĐ</h4>
+                            </div>
+                        @else
+                            <h4 style="color: red;">
+                                {{ number_format($product->product_price, 0, ',', '.') }} VNĐ
+                            </h4>
+                        @endif
+
+
+                        <p style="margin-top: 10px">Đã bán:{{ $product->product_sold }}</p>
+                        </a>
+
+                        <style>
+                            .add-to-cart {
+                                border-radius: 50%;
+                                background-color: #000;
+                                color: #fff;
+                                padding: 10px;
+                                transition: background-color 0.3s ease;
+                                border: none;
+                                overflow: hidden;
+                                /* Giữ cho phần bên ngoài khu vực hình tròn bị ẩn đi */
+                            }
+
+                            .add-to-cart:hover {
+                                background-color: white;
+                                transform: scale(1.1);
+                            }
+
+                            .position-relative {
+                                position: relative;
+                            }
+
+                            .discount-badge {
+                                position: absolute;
+                                top: 10px;
+                                right: 10px;
+                                background-color: red;
+                                color: white;
+                                padding: 5px;
+                                border-radius: 5px;
+                            }
+                        </style>
+                        <div class="row">
+                            <div class="col-md-6">
+
+                                <button type="button" class="btn btn-default add-to-cart"
+                                    data-id_product="{{ $product->product_id }}" name="add-to-cart">
+                                    <i class="fas fa-shopping-cart"></i>
+                                </button>
+
+
+                            </div>
+                            <div class="col-md-6">
+                                <input type="button" data-toggle="modal" data-target="#xemnhanh"
+                                    class="btn btn-default xemnhanh" data-id_product="{{ $product->product_id }}"
+                                    name="add-to-cart" value="Xem nhanh">
+                            </div>
+                        </div>
+                        </form>
+                    </div>
+
+                </div>
+                <div class="choose">
+                    <ul class="nav nav-pills nav-justified">
+                        <li>
+                            <i class="fa fa-heart"></i>
+                            <button class="button_wishlist" id="{{ $product->product_id }}"
+                                onclick="add_wishlist(this.id);">
+                                <span>Yêu thích</span>
+                            </button>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+    </div>
+    @endforeach
+</div>
+@endsection
+</br>
 @section('content')
     <div class="features_items">
         <h2 class="title text-center">SẢN PHẨM MỚI NHẤT</h2>
@@ -581,3 +709,6 @@
         outline: none
     }
 </style>
+@section('footer')
+    @include('pages.include.footer');
+@endsection

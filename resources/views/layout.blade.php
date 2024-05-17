@@ -23,7 +23,7 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-
+    <link href="{{ asset('public/backend/css/font-awesome.css') }}" rel="stylesheet">
     <link rel="shortcut icon" href="{{ 'public/fontend/images/ico/favicon.ico' }}">
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/ico/apple-touch-icon-144-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/ico/apple-touch-icon-114-precomposed.png">
@@ -71,20 +71,20 @@
 								$shipping_id = Session::get('shipping_id');
 								if($customer_id!=NULL && $shipping_id==NULL ){
 								?>
-                                <li><a href="{{ URL::to('/thanhtoan') }}"><i class="fa fa-crosshairs"></i> Thanh
+                                <li><a href="{{ URL::to('/thanhtoan') }}"><i class="fa fa-credit-card"></i></i> Thanh
                                         toán</a></li>
 
                                 <?php
 								}elseif($customer_id!=NULL && $shipping_id!=NULL ){
 								?>
-                                <li><a href="{{ URL::to('/payment') }}"><i class="fa fa-crosshairs"></i> Thanh toán</a>
+                                <li><a href="{{ URL::to('/payment') }}"><i class="fa fa-credit-card"></i></i> Thanh toán</a>
                                 </li>
 
                                 <?php
 								}
 								else{
 									?>
-                                <li><a href="{{ URL::to('/login-checkout') }}"><i class="fa fa-crosshairs"></i> Thanh
+                                <li><a href="{{ URL::to('/login-checkout') }}"><i class="fa fa-credit-card"></i></i> Thanh
                                         toán</a></li>
 
                                 <?php
@@ -92,7 +92,6 @@
 								?>
                                
                                 <li><a href="{{ URL::to('/gio-hang') }}"><i class="fa fa-shopping-cart"></i> Giỏ hàng 
-                                   
                                             <span class="show-cart"></span>
                                     </a>
                                 </li>
@@ -134,7 +133,7 @@
         <div class="header-bottom"><!--header-bottom-->
             <div class="container">
                 <div class="row">
-                    <div class="col-sm-8">
+                    <div class="col-sm-10">
                        
                         <div class="mainmenu pull-left">
                             <ul class="nav navbar-nav collapse navbar-collapse">
@@ -149,12 +148,21 @@
                                         @endforeach
                                     </ul>
                                 </li>
-                                <li><a href="{{ URL::to('/gio-hang') }}">Giỏ hàng 
-                                    <span class="show-cart">
-                            </span></a>
-                                   
+                                <li class="dropdown"><a href="#">Thương hiệu<i class="fa fa-angle-down"></i></a>
+                                    <ul role="menu" class="sub-menu">
+                                        @foreach ($brand as $key => $brand)
+                                            <li><a
+                                                    href="{{ URL::to('/thuong-hieu-san-pham/' . $brand->brand_slug) }}">{{ $brand->brand_name }}</a>
+                                            </li>
+                                        @endforeach
+                                    </ul>
                                 </li>
-                                <li class="dropdown"><a href="#">Tin tức<i class="fa fa-angle-down"></i></a>
+                                {{-- <li><a href="{{ URL::to('/gio-hang') }}">Giỏ hàng 
+                                    <span class="show-cart">
+                                    </span></a>
+                                   
+                                </li> --}}
+                                <li class="dropdown"><a href="#">Bài viết<i class="fa fa-angle-down"></i></a>
                                     <ul role="menu" class="sub-menu">
                                         @foreach ($category_post as $key => $danhmucbaiviet)
                                             <li><a
@@ -168,7 +176,7 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-2">
                         <form method="POST" action="{{ URL::to('/tim-kiem') }}" autocomplete="off">
                             {{ csrf_field() }}
                             <div class="search_box pull-right">
@@ -225,7 +233,19 @@
 
 {{-- /slider --}}
 @yield('slider')
+<section>
+    <div class="container">
+        <div class="row">
+            
+            <div class="col-sm-12 padding-right">
 
+                @yield('content_kmai')
+
+            </div>
+           
+        </div>
+    </div>
+</section>
     <section>
         <div class="container">
             <div class="row">
@@ -236,7 +256,8 @@
 
                 </div>
                 @yield('sliderbar')
-                <div class="col-sm-9 padding-right">
+                
+                <div class="col-sm-12 padding-right">
 
                     @yield('content')
 
@@ -270,11 +291,73 @@
             </div>
         </div>
     </section>
-    
+  
+    <footer class="footer text-color-dark">
+        <div class="container-fluid d-flex justify-content-center">
+            <div class="row anhduoi flex-grow-1">
+                
+                <div class="col-md-4">
+                    <div class="product-image-wrapper">
+                       
+                        <img src="{{asset('public/fontend/images/ap/aa.png') }}" alt="Ảnh sản phẩm">
+                    </div>
+                   
+                    <div class="productinfo" >
+                        <h3 style="color: white">Giao hàng miễn phí toàn quốc</h3>
+                        <h4 style="color: white">Thanh toán khi nhận hàng</h4>
+                    </div>
+                </div>
+               
+                <div class="col-md-4">
+                    <div class="product-image-wrapper">
+                       
+                        <img src="{{asset('public/fontend/images/ap/bb.png') }}" alt="Ảnh sản phẩm">
+                    </div>
+                   
+                    <div class="productinfo">
+                        <h3 style="color: white">Cam kết hàng chính hãng</h3>
+                        <h4 style="color: white">Đền 200% nếu phát hiện hàng giả</h4>
+                    </div>
+                </div>
+              
+                <div class="col-md-4">
+                    <div class="product-image-wrapper">
+                       
+                        <img src="{{asset('public/fontend/images/ap/cc.png') }}" alt="Ảnh sản phẩm">
+                    </div>
+                  
+                    <div class="productinfo">
+                        <h3 style="color: white">Tặng ngay Voucher giảm giá</h3>
+                        <h4 style="color: white">Đặt mua để nhận voucher giảm giá 10%</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <style>
+            footer.footer.text-color-dark {
+            background: #333;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            height: 170px;
+            }
+
+            .container-fluid.d-flex.justify-content-center.align-items-center {
+            height: 100%;
+            }
 
 
- 
-    <footer id="footer"><!--Footer-->
+            .col-md-4 {
+            display: flex;
+            justify-content: center;
+
+            margin-top: 50px;
+            }
+            .productinfo{
+            padding-left: 15px;
+            }
+        </style>
+    </footer>
+    <footer id="footer">
 
 
         <div class="footer-widget">
@@ -317,11 +400,11 @@
                         <div class="single-widget">
                             <h2>Thanh toán miễn phí</h2>
                             <ul class="nav nav-pills nav-stacked">
-                                <li><img src="{{ 'public/fontend/images/logo-visa.png' }}" alt="">
-                                    <img src="{{ 'public/fontend/images/logo-vnpay.png' }}" alt="">
+                                <li><img src="{{asset('public/fontend/images/logo-visa.png') }}" alt="">
+                                    <img src="{{asset('public/fontend/images/logo-vnpay.png') }}" alt="">
                                 </li>
-                                <li><img src="{{ 'public/fontend/images/logo-samsungpay.png' }}" alt="">
-                                    <img src="{{ 'public/fontend/images/logo-atm.png' }}" alt="">
+                                <li><img src="{{asset('public/fontend/images/logo-samsungpay.png') }}" alt="">
+                                    <img src="{{asset('public/fontend/images/logo-atm.png') }}" alt="">
                                 </li>
 
                             </ul>
@@ -331,11 +414,11 @@
                         <div class="single-widget">
                             <h2>Hình thúc vận chuyển</h2>
                             <ul class="nav nav-pills nav-stacked">
-                                <li><img src="{{ 'public/fontend/images/nhattin.jpg' }}" alt="">
-                                    <img src="{{ 'public/fontend/images/vnpost.jpg' }}" alt="">
+                                <li><img src="{{asset('public/fontend/images/nhattin.jpg')}}" alt="">
+                                    <img src="{{asset('public/fontend/images/vnpost.jpg') }}" alt="">
                                 </li>
                                 <li>
-                                    <img src="{{ 'public/fontend/images/logo-bct.png' }}" alt="">
+                                    <img src="{{asset('public/fontend/images/logo-bct.png') }}" alt="">
                                 </li>
                             </ul>
                         </div>
@@ -348,7 +431,7 @@
 
 
 
-    </footer><!--/Footer-->
+    </footer>
 
 
 
@@ -370,47 +453,7 @@
     <div id="fb-root"></div>
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v19.0" nonce="HvSWG6qx"></script>
     <script src="https://www.paypalobjects.com/api/checkout.js"></script>
-    {{-- <script>
-        var usd = document.getElementById("vnd_to_usd").value;
-        paypal.Button.render({
-          // Configure environment
-          env: 'sandbox',
-          client: {
-            sandbox: 'AYOFOKQNJlDCipof_AG5LW--DzMGDstaU4FfIfUFBEE_g_nTnVSWJ0cZUsiG5MBJ5upZVdr0bayCSxfw',
-            production: 'demo_production_client_id'
-          },
-          // Customize button (optional)
-          locale: 'en_US',
-          style: {
-            size: 'small',
-            color: 'gold',
-            shape: 'pill',
-          },
-      
-          // Enable Pay Now checkout flow (optional)
-          commit: true,
-      
-          // Set up a payment
-          payment: function(data, actions) {
-            return actions.payment.create({
-              transactions: [{
-                amount: {
-                  total: `${usd}`,
-                  currency: 'USD'
-                }
-              }]
-            });
-          },
-          // Execute the payment
-          onAuthorize: function(data, actions) {
-            return actions.payment.execute().then(function() {
-              // Show a confirmation message to the buyer
-              window.alert('Cảm ơn bạn đã mua hàng của chúng tôi');
-            });
-          }
-        }, '#paypal-button');
-      
-      </script> --}}
+   
         <script type="text/javascript">
             $(document).ready(function() {
                 load_more(); // Gọi hàm khi tài liệu được tải
@@ -688,7 +731,7 @@
                 var data = JSON.parse(localStorage.getItem('data'));
                 data.reverse();
                 document.getElementById('row_wishlist').style.overflow = 'scroll';
-                document.getElementById('row_wishlist').style.height = '600px';
+                document.getElementById('row_wishlist').style.height = '800px';
 
                 for (i = 0; i < data.length; i++) {
                     var name = data[i].name;
@@ -737,7 +780,7 @@
                 $("#row_wishlist").append('<div class="row" style="margin:10px 0"><div class="col-md-4"><img src="' +
                     newItem.image + '" width="100%"></div><div class="col=md-8 info_wishlist"><p>' + newItem.name +
                     '</p><p style="color : #FE980F">' + newItem.price + '</p><a href="' + newItem.url +
-                    '">Đặt hàng</a></div></div>');
+                    '">Xem</a></div></div>');
             }
             localStorage.setItem('data', JSON.stringify(old_data));
         }
@@ -945,7 +988,7 @@
                     success: function(data) {
 
                         $('#notify_comment').html(
-                            '<span class="text text-success">Them binh luan thanh cong, cho xem xet</span>'
+                            '<span class="text text-success">Đã thêm bình luận. Xin vui lòng đợi chúng tôi xem xét</span>'
                         )
                         load_comment();
                         $('#notify_comment').fadeOut(5000);
@@ -958,60 +1001,7 @@
             });
         });
     </script>
-    <script type="text/javascript">
-        function remove_background(product_id) {
-            for (var count = 1; count <= 5; count++) {
-                $('#' + product_id + '-' + count).css('color', '#ccc');
-            }
-        }
-        //hover chuột đánh giá sao
-        $(document).on('mouseenter', '.rating', function() {
-            var index = $(this).data("index"); //3
-            var product_id = $(this).data('product_id'); //13
-
-            // alert(index);
-            // alert(product_id);
-            remove_background(product_id);
-            for (var count = 1; count <= index; count++) {
-                $('#' + product_id + '-' + count).css('color', '#ffcc00');
-            }
-        });
-        //nhả chuột ko đánh giá
-        $(document).on('mouseleave', '.rating', function() {
-            var index = $(this).data("index");
-            var product_id = $(this).data('product_id');
-            var rating = $(this).data("rating");
-            remove_background(product_id);
-            //alert(rating);
-            for (var count = 1; count <= rating; count++) {
-                $('#' + product_id + '-' + count).css('color', '#ffcc00');
-            }
-        });
-        //clivk danh gia sao
-        $(document).on('click', '.rating', function() {
-            var index = $(this).data("index"); // Lấy giá trị index của đánh giá
-            var product_id = $(this).data('product_id'); // Lấy giá trị product_id từ phần tử HTML
-            var _token = $('input[name="_token"]').val();
-
-            $.ajax({
-                url: "{{ url('insert-rating') }}",
-                method: 'POST',
-                data: {
-                    index: index,
-                    product_id: product_id,
-                    _token: _token
-                },
-                success: function(data) {
-                    if (data == 'done') {
-                        alert("Bạn đã đánh giá " + index + " trên 5");
-                        location.reload();
-                    } else {
-                        alert("Bạn chưa đánh giá");
-                    }
-                }
-            });
-        });
-    </script>
+   
     <script type="text/javascript">
         $(document).ready(function() {
             $('#sort').on('change', function() { // fix syntax error here
@@ -1075,6 +1065,90 @@
                 }
             });
         }
+    </script>
+    <script type="text/javascript">
+        function remove_background(product_id) {
+            for (var count = 1; count <= 5; count++) {
+                $('#' + product_id + '-' + count).css('color', '#ccc');
+            }
+        }
+        //hover chuột đánh giá sao
+        $(document).on('mouseenter', '.rating', function() {
+            var index = $(this).data("index"); //3
+            var product_id = $(this).data('product_id'); //13
+
+            // alert(index);
+            // alert(product_id);
+            remove_background(product_id);
+            for (var count = 1; count <= index; count++) {
+                $('#' + product_id + '-' + count).css('color', '#ffcc00');
+            }
+        });
+        //nhả chuột ko đánh giá
+        $(document).on('mouseleave', '.rating', function() {
+            var index = $(this).data("index");
+            var product_id = $(this).data('product_id');
+            var rating = $(this).data("rating");
+            remove_background(product_id);
+            //alert(rating);
+            for (var count = 1; count <= rating; count++) {
+                $('#' + product_id + '-' + count).css('color', '#ffcc00');
+            }
+        });
+        //clivk danh gia sao
+        // $(document).on('click', '.rating', function() {
+        //     var index = $(this).data("index"); 
+        //     var product_id = $(this).data('product_id'); 
+        //     var _token = $('input[name="_token"]').val();
+
+        //     $.ajax({
+        //         url: "{{ url('insert-rating') }}",
+        //         method: 'POST',
+        //         data: {
+        //             index: index,
+        //             product_id: product_id,
+        //             _token: _token
+        //         },
+        //         success: function(data) {
+        //             if (data == 'done') {
+        //                 alert("Bạn đã đánh giá " + index + " trên 5");
+        //                 location.reload();
+        //             } else {
+        //                 alert("Bạn chưa đánh giá");
+        //             }
+        //         }
+        //     });
+        // });
+        //KHAC NUA NHA
+        $(document).on('click', '.rating', function() {
+    var index = $(this).data("index"); 
+    var product_id = $(this).data('product_id'); 
+    var _token = $('meta[name="csrf-token"]').attr('content');
+
+    console.log('Index:', index, 'Product ID:', product_id, 'Token:', _token); // Log to verify data
+
+    $.ajax({
+        url: "{{ url('insert-rating') }}",
+        method: 'POST',
+        data: {
+            index: index,
+            product_id: product_id,
+            _token: _token
+        },
+        success: function(data) {
+            console.log('Response Data:', data); // Log the response data
+
+            if (data.message === 'done') {
+                alert("Bạn đã đánh giá " + index + " trên 5");
+                location.reload();
+            } else {
+                alert("Bạn chưa đánh giá");
+            }
+        },
+        
+    });
+});
+
     </script>
 </body>
 

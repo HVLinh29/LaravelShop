@@ -201,8 +201,9 @@ Route::get('/add-post','PostController@add_post');
 Route::get('/list-post','PostController@list_post');
 Route::post('/save-post','PostController@save_post');
 Route::get('/delete-post/{post_id}','PostController@delete_post');
-Route::get('/edit-post/{post_id}','PostController@edit_post');
-Route::post('/update-post/{post_id}','PostController@update_post');
+Route::get('/edit-post/{post_id}', 'PostController@edit_post');
+Route::post('/update-post/{post_id}', 'PostController@update_post');
+
 
 //Gallery
 Route::get('/add-gallery/{product_id}','GalleryController@add_gallery');

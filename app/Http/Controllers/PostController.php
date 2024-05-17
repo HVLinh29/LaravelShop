@@ -89,27 +89,27 @@ class PostController extends Controller
     public function edit_post($post_id)
     {
         $cate_post = CatePost::orderBy('cate_post_id')->get();
-        $post = Post::find($post_id);
-        return view('admin.post.edit_post')->with(compact('post', 'cate_post'));
+        $postbv = Post::find($post_id);
+        return view('admin.post.edit_post')->with(compact('postbv', 'cate_post'));
     }
     public function update_post(Request $request, $post_id)
     {
         $this->AuthLogin();
         $data = $request->all();
-        $post = Post::find($post_id);
-        $post->post_title = $data['post_title'];
-        $post->post_desc = $data['post_desc'];
-        $post->post_content = $data['post_content'];
-        $post->post_meta_desc = $data['post_meta_desc'];
-        $post->post_meta_keywords = $data['post_meta_keywords'];
-        $post->cate_post_id = $data['cate_post_id'];
-        $post->post_slug = $data['post_slug'];
-        $post->post_status = $data['post_status'];
+        $postbv = Post::find($post_id);
+        $postbv->post_title = $data['post_title'];
+        $postbv->post_desc = $data['post_desc'];
+        $postbv->post_content = $data['post_content'];
+        $postbv->post_meta_desc = $data['post_meta_desc'];
+        $postbv->post_meta_keywords = $data['post_meta_keywords'];
+        $postbv->cate_post_id = $data['cate_post_id'];
+        $postbv->post_slug = $data['post_slug'];
+        $postbv->post_status = $data['post_status'];
 
         $get_image = $request->file('post_image');
         if ($get_image) {
             //Xoa anh cu
-            $post_image_old = $post->post_image;
+            $post_image_old = $postbv->post_image;
             $path = 'public/uploads/post/' . $post_image_old;
             unlink($path);
             //Cap nhat anh moi
@@ -118,10 +118,10 @@ class PostController extends Controller
             $new_image = $name_imgae . rand(0, 9999) . '.' . $get_image->getClientOriginalExtension();
             $get_image->move('public/uploads/post', $new_image);
 
-            $post->post_image = $new_image;
+            $postbv->post_image = $new_image;
         }
 
-        $post->save();
+        $postbv->save();
         Session::put('message', 'Cập nhật bài viết thành công');
         return redirect('/list-post');
     }

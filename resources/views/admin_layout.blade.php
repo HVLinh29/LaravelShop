@@ -4,9 +4,9 @@
     <title>Admin Shop Đồng Hồ Linh Watch</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="keywords"
+    {{-- <meta name="keywords"
         content="Visitors Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
-Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" /> --}}
 
     <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
     <!-- bootstrap-css -->
@@ -18,9 +18,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <link href="{{ asset('public/backend/css/style.css') }}" rel='stylesheet' type='text/css' />
     <link href="{{ asset('public/backend/css/style-responsive.css') }}" rel="stylesheet" />
     <!-- font CSS -->
-    <link
+    {{-- <link
         href='//fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic'
-        rel='stylesheet' type='text/css'>
+        rel='stylesheet' type='text/css'> --}}
     <!-- font-awesome icons -->
     <link rel="stylesheet" href="{{ asset('public/backend/css/font.css') }}" type="text/css" />
     <link href="{{ asset('public/backend/css/font-awesome.css') }}" rel="stylesheet">
@@ -77,17 +77,16 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             <li><a href="{{ URL::to('/logout-auth') }}"><i class="fa fa-key"></i>Đăng xuất</a></li>
                         </ul>
                     </li>
-                    <!-- user login dropdown end -->
+                  
 
                 </ul>
-                <!--search & user info end-->
+              
             </div>
         </header>
-        <!--header end-->
-        <!--sidebar start-->
+       
         <aside>
             <div id="sidebar" class="nav-collapse">
-                <!-- sidebar menu start-->
+               
                 <div class="leftside-navigation">
                     <ul class="sidebar-menu" id="nav-accordion">
                         <li>
@@ -102,7 +101,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <span>Danh mục sản phẩm</span>
                             </a>
                             <ul class="sub">
-                                <li><a href="{{ URL::to('/add-category-product') }}">Thêm danh mục sản phẩm</a></li>
+                                {{-- <li><a href="{{ URL::to('/add-category-product') }}">Thêm danh mục sản phẩm</a></li> --}}
                                 <li><a href="{{ URL::to('/all-category-product') }}">Liệt kê danh mục sản phẩm</a></li>
 
                             </ul>
@@ -113,7 +112,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <span>Thương hiệu sản phẩm</span>
                             </a>
                             <ul class="sub">
-                                <li><a href="{{ URL::to('/add-brand-product') }}">Thêm thương hiệu sản phẩm</a></li>
+                                {{-- <li><a href="{{ URL::to('/add-brand-product') }}">Thêm thương hiệu sản phẩm</a></li> --}}
                                 <li><a href="{{ URL::to('/all-brand-product') }}">Liệt kê thương hiệu</a></li>
 
                             </ul>
@@ -124,7 +123,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <span>Danh mục bài viết</span>
                             </a>
                             <ul class="sub">
-                                <li><a href="{{ URL::to('/add-category-post') }}">Thêm danh mục bài viết</a></li>
+                                {{-- <li><a href="{{ URL::to('/add-category-post') }}">Thêm danh mục bài viết</a></li> --}}
                                 <li><a href="{{ URL::to('/list-category-post') }}">Liệt kê danh mục bài viết</a></li>
 
                             </ul>
@@ -135,7 +134,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <span>Sản phẩm</span>
                             </a>
                             <ul class="sub">
-                                <li><a href="{{ URL::to('/add-product') }}">Thêm sản phẩm</a></li>
+                                {{-- <li><a href="{{ URL::to('/add-product') }}">Thêm sản phẩm</a></li> --}}
                                 <li><a href="{{ URL::to('/all-product') }}">Liệt kê sản phẩm</a></li>
 
                             </ul>
@@ -157,7 +156,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <span>Mã giảm giá</span>
                             </a>
                             <ul class="sub">
-                                <li><a href="{{ URL::to('/insert-coupon') }}">Thêm mã giảm giá</a></li>
+                                {{-- <li><a href="{{ URL::to('/insert-coupon') }}">Thêm mã giảm giá</a></li> --}}
                                 <li><a href="{{ URL::to('/list-coupon') }}">Liệt kê mã giảm giá</a></li>
 
                             </ul>
@@ -186,7 +185,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             </a>
                             <ul class="sub">
                                 <li><a href="{{ URL::to('/managa-slider') }}">Liệt kê Slider</a></li>
-                                <li><a href="{{ URL::to('/add-slider') }}">Thêm Slider</a></li>
+                                {{-- <li><a href="{{ URL::to('/add-slider') }}">Thêm Slider</a></li> --}}
 
                             </ul>
                         </li>
@@ -196,7 +195,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <span>Bài viết</span>
                             </a>
                             <ul class="sub">
-                                <li><a href="{{ URL::to('/add-post') }}">Thêm bài viết</a></li>
+                                {{-- <li><a href="{{ URL::to('/add-post') }}">Thêm bài viết</a></li> --}}
                                 <li><a href="{{ URL::to('/list-post') }}">Liệt kê bài viết</a></li>
 
                             </ul>
@@ -237,7 +236,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                     <span>User</span>
                                 </a>
                                 <ul class="sub">
-                                    <li><a href="{{ URL::to('/add-users') }}">Thêm user</a></li>
+                                    {{-- <li><a href="{{ URL::to('/add-users') }}">Thêm user</a></li> --}}
                                     <li><a href="{{ URL::to('/users') }}">Liệt kê user</a></li>
 
                                 </ul>
@@ -249,15 +248,14 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
             </div>
         </aside>
-        <!--sidebar end-->
-        <!--main content start-->
+       
         <section id="main-content">
             <section class="wrapper">
                 @yield('admin_content')
             </section>
 
         </section>
-        <!--main content end-->
+    
     </section>
     <script src="{{ asset('public/backend/js/bootstrap.js') }}"></script>
     <script src="{{ asset('public/backend/js/jquery.dcjqaccordion.2.7.js') }}"></script>
@@ -455,7 +453,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     success: function(data) {
                         load_video();
                         $('#notify').html(
-                            '<span class="text text-success">Da them video thanh cong</span>'
+                            '<span class="text text-success">Thêm video thành công</span>'
                         );
                     }
                 });
@@ -492,14 +490,14 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     success: function(data) {
                         load_video();
                         $('#notify').html(
-                            '<span class="text text-success">Cap nhat video thanh cong</span>'
+                            '<span class="text text-success">Cập nhật video thành công</span>'
                         );
                     }
                 });
             });
             $(document).on('click', '.btn-delete-video', function() {
                 var video_id = $(this).data('video_id');
-                if (confirm('Ban muon xoa video nay khong')) {
+                if (confirm('Bạn có muốn xóa video này?')) {
                     $.ajax({
                         url: "{{ url('/delete-video') }}",
                         method: "POST",
@@ -513,7 +511,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         success: function(data) {
                             load_video();
                             $('#notify').html(
-                                '<span class="text text-success">Xoa video thanh cong</span>'
+                                '<span class="text text-success">Xóa video thành công!</span>'
                             );
                         }
                     });
@@ -543,7 +541,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     success: function(data) {
                         load_video();
                         $('#notify').html(
-                            '<span class="text text-success">Cap nhat hinh anh video thanh cong</span>'
+                            '<span class="text text-success">Cập nhật hình video thành công</span>'
                         );
                     }
                 });
@@ -577,11 +575,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 var files = $('#file')[0].files;
 
                 if (files.length > 5) {
-                    error += '<p>Chi duoc chon toi da 5 anh</p>'
+                    error += '<p>Bạn được chọn tối đa 5 ảnh!</p>'
                 } else if (files.length == '') {
-                    error += '<p>Vui long chon anh</p>'
+                    error += '<p>Bạn hãy chọn ảnh</p>'
                 } else if (files.size > 2000000) {
-                    error += '<p>Kich thuoc anh qua lon</p>'
+                    error += '<p>Kích thước ảnh quá lớn</p>'
                 }
 
                 if (error == '') {
@@ -607,7 +605,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     success: function(data) {
                         load_gallery();
                         $('#error_gallery').html(
-                            '<span class="text-danger">Cap nhat ten hinh anh thanh cong</span>'
+                            '<span class="text-danger">Cập nhật tên hình ảnh thành công!</span>'
                         );
                     }
                 });
@@ -615,7 +613,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             $(document).on('click', '.delete-gallery', function() {
                 var gal_id = $(this).data('gal_id');
                 var _token = $('input[name="_token"]').val();
-                if (confirm('Ban muon xoa hinh anh nay khong')) {
+                if (confirm('Bạn có muốn xóa hình ảnh này không')) {
                     $.ajax({
                         url: "{{ url('/delete-gallery') }}",
                         method: "POST",
@@ -626,7 +624,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         success: function(data) {
                             load_gallery();
                             $('#error_gallery').html(
-                                '<span class="text-danger">Xoa hinh anh thanh cong</span>');
+                                '<span class="text-danger">Xóa hình ảnh thành công!</span>');
                         }
                     });
                 }
@@ -655,7 +653,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     success: function(data) {
                         load_gallery();
                         $('#error_gallery').html(
-                            '<span class="text-danger">Cap nhat hinh anh thanh cong</span>');
+                            '<span class="text-danger">Cập nhật hình ảnh thành công!    </span>');
                     }
                 });
 

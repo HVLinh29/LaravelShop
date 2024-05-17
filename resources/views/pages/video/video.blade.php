@@ -1,8 +1,8 @@
 @extends('layout')
-@section('sliderbar')
-@include('pages.include.sliderbar')
+@section('slider')
+    @include('pages.include.slider');
 @endsection
-@section('content')
+@section('content_xemnhieu')
     <div class="features_items">
         <h2 class="title text-center">VIDEO SAN PHAM</h2>
         <div class="row"> <!-- Thêm lớp row ở đây -->

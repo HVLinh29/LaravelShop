@@ -37,9 +37,9 @@
                             class="form-control" id="exampleInputPassword1" >{{$edit_value->meta_keywords}}</textarea>
                         </div>
                         <div class="form-group">
-                            <label for="exampleInputPassword1">Thuoc danh muc</label>
+                            <label for="exampleInputPassword1">Thuộc danh mục</label>
                             <select name="category_parent" class="form-control input-sm m-bot15">
-                                <option value="0">Danh muc cha</option>
+                                <option value="0">Danh mục cha</option>
                                 @foreach($category as $key => $val)
                                     @if($val->category_parent==0)
                                     <option {{$val->category_id==$edit_value->category_id ? 'selected' : ''}} value="{{$val->category_id}}">{{$val->category_name}}</option>

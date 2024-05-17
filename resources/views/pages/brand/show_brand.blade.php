@@ -187,3 +187,6 @@
         /* Khoảng cách giữa các cột */
     }
 </style>
+@section('footer')
+    @include('pages.include.footer');
+@endsection

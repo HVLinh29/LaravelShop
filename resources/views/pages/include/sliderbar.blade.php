@@ -33,7 +33,7 @@
 
         </div> --}}
 
-        <div class="brands_products">
+        {{-- <div class="brands_products">
             <h2>THƯƠNG HIỆU SẢN PHẨM</h2>
             @foreach ($brand as $key => $brand)
                 <div class="brands-name">
@@ -44,7 +44,7 @@
                     </ul>
                 </div>
             @endforeach
-        </div>
+        </div> --}}
         <div class="brands_products">
             <h2>SẢN PHẨM YÊU THÍCH</h2>
 

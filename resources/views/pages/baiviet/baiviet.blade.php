@@ -1,6 +1,8 @@
 @extends('layout')
-
-@section('content_thu2')
+@section('slider')
+    @include('pages.include.slider');
+@endsection
+@section('content_xemnhieu')
 <style type="text/css">
     .baiviet ul li{
         padding: 2px;

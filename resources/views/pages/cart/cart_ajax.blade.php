@@ -1,7 +1,5 @@
 @extends('layout')
-@section('slider')
-@include('pages.include.slider');
-@endsection
+
 @section('content')
 
 	<section id="cart_items">

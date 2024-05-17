@@ -34,8 +34,8 @@ class ProductController extends Controller
     public function add_product()
     {
         $this->AuthLogin();
-        $cate_product = DB::table('tbl_category_product')->orderby('category_id', 'desc')->get();
-        $brand_product = DB::table('tbl_brand')->orderby('brand_id', 'desc')->get();
+        $cate_product = DB::table('tbl_category_product')->orderby('category_id', 'DESC')->get();
+        $brand_product = DB::table('tbl_brand')->orderby('brand_id', 'DESC')->get();
 
         return view('admin.sanpham.add_product')->with('cate_product', $cate_product)->with('brand_product', $brand_product);
     }
@@ -46,7 +46,7 @@ class ProductController extends Controller
         $all_product = DB::table('tbl_product')
             ->join('tbl_category_product', 'tbl_category_product.category_id', '=', 'tbl_product.category_id')
             ->join('tbl_brand', 'tbl_brand.brand_id', '=', 'tbl_product.brand_id')
-            ->orderBy('tbl_product.product_id', 'desc')->get();
+            ->orderBy('tbl_product.product_id', 'DESC')->get();
         $manager_product = view('admin.sanpham.all_product')->with('all_product', $all_product);
         return view('admin_layout')->with('admin.all_product', $manager_product);
     }
@@ -55,9 +55,9 @@ class ProductController extends Controller
         $this->AuthLogin();
         $data = array();
 
-        $product_price = filter_var($request->product_price,FILTER_SANITIZE_NUMBER_INT);
-        $product_cost = filter_var($request->product_cost,FILTER_SANITIZE_NUMBER_INT);
-        $product_km = filter_var($request->product_km,FILTER_SANITIZE_NUMBER_INT);
+        $product_price = filter_var($request->product_price, FILTER_SANITIZE_NUMBER_INT);
+        $product_cost = filter_var($request->product_cost, FILTER_SANITIZE_NUMBER_INT);
+        $product_km = filter_var($request->product_km, FILTER_SANITIZE_NUMBER_INT);
 
 
         $data['product_name'] = $request->product_name;
@@ -124,10 +124,10 @@ class ProductController extends Controller
     {
         $this->AuthLogin();
         $data = array();
-        $product_price = filter_var($request->product_price,FILTER_SANITIZE_NUMBER_INT);
-        $product_cost = filter_var($request->product_cost,FILTER_SANITIZE_NUMBER_INT);
-        $product_km = filter_var($request->product_km,FILTER_SANITIZE_NUMBER_INT);
-        
+        $product_price = filter_var($request->product_price, FILTER_SANITIZE_NUMBER_INT);
+        $product_cost = filter_var($request->product_cost, FILTER_SANITIZE_NUMBER_INT);
+        $product_km = filter_var($request->product_km, FILTER_SANITIZE_NUMBER_INT);
+
         $data['product_name'] = $request->product_name;
         $data['product_tags'] = $request->product_tags;
         $data['product_slug'] = $request->product_slug;
@@ -231,8 +231,6 @@ class ProductController extends Controller
         $meta_title = 'Tags:' . $product_tag;
         $url_canonical = $request->url();
 
-
-
         return view('pages.sanpham.tag')->with('category', $cate_product)->with('brand', $brand_product)
             ->with('slider', $slider)->with('category_post', $category_post)->with('meta_desc', $meta_desc)
             ->with('meta_keywords', $meta_keywords)->with('meta_title', $meta_title)->with('url_canonical', $url_canonical)
@@ -285,7 +283,7 @@ class ProductController extends Controller
             $output .= '
             <div class="row style_comment">
             <div class="col-md-2">
-            <img width="100%" src="' . url('/public/fontend/images/download.png') . '" class="img img-responsive img-thumbnail">
+           
         </div>
         <div class="col-md-10">
             <p style="color: green">@' . $com->comment_name . '</p>
@@ -300,7 +298,7 @@ class ProductController extends Controller
                     $output .= '
             <div class="row style_comment" style="margin:5px 40px">
             <div class="col-md-2">
-            <img width="60%" src="' . url('/public/fontend/images/images.png') . '" class="img img-responsive img-thumbnail">
+           
         </div>
         <div class="col-md-10">
             <p style="color: brown">@Admin</p>
@@ -371,13 +369,37 @@ class ProductController extends Controller
             return redirect()->back()->with('error', 'Không tìm thấy bình luận cần xóa.');
         }
     }
+    // public function insert_rating(Request $request)
+    // {
+    //     $data = $request->all();
+    //     $rating = new Rating();
+    //     $rating->product_id = $data['product_id'];
+    //     $rating->rating = $data['index'];
+    //     $rating->save();
+    //     dd($rating);
+    // }
     public function insert_rating(Request $request)
-    {
+{
+    try {
+        \Log::info('Request Data: ', $request->all()); // Log all request data
+
         $data = $request->all();
+
+        if (!isset($data['product_id']) || !isset($data['index'])) {
+            \Log::error('Missing product_id or index', $data);
+            return response()->json(['message' => 'Missing product_id or index'], 400);
+        }
+
         $rating = new Rating();
         $rating->product_id = $data['product_id'];
         $rating->rating = $data['index'];
         $rating->save();
-        return 'done';
+
+        return response()->json(['message' => 'done'], 200);
+    } catch (\Exception $e) {
+        \Log::error('Error inserting rating: ' . $e->getMessage());
+        return response()->json(['message' => 'Server Error'], 500);
     }
+}
+
 }

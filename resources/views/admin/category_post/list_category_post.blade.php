@@ -5,11 +5,27 @@
 <div class="table-agile-info">
     <div class="panel panel-default">
       <header class="panel-heading">
-      Liệt kê danh mục bai viet
+      Liệt kê danh mục bài viết
     </header>
       
       <div class="table-responsive">
         <table class="table table-striped b-t b-light">
+          <style>
+            .custom-button {
+                background-color: brown;
+                color: white;
+                padding: 10px 20px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                margin: 5px 2px;
+                cursor: pointer;
+                border: none;
+                border-radius: 4px;
+            }
+        </style>
+          <a href="{{ URL::to('/add-category-post') }}"  class="custom-button">Thêm danh mục bài viết</a>
           <?php
           $message = Session::get('message');
           if($message){
