@@ -32,7 +32,7 @@
 							<td class="price">Giá sản phẩm</td>
 							<td class="quantity">Số lượng</td>
 							<td class="total">Thành tiền</td>
-							<td></td>
+							<td class="total">Xử lí</td>
 						</tr>
 					</thead>
 					<tbody>
@@ -77,7 +77,7 @@
 								</p>
 							</td>
 							<td class="cart_delete">
-								<a class="cart_quantity_delete" href="{{url('/del-product/'.$cart['session_id'])}}"><i class="fa fa-times"></i></a>
+								<a class="cart_quantity_delete" href="{{url('/del-product/'.$cart['session_id'])}}">Xóa</a>
 							</td>
 						</tr>
 						
@@ -85,11 +85,11 @@
 						<tr>
 							<td><input type="submit" value="Cập nhật giỏ hàng" name="update_qty" class="check_out btn btn-success btn-sm"></td>
 							<td><a class="btn btn-danger check_out" href="{{url('/del-all-product')}}">Xóa tất cả</a></td>
-							<td>
+							{{-- <td>
 								@if(Session::get('coupon'))
 	                          	<a class="btn btn-success check_out" href="{{url('/unset-coupon')}}">Xóa mã khuyến mãi</a>
 								@endif
-							</td>
+							</td> --}}
 
 							<td>
 								@if(Session::get('customer_id'))
@@ -101,7 +101,7 @@
 
 							
 							<td colspan="2">
-							<h4 style="color: red">Tổng tiền :<span>{{number_format($total,0,',','.')}} VNĐ</span></h4>
+							<h4 style="color: red">Tổng tiền: <span>{{number_format($total,0,',','.')}} VNĐ</span></h4>
 							@if(Session::get('coupon'))
 							<li>
 								
@@ -114,7 +114,7 @@
 												echo '<p><li>Tổng giảm:'.number_format($total_coupon,0,',','.').'đ</li></p>';
 												@endphp
 											</p>
-											<p><li>Tổng đã giảm :{{number_format($total-$total_coupon,0,',','.')}} VNĐ</li></p>
+											<p><li>Tổng đã giảm: {{number_format($total-$total_coupon,0,',','.')}} VNĐ</li></p>
 										@elseif($cou['coupon_condition']==2)
 											Mã giảm : {{number_format($cou['coupon_number'],0,',','.')}} VNĐ
 											<p>
@@ -123,12 +123,9 @@
 								
 												@endphp
 											</p>
-											<p><li>Tổng đã giảm :{{number_format($total_coupon,0,',','.')}} VNĐ</li></p>
+											<p><li>Tổng đã giảm: {{number_format($total_coupon,0,',','.')}} VNĐ</li></p>
 										@endif
 									@endforeach
-								
-
-
 							</li>
 							@endif 	
 						</td>
@@ -147,7 +144,7 @@
 					
 
 				</form>
-					@if(Session::get('cart'))
+					{{-- @if(Session::get('cart'))
 					<tr><td>
 
 							<form method="POST" action="{{url('/check-coupon')}}">
@@ -159,7 +156,7 @@
                           		</form>
                           	</td>
 					</tr>
-					@endif
+					@endif --}}
 
 				</table>
 

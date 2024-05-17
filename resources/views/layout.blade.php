@@ -171,7 +171,7 @@
                                         @endforeach
                                     </ul>
                                 </li>
-                                <li><a href="{{ URL::to('/video-linhwatch') }}">Video</a></li>
+                                {{-- <li><a href="{{ URL::to('/video-linhwatch') }}">Video</a></li> --}}
                                 <li><a href="{{ URL::to('/lien-he') }}">Liên hệ</a></li>
                             </ul>
                         </div>

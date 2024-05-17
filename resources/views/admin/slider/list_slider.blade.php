@@ -9,7 +9,7 @@
       </div>
       
       <div class="table-responsive">
-        <table class="table table-striped b-t b-light">
+        <table class="table table-striped b-t b-light"id="myTable">
           <style>
             .custom-button {
                 background-color: brown;

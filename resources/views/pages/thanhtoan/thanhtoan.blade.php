@@ -9,9 +9,6 @@
                     <li class="active">Thanh toán giỏ hàng</li>
                 </ol>
             </div>
-
-
-
             <div class="shopper-informations">
                 <div class="row">
 
@@ -58,19 +55,7 @@
                                     <div class="">
                                         <div class="form-group">
                                             <label for="exampleInputPassword1">Chọn hình thức thanh toán</label>
-                                            {{-- @if (!Session::get('success_paypal') == true)
-                                                <select name="payment_select"
-                                                    class="form-control input-sm m-bot15 payment_select">
-                                                    <option value="0">Qua chuyển khoản</option>
-                                                    <option value="1">Tiền mặt</option>
-                                                </select>
-                                            @else
-                                                <select name="payment_select"
-                                                    class="form-control input-sm m-bot15 payment_select">
-                                                    <option value="2">Đã thanh toán bằng PayPal</option>
 
-                                                </select>
-                                            @endif --}}
                                             @if (Session::has('success_vnpay') || Session::has('success_momo'))
                                                 <select name="payment_select"
                                                     class="form-control input-sm m-bot15 payment_select">
@@ -85,7 +70,7 @@
                                             @else
                                                 <select name="payment_select"
                                                     class="form-control input-sm m-bot15 payment_select">
-                                                   
+
                                                     <option value="1">Tiền mặt</option>
                                                 </select>
                                             @endif
@@ -154,7 +139,7 @@
                                             <td class="price">Giá sản phẩm</td>
                                             <td class="quantity">Số lượng</td>
                                             <td class="total">Thành tiền</td>
-                                            <td></td>
+                                            <td class="total">Xử lí</td>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -179,14 +164,14 @@
                                                     </td>
                                                     <td class="cart_price">
                                                         <p style="color: red">
-                                                            {{ number_format($cart['product_price'], 0, ',', '.') }} VNĐ</p>
+                                                            {{ number_format($cart['product_price'], 0, ',', '.') }} VNĐ
+                                                        </p>
                                                     </td>
                                                     <td class="cart_quantity">
                                                         <div class="cart_quantity_button">
 
 
                                                             <input class="cart_quantity" type="number"
-                                                                {{-- @if (Session::get('success_paypal') == true) readonly @endif --}}
                                                                 @if (Session::get('success_paypal') || Session::get('success_momo') || Session::get('success_vnpay') == true) readonly @endif
                                                                 min="1" name="cart_qty[{{ $cart['session_id'] }}]"
                                                                 value="{{ $cart['product_qty'] }}">
@@ -200,14 +185,11 @@
                                                         </p>
                                                     </td>
                                                     <td class="cart_delete">
-                                                       
+
                                                         @if (Session::get('success_paypal') || Session::get('success_vnpay') || Session::get('success_momo'))
-                                                            {{-- Nếu có ít nhất một trong hai session tồn tại, không hiển thị nút xóa --}}
                                                         @else
-                                                            {{-- Nếu cả hai session đều không tồn tại, hiển thị nút xóa --}}
                                                             <a class="cart_quantity_delete"
-                                                                href="{{ url('/del-product/' . $cart['session_id']) }}"><i
-                                                                    class="fa fa-times"></i></a>
+                                                                href="{{ url('/del-product/' . $cart['session_id']) }}">Xóa</a>
                                                         @endif
 
 
@@ -223,12 +205,7 @@
                                                     <td><a class="btn btn-danger check_out"
                                                             href="{{ url('/del-all-product') }}">Xóa tất cả</a></td>
                                                     {{-- <td><a class="btn btn-success m-3 check_out" href="{{ route('processTransaction') }}">Thanh toán PayPal</a></td> --}}
-                                                    <td>
-                                                        <a href="{{ route('processTransaction') }}">
-                                                            <img src="{{ 'public/fontend/images/PayPal.png' }}"
-                                                                alt="PayPal" class="check_out paypal">
-                                                        </a>
-                                                    </td>
+
 
                                                     <td>
                                                         @if (Session::get('coupon'))
@@ -242,96 +219,80 @@
                                                         }
                                                     </style>
                                                 @endif
+                                                <td>
+                                                </td>
+                                                
+                                                {{-- LUU O FOOTER --}}
+                                                <td style="border: 1px solid #ccc; padding: 10px;">
+                                                    <div style="margin-bottom: 10px;">
+                                                        <a style="color: green; font-size: 18px;">Tổng tiền:</a>
+                                                        <span
+                                                            style="color: green; font-size: 18px;">{{ number_format($total, 0, ',', '.') }}
+                                                            VNĐ</span>
+                                                    </div>
 
-                                                <td >
-                                                    <a style="color: green; font-size:18px">Tổng tiền :<span>{{ number_format($total, 0, ',', '.') }} VNĐ</span>
-                                                    </a>
                                                     @if (Session::get('coupon'))
-                                                        <a>
-
+                                                        <div style="margin-bottom: 10px;">
                                                             @foreach (Session::get('coupon') as $key => $cou)
                                                                 @if ($cou['coupon_condition'] == 1)
-                                                                    Mã giảm : {{ $cou['coupon_number'] }} %
-                                                                    <p>
-                                                                        @php
-                                                                            $total_coupon =
-                                                                                ($total * $cou['coupon_number']) / 100;
-                                                                        @endphp
-                                                                    </p>
-                                                                    <p>
-                                                                        @php
-                                                                            $total_after_coupon =
-                                                                                $total - $total_coupon;
-                                                                        @endphp
-                                                                    </p>
+                                                                    <span style="color: red; font-size: 16px;">Mã giảm:
+                                                                        {{ $cou['coupon_number'] }}%</span>
+                                                                    <p>@php $total_coupon = ($total * $cou['coupon_number']) / 100; @endphp</p>
+                                                                    <p>@php $total_after_coupon = $total - $total_coupon; @endphp</p>
                                                                 @elseif($cou['coupon_condition'] == 2)
-                                                                    Mã giảm :
-                                                                    {{ number_format($cou['coupon_number'], 0, ',', '.') }}
-                                                                    k
-                                                                    <p>
-                                                                        @php
-                                                                            $total_coupon =
-                                                                                $total - $cou['coupon_number'];
-
-                                                                        @endphp
-                                                                    </p>
-                                                                    @php
-                                                                        $total_after_coupon = $total_coupon;
-                                                                    @endphp
+                                                                    <span style="color: red; font-size: 16px;">Mã giảm:
+                                                                        {{ number_format($cou['coupon_number'], 0, ',', '.') }}
+                                                                        VNĐ</span>
+                                                                    <p>@php $total_coupon = $total - $cou['coupon_number']; @endphp</p>
+                                                                    @php $total_after_coupon = $total_coupon; @endphp
                                                                 @endif
                                                             @endforeach
-
-
-
-                                                                </a>
+                                                        </div>
                                                     @endif
 
                                                     @if (Session::get('fee'))
-                                                        <a style="color: green; font-size:18px" >
-                                                        </br>
-                                                            <a class="cart_quantity_delete"
-                                                                href="{{ url('/del-fee') }}"><i
-                                                                    class="fa fa-times"></i></a>
-
-                                                            Phí vận chuyển
-                                                            <span>{{ number_format(Session::get('fee'), 0, ',', '.') }}đ</span>
-                                                        </a>
+                                                        <div style="margin-bottom: 10px;">
+                                                            <a style="color: red; font-size: 18px;"
+                                                                class="cart_quantity_delete"
+                                                                href="{{ url('/del-fee') }}">
+                                                                <i class="fa fa-times"></i>
+                                                            </a>
+                                                            <span style="color: red; font-size: 18px;">Phí vận
+                                                                chuyển:</span>
+                                                            <span
+                                                                style="color: red; font-size: 18px;">{{ number_format(Session::get('fee'), 0, ',', '.') }}VNĐ</span>
+                                                        </div>
                                                         <?php $total_after_fee = $total + Session::get('fee'); ?>
                                                     @endif
-                                                    </br>
-                                                    <a style="color: red;font-size:20px">Tổng còn:
+
+                                                    <div style="margin-bottom: 10px;">
+                                                        <a style="color: red; font-size: 18px;">Tổng còn:</a>
                                                         @php
                                                             if (Session::get('fee') && !Session::get('coupon')) {
                                                                 $total_after = $total_after_fee;
-                                                                echo number_format($total_after, 0, ',', '.') . ' VNĐ';
                                                             } elseif (!Session::get('fee') && Session::get('coupon')) {
                                                                 $total_after = $total_after_coupon;
-                                                                echo number_format($total_after, 0, ',', '.') . ' VNĐ';
                                                             } elseif (Session::get('fee') && Session::get('coupon')) {
-                                                                $total_after = $total_after_coupon;
-                                                                $total_after = $total_after + Session::get('fee');
-                                                                echo number_format($total_after, 0, ',', '.') . ' VNĐ';
-                                                            } elseif (!Session::get('fee') && !Session::get('coupon')) {
+                                                                $total_after =
+                                                                    $total_after_coupon + Session::get('fee');
+                                                            } else {
                                                                 $total_after = $total;
-                                                                echo number_format($total_after, 0, ',', '.') . ' VNĐ';
                                                             }
-
                                                         @endphp
+                                                        <span
+                                                            style="color: red; font-size: 18px;">{{ number_format($total_after, 0, ',', '.') }}
+                                                            VNĐ</span>
+                                                    </div>
 
-                                                        </a>
                                                     <div class="col-md-12">
                                                         @php
-
                                                             $vnd_to_usd = $total_after / 25451;
                                                             $total_paypal = round($vnd_to_usd, 2);
                                                             \Session::put('total_paypal', $total_paypal);
                                                         @endphp
-
-
                                                     </div>
-
-
                                                 </td>
+
 
                                             </tr>
                                         @else
@@ -352,9 +313,9 @@
 
                             </form>
                             @if (Session::get('cart'))
-                            @if (Session::get('success_paypal') || Session::get('success_vnpay') || Session::get('success_momo'))
-                                {{-- @if (!Session::get('success_paypal') == true) --}}
-                            @else
+                                @if (Session::get('success_paypal') || Session::get('success_vnpay') || Session::get('success_momo'))
+                                    {{-- @if (!Session::get('success_paypal') == true) --}}
+                                @else
                                     <tr>
                                         <td>
 
@@ -370,38 +331,48 @@
                                         </td>
                                         <td>
                                             <div class="payment-methods">
-                                            <form action="{{ url('/vnpay-payment') }}" method="POST">
-                                                @csrf
-                                                <input type="hidden" name="total_vnpay" value="{{ $total_after }}">
-                                                <!-- Ẩn văn bản bằng CSS và thêm class để tùy chỉnh CSS -->
-                                                <button type="submit" class=" check_out vnpay-button" name="redirect">
-                                                    <!-- Hiển thị hình ảnh logo của VNPAY -->
-                                                    <img src="{{ 'public/fontend/images/vnpay.png' }}" alt="VNPAY"
-                                                        class="vnpay-logo">
-                                                </button>
-                                            </form>
-                                            <style>
-                                                img.vnpay-logo {
-                                                    width: 115px;
-                                                    height: 42px;
-                                                }
-                                            </style>
+                                                <form action="{{ url('/vnpay-payment') }}" method="POST">
+                                                    @csrf
+                                                    <input type="hidden" name="total_vnpay"
+                                                        value="{{ $total_after }}">
+                                                    <!-- Ẩn văn bản bằng CSS và thêm class để tùy chỉnh CSS -->
+                                                    <button type="submit" class=" check_out vnpay-button"
+                                                        name="redirect">
+                                                        <!-- Hiển thị hình ảnh logo của VNPAY -->
+                                                        <img src="{{ 'public/fontend/images/vnpay.png' }}" alt="VNPAY"
+                                                            class="vnpay-logo">
+                                                    </button>
+                                                </form>
+                                                <style>
+                                                    img.vnpay-logo {
+                                                        width: 115px;
+                                                        height: 42px;
+                                                    }
+                                                </style>
 
-                                            <form action="{{ url('/momo-payment') }}" method="POST">
-                                                @csrf
-                                                <input type="hidden" name="total_momo" value="{{ $total_after }}">
-                                                <button type="submit" class="check_out"
-                                                    name="payUrl"><img src="{{ 'public/fontend/images/MoMo.png' }}" alt="VNPAY"
-                                                    class="vnpay-logo"></button>
-                                            </form>
-                                        </div>
 
-                                            
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="payment-methods">
+                                                <form action="{{ url('/momo-payment') }}" method="POST">
+                                                    @csrf
+                                                    <input type="hidden" name="total_momo" value="{{ $total_after }}">
+                                                    <button type="submit" class="check_out" name="payUrl"><img
+                                                            src="{{ 'public/fontend/images/MoMo.png' }}" alt="VNPAY"
+                                                            class="vnpay-logo"></button>
+                                                </form>
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('processTransaction') }}">
+                                                <img src="{{ 'public/fontend/images/PayPal.png' }}" alt="PayPal"
+                                                    class="check_out paypal">
+                                            </a>
                                         </td>
                                         <style>
                                             .payment-methods {
-  display: flex;
-}
+                                                display: flex;
+                                            }
                                         </style>
                                     </tr>
                                 @endif
@@ -411,10 +382,10 @@
 
                         </div>
                     </div>
-                    
-                    
-                    
-                    
+
+
+
+
 
                 </div>
             </div>

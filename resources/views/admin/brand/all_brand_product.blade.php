@@ -35,7 +35,6 @@
                     ?>
                     <thead>
                         <tr>
-
                             <th style="color: brown">Tên thương hiệu</th>
                             <th style="color: brown">Slug</th>
                             <th style="color: brown">Mô tả</th>

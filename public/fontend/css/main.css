@@ -1534,7 +1534,7 @@ h2.title {
 
 #cart_items .cart_info .cart_total_price {
   
-  font-size: 24px;
+  font-size: 18px;
 }
 
 .cart_product {
@@ -1567,7 +1567,7 @@ h2.title {
 
 .cart_delete  {
   display: block;
-  margin-right: -12px;
+
   overflow: hidden;
 }
 
@@ -1576,7 +1576,7 @@ h2.title {
   background: red;
   color: #FFFFFF;
   padding: 5px 7px;
-  font-size: 16px
+ 
 }
   
 
@@ -1688,9 +1688,7 @@ h2.title {
     margin-left: 40px;
 }
 
-.check_out {
-  margin-left: 20px
-}
+
 
 
 
@@ -2297,9 +2295,7 @@ h2.title {
 
 .btn.btn-primary {
   background: red;
-  border: 0 none;
-  border-radius: 0;
-  margin-top: 16px;
+ 
 }
 
 .blank-arrow {

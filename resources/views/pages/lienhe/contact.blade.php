@@ -5,12 +5,12 @@
         <div class="row">
             @foreach($contact as $key =>$cont)
             <div class="col-md-12">
-               {!!$cont->info_contact!!}
-               {!!$cont->info_fanpage!!}
+               {!!$cont->ct_contact!!}
+               {!!$cont->ct_fanpage!!}
             </div>
             <div class="col-md-12">
                <h4>Bản đồ</h4>
-               {!!$cont->info_map!!}
+               {!!$cont->ct_map!!}
             </div>
             @endforeach
         </div>
