@@ -187,7 +187,7 @@
                             <span>Số lượt đánh giá: {{ $ratingCount }}</span>
                         </div>
                         <p><b>Bình luận về sản phẩm</b></p>
-                        <form action="#">
+                        {{-- <form action="#">
 
                             <span>
                                 <input type="hidden" style="width: 100%;margin-left:0" type="text"
@@ -195,7 +195,7 @@
                                     value="{{ Session::get('customer_name', '') }}"
                                     {{ Session::has('customer_name') ? 'readonly' : '' }} />
                             </span>
-                            <textarea name="comment" class="comment_content" placeholder="Bình luận"></textarea>
+                            <input name="comment" class="comment_content" placeholder="Bình luận"></input>
                             <div id="notify_comment"></div>
                             @if (!Session::get('customer_name', ''))
                                 <button type="button" class="btn btn-danger pull-right send-comment">Đăng nhập để bình
@@ -205,8 +205,25 @@
                                     Gửi bình luận
                                 </button>
                             @endif
-                        </form>
-                    </br></br>
+                        </form> --}}
+                        <div class="comment-section">
+                            <form action="#">
+                                <span>
+                                    <input type="hidden" class="comment_name" placeholder="User"
+                                           value="{{ Session::get('customer_name', '') }}"
+                                           {{ Session::has('customer_name') ? 'readonly' : '' }} />
+                                </span>
+                                <input name="comment" class="comment_content" placeholder="Bình luận"></input>
+                                <div id="notify_comment"></div>
+                                @if (!Session::get('customer_name', ''))
+                                    <button type="button" class="btn btn-danger send-comment">Đăng nhập để bình luận</button>
+                                @else
+                                    <button type="button" class="btn btn-danger send-comment">Gửi bình luận</button>
+                                @endif
+                            </form>
+                          
+                        </div>
+                        <div>
                         <form>
                             @csrf
                             <input type="hidden" name="comment_product_id" class="comment_product_id"
@@ -214,6 +231,7 @@
                             <div id="comment_show"></div>
 
                         </form>
+                        <div>
                     </div>
                 </div>
 
@@ -407,5 +425,41 @@
         text-decoration: none;
 
     }
+    comment-section {
+    display: flex;
+    align-items: flex-start;
+    margin: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    margin-right: 20px;
+}
+
+.comment_content {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.send-comment {
+    align-self: flex-end;
+    padding: 10px 20px;
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.send-comment:hover {
+    background-color: #c9302c;
+}
+
 </style>
 

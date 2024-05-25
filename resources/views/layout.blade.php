@@ -291,7 +291,13 @@
             </div>
         </div>
     </section>
-  
+    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+    <df-messenger
+      intent="WELCOME"
+      chat-title="VLinh"
+      agent-id="c8ac63f0-8b2a-44ac-b959-e220da03860b"
+      language-code="vi"
+    ></df-messenger>
     <footer class="footer text-color-dark">
         <div class="container-fluid d-flex justify-content-center">
             <div class="row anhduoi flex-grow-1">

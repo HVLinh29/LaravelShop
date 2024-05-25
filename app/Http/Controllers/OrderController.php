@@ -19,7 +19,7 @@ use Session;
 use Illuminate\Support\Facades\DB;
 use App\Slider;
 use App\CatePost;
-
+use Toastr;
 class OrderController extends Controller
 {
 	public function manage_order()

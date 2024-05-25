@@ -12,6 +12,7 @@ session_start();
 use App\CatePost;
 use App\Slider;
 use Auth;
+use Toastr;
 class BrandProduct extends Controller
 {
     public function AuthLogin()
@@ -45,21 +46,23 @@ class BrandProduct extends Controller
         $brand->brand_desc =$data['brand_product_desc'];
         $brand->brand_status =$data['brand_product_status'];
         $brand->save();
-
-        Session::put('message','Thêm thương hiệu sản phẩm thành công');
+        Toastr::success('Thêm thương hiệu sản phẩm thành công', 'Thành công');
+        // Session::put('message','Thêm thương hiệu sản phẩm thành công');
         return Redirect::to('all-brand-product');
 
     }
     public function unactive_brand_product($brand_product_id){
         $this->AuthLogin();
         DB::table('tbl_brand')->where('brand_id',$brand_product_id)->update(['brand_status'=>1]);
-        Session::put('message','Không kích hoạt được thương hiệu sản phẩm');
+        Toastr::error('Không kích hoạt được thương hiệu sản phẩm', 'Không thành công');
+        // Session::put('message','Không kích hoạt được thương hiệu sản phẩm');
         return Redirect::to('all-brand-product');
     }
     public function active_brand_product($brand_product_id){
         $this->AuthLogin();
         DB::table('tbl_brand')->where('brand_id',$brand_product_id)->update(['brand_status'=>0]);
-        Session::put('message','Kích hoạt thương hiệu sản phẩm thành công');
+        Toastr::success('Kích hoạt thương hiệu sản phẩm thành công', 'Thành công');
+        // Session::put('message','Kích hoạt thương hiệu sản phẩm thành công');
         return Redirect::to('all-brand-product');
     }
     public function edit_brand_product($brand_product_id){
@@ -79,13 +82,15 @@ class BrandProduct extends Controller
         $brand->brand_desc =$data['brand_product_desc'];
         // $brand->brand_status =$data['brand_product_status'];
         $brand->save();
-        Session::put('message','Cập nhật thương hiệu sản phẩm thành công');
+        Toastr::success('Cập nhật thương hiệu sản phẩm thành công', 'Thành công');
+        // Session::put('message','Cập nhật thương hiệu sản phẩm thành công');
         return Redirect::to('all-brand-product');
     }
     public function delete_brand_product($brand_product_id){
         $this->AuthLogin();
         DB::table('tbl_brand')->where('brand_id',$brand_product_id)->delete();
-        Session::put('message','Xóa thương hiệu sản phẩm thành công');
+        Toastr::error('Xóa thương hiệu sản phẩm thành công', 'Thành công');
+        // Session::put('message','Xóa thương hiệu sản phẩm thành công');
         return Redirect::to('all-brand-product');
     }
 

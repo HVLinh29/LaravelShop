@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Redirect;
 use Session;
 use Carbon\Carbon;
 session_start();
-
+use Toastr;
 class CouponController extends Controller
 {
     public function insert_coupon(){
@@ -23,7 +23,8 @@ class CouponController extends Controller
     public function delete_coupon($coupon_id){
         $coupon = Coupon::find($coupon_id);
         $coupon->delete();
-        Session::put('message','Xóa mã giảm giá thành công');
+        Toastr::error('Xóa mã giảm giá thành công', 'Thành công');
+        // Session::put('message','Xóa mã giảm giá thành công');
         return Redirect::to('list-coupon');
     }
     public function unset_coupon(){
@@ -45,8 +46,8 @@ class CouponController extends Controller
         $coupon->coupon_time = $data['coupon_time'];
         $coupon->coupon_condition = $data['coupon_condition'];
         $coupon->save();
-
-        Session::put('message','Thêm mã giảm giá thành công');
+        Toastr::success('Thêm mã giảm giá thành công', 'Thành công');
+        // Session::put('message','Thêm mã giảm giá thành công');
         return Redirect::to('list-coupon');
 
     }

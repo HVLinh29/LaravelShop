@@ -135,7 +135,7 @@
     @endforeach
 </div>
 @endsection
-</br>
+
 @section('content')
     <div class="features_items">
         <h2 class="title text-center">SẢN PHẨM MỚI NHẤT</h2>
@@ -196,7 +196,7 @@
                                 <div class="col-md-7">
 
                                     <h2 class="quickview"><span id="product_quickview_title"></span></h2>
-                                    <p style="color: brown">Mã ID: <span id="product_quickview_id"></span></p>
+                                   
 
                                     <span>
                                         <h3 style="color: brown">Giá sản phẩm: <span id="product_quickview_price"></span>
@@ -227,7 +227,6 @@
     </div>
 @endsection
 
-</br>
 @section('content_soluong')
     <div class="features_items">
         <h2 class="title text-center">SẢN PHẨM BÁN CHẠY</h2>
@@ -432,7 +431,7 @@
     </div>
     </div>
 @endsection
-</br>
+
 @section('content_xemnhieu')
     <div class="features_items">
         <h2 class="title text-center">SẢN PHẨM XEM NHIỀU</h2>

@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Symfony\Component\Console\Helper\Table;
 use Session;
 use Illuminate\Support\Facades\Redirect;
-
+use Toastr;
 session_start();
 
 use Auth;
@@ -59,10 +59,12 @@ class PostController extends Controller
             $post->post_image = $new_image;
 
             $post->save();
-            Session::put('message', 'Thêm bai viet thành công');
+            Toastr::success('Thêm bài viết thành công', 'Thành công');
+            // Session::put('message', 'Thêm bai viet thành công');
             return redirect('/list-post');
         } else {
-            Session::put('message', 'Ban hay them hinh anh cho bai viet');
+            Toastr::success('Bạn hãy thêm hình ảnh cho bài viết', 'Bạn hãy thêm hình ảnh');
+            // Session::put('message', 'Ban hay them hinh anh cho bai viet');
             return redirect('/list-post');
         }
     }
@@ -82,8 +84,8 @@ class PostController extends Controller
             unlink($path);
         }
         $post->delete();
-
-        Session::put('message', 'Xóa  bai viet thành công');
+        Toastr::error('Xóa bài viết thành công', 'Thành công');
+        // Session::put('message', 'Xóa  bai viet thành công');
         return redirect('/list-post');
     }
     public function edit_post($post_id)
@@ -122,7 +124,8 @@ class PostController extends Controller
         }
 
         $postbv->save();
-        Session::put('message', 'Cập nhật bài viết thành công');
+        Toastr::success('Cập nhật bài viết thành công', 'Thành công');
+        // Session::put('message', 'Cập nhật bài viết thành công');
         return redirect('/list-post');
     }
     public function danh_muc_bai_viet(Request $request, $post_slug)

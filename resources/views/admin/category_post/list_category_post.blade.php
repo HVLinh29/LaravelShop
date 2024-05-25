@@ -69,18 +69,7 @@
           </tbody>
         </table>
 
-        {{-- Xuat nhap excel --}}
-      </br>
-        <form action="{{url('import-csv')}}" method="POST" enctype="multipart/form-data">
-          @csrf
-        <input type="file" name="file" accept=".xlsx"><br>
-       <input type="submit" value="Import Excel" name="import_csv" class="btn btn-warning">
-        </form>
-      </br>
-       <form action="{{url('export-csv')}}" method="POST">
-          @csrf
-       <input type="submit" value="Export Excel" name="export_csv" class="btn btn-success">
-      </form>
+      
 
       </div>
       

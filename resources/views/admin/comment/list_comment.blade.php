@@ -37,11 +37,11 @@
                                     @if ($comm->comment_status == 1)
                                         <input type="button" data-comment_status="0"
                                             data-comment_id="{{ $comm->comment_id }}" id="{{ $comm->comment_product_id }}"
-                                            class="btn btn-success btn xs comment_duyet" value="Duyet">
+                                            class="btn btn-success btn xs comment_duyet" value="Duyệt">
                                     @else
                                         <input type="button" data-comment_status="1"
                                             data-comment_id="{{ $comm->comment_id }}" id="{{ $comm->comment_product_id }}"
-                                            class="btn btn-danger btn xs comment_duyet" value=" Bo Duyet">
+                                            class="btn btn-danger btn xs comment_duyet" value="Bỏ Duyệt">
                                     @endif
                                 </td>
 
@@ -77,7 +77,7 @@
 
                                 <td>
                                     
-                                    <a onclick="return confirm('Bạn có muốn xóa binh luan này  ?')" href="{{URL::to('/delete-comment/'.$comm->comment_id)}}"
+                                    <a onclick="return confirm('Bạn có muốn xóa bình luận này?')" href="{{URL::to('/delete-comment/'.$comm->comment_id)}}"
                                         class="active btn btn-danger" ui-toggle-class="">Xóa
                                        </a>
                                 </td>

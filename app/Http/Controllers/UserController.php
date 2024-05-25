@@ -20,7 +20,7 @@ class UserController extends Controller
     }
     public function assign_roles(Request $request){
         if(Auth::id() == $request->admin_id){
-            return redirect()->back()->with('message','Ban khong co quyen phan quyen tai khoan cua ban');
+            return redirect()->back()->with('message','Bạn không thể phân quyền tài khoản của bạn');
         }
     
         $user = Admin::where('admin_email',$request->admin_email)->first();
@@ -34,7 +34,7 @@ class UserController extends Controller
         if($request->admin_role){
            $user->roles()->attach(Roles::where('name','admin')->first());     
         }
-        return redirect()->back()->with('message','Cap quyen thanh cong');
+        return redirect()->back()->with('message','Cấp quyền thành công');
     }
     public function store_users(Request $request){
         $data = $request->all();
@@ -52,7 +52,7 @@ class UserController extends Controller
     }
     public function delete_user_roles($admin_id){
         if(Auth::id() == $admin_id){
-            return redirect()->back()->with('message','Ban khong co quyen xoa tai khoan cua ban');
+            return redirect()->back()->with('message','Bạn không có quyền xóa tài khoản của bạn');
         }
 
         $admin =Admin::find($admin_id);
@@ -60,7 +60,7 @@ class UserController extends Controller
             $admin->roles()->detach();
             $admin->delete();
         }
-        return redirect()->back()->with('message','Xoa User thanh cong');
+        return redirect()->back()->with('message','Xóa User thành công');
     }
     public function transferrights($admin_id){
         $user = Admin::where('admin_id',$admin_id)->first();

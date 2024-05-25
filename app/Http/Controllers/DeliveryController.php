@@ -7,7 +7,7 @@ Use App\City;
 Use App\Quan;
 Use App\Xa;
 Use App\Feeship;
-
+use Toastr;
 class DeliveryController extends Controller
 {
     public function delivery(Request $request){
@@ -89,5 +89,6 @@ class DeliveryController extends Controller
 		$fee_ship->fee_xaid = $data['wards'];
 		$fee_ship->fee_feeship = $data['fee_ship'];
 		$fee_ship->save();
+		Toastr::success('Thêm phí vận chuyển thành công', 'Thành công');
 	}
 }

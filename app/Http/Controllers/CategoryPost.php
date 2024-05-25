@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Redirect;
 session_start();
 use App\CatePost;
 use Auth;
+use Toastr;
 class CategoryPost extends Controller
 {
     public function AuthLogin()
@@ -43,7 +44,8 @@ class CategoryPost extends Controller
         $category_post->cate_post_slug = $data['cate_post_slug'];
       
         $category_post->save();
-        Session::put('message','Thêm danh mục bai viet thành công');
+        Toastr::success('Thêm danh mục bài viết thành công', 'Thành công');
+        // Session::put('message','Thêm danh mục bai viet thành công');
         return redirect('/list-category-post');
 
     }
@@ -73,13 +75,15 @@ class CategoryPost extends Controller
         $category_post->cate_post_slug = $data['cate_post_slug'];
       
         $category_post->save();
-        Session::put('message','Cap nhat danh mục bai viet thành công');
+        Toastr::success('Cập nhật danh mục bài viết thành công', 'Thành công');
+        // Session::put('message','Cap nhat danh mục bai viet thành công');
         return redirect('/list-category-post');
     }
     public function delete_category_post($cate_id){
         $category_post = CatePost::find($cate_id);
         $category_post->delete();
-        Session::put('message','Xóa danh mục bai viet thành công');
+        Toastr::error('Xóa danh mục bài viết thành công', 'Thành công');
+        // Session::put('message','Xóa danh mục bai viet thành công');
         return redirect('/list-category-post');
     }
 }

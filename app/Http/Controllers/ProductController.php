@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Symfony\Component\Console\Helper\Table;
 use Session;
 use Illuminate\Support\Facades\Redirect;
+use Toastr;
 
 session_start();
 
@@ -92,21 +93,24 @@ class ProductController extends Controller
         $gallery->product_id = $pro_id;
         $gallery->save();
 
-        Session::put('message', 'Thêm sản phẩm thành công');
+        Toastr::success('Thêm sản phẩm thành công', 'Thành công');
+        // Session::put('message', 'Thêm sản phẩm thành công');
         return Redirect::to('all-product');
     }
     public function unactive_product($product_id)
     {
         $this->AuthLogin();
         DB::table('tbl_product')->where('product_id', $product_id)->update(['product_status' => 1]);
-        Session::put('message', 'Không kích hoạt sản phẩm thành công');
+        Toastr::error('Không kích hoạt sản phẩm thành công', 'Không thành công');
+        // Session::put('message', 'Không kích hoạt sản phẩm thành công');
         return Redirect::to('all-product');
     }
     public function active_product($product_id)
     {
         $this->AuthLogin();
         DB::table('tbl_product')->where('product_id', $product_id)->update(['product_status' => 0]);
-        Session::put('message', 'Kích hoạt sản phẩm thành công');
+        Toastr::success('Kích hoạt sản phẩm thành công', 'Thành công');
+        // Session::put('message', 'Kích hoạt sản phẩm thành công');
         return Redirect::to('all-product');
     }
     public function edit_product($product_id)
@@ -149,19 +153,22 @@ class ProductController extends Controller
             $get_image->move('public/uploads/product', $new_image);
             $data['product_image'] = $new_image;
             DB::table('tbl_product')->where('product_id', $product_id)->update($data);
-            Session::put('message', 'Cập nhật sản phẩm thành công');
+            Toastr::success('Cập nhật sản phẩm thành công', 'Thành công');
+            // Session::put('message', 'Cập nhật sản phẩm thành công');
             return Redirect::to('all-product');
         }
 
         DB::table('tbl_product')->where('product_id', $product_id)->update($data);
-        Session::put('message', 'Cập nhật sản phẩm thành công');
+        // Session::put('message', 'Cập nhật sản phẩm thành công');
+        Toastr::success('Cập nhật sản phẩm thành công', 'Thành công');
         return Redirect::to('all-product');
     }
     public function delete_product($product_id)
     {
         $this->AuthLogin();
         DB::table('tbl_product')->where('product_id', $product_id)->delete();
-        Session::put('message', 'Xóa sản phẩm thành công');
+        Toastr::error('Xóa sản phẩm thành côngg', 'Thành công');
+        // Session::put('message', 'Xóa sản phẩm thành công');
         return Redirect::to('all-product');
     }
 
@@ -280,37 +287,34 @@ class ProductController extends Controller
         $comment_rep = Comment::with('product')->where('comment_parent_comment', '>', 0)->get();
         $output = '';
         foreach ($comment as $key => $com) {
+            
             $output .= '
-            <div class="row style_comment">
-            <div class="col-md-2">
-           
-        </div>
-        <div class="col-md-10">
-            <p style="color: green">@' . $com->comment_name . '</p>
-            <p style="color: #000">@' . $com->comment_date . '</p>
-            <p>' . $com->comment . '</p>
-        </div>
-            </div><p></p>
-';
-            foreach ($comment_rep as $key => $rep_comment) {
+            <div class="col-md-10">
+                <div class="comment-box" style=" margin-bottom: 10px;">
+                    <p style="color: green; font-weight: bold;">' . htmlspecialchars($com->comment_name) . '</p>
+                    <p style="color: #000; font-size: 12px;">' . htmlspecialchars($com->comment_date) . '</p>
+                    <p>' . nl2br(htmlspecialchars($com->comment)) . '</p>
+                </
+                </div>
+                ';
 
+            foreach ($comment_rep as $key => $rep_comment) {
                 if ($rep_comment->comment_parent_comment == $com->comment_id) {
                     $output .= '
-            <div class="row style_comment" style="margin:5px 40px">
-            <div class="col-md-2">
-           
-        </div>
-        <div class="col-md-10">
-            <p style="color: brown">@Admin</p>
-            <p style="color: #000">' . $rep_comment->comment . '</p>
-            <p></p>
-        </div>
-            </div><p></p>
+            <div class="col-md-10 offset-md-1">
+                <div class="reply-box" style=" margin-bottom: 10px; ">
+                    <p style="color: brown; font-weight: bold;">@Admin</p>
+                    <p style="color: #000;">' . nl2br(htmlspecialchars($rep_comment->comment)) . '</p>
+                </div>
+            </div>
             ';
                 }
             }
+
+            $output .= '</div>';
+
+            echo $output;
         }
-        echo $output;
     }
     public function send_comment(Request $request)
     {
@@ -358,48 +362,41 @@ class ProductController extends Controller
 
             // Kiểm tra xem xóa bình luận thành công hay không
             if ($deleted) {
+                Toastr::success('Bình luận đã được xóa thành công', 'Thành công');
                 // Nếu xóa thành công, chuyển hướng về trang trước đó hoặc trang chính của ứng dụng của bạn
                 return redirect()->back()->with('success', 'Bình luận đã được xóa thành công.');
             } else {
                 // Nếu xóa không thành công, thông báo lỗi
+                Toastr::error('Xóa bình luận thất bại. Vui lòng thử lại sau.', 'Lỗi');
                 return redirect()->back()->with('error', 'Xóa bình luận thất bại. Vui lòng thử lại sau.');
             }
         } else {
-            // Nếu không có comment_id được cung cấp, thông báo lỗi
+            Toastr::error('Không tìm thấy bình luận cần xóa.', 'Lỗi');
             return redirect()->back()->with('error', 'Không tìm thấy bình luận cần xóa.');
         }
     }
-    // public function insert_rating(Request $request)
-    // {
-    //     $data = $request->all();
-    //     $rating = new Rating();
-    //     $rating->product_id = $data['product_id'];
-    //     $rating->rating = $data['index'];
-    //     $rating->save();
-    //     dd($rating);
-    // }
+
     public function insert_rating(Request $request)
-{
-    try {
-        \Log::info('Request Data: ', $request->all()); // Log all request data
+    {
+        try {
+            \Log::info('Request Data: ', $request->all()); // Log all request data
 
-        $data = $request->all();
+            $data = $request->all();
 
-        if (!isset($data['product_id']) || !isset($data['index'])) {
-            \Log::error('Missing product_id or index', $data);
-            return response()->json(['message' => 'Missing product_id or index'], 400);
+            if (!isset($data['product_id']) || !isset($data['index'])) {
+                \Log::error('Missing product_id or index', $data);
+                return response()->json(['message' => 'Missing product_id or index'], 400);
+            }
+
+            $rating = new Rating();
+            $rating->product_id = $data['product_id'];
+            $rating->rating = $data['index'];
+            $rating->save();
+
+            return response()->json(['message' => 'done'], 200);
+        } catch (\Exception $e) {
+            \Log::error('Error inserting rating: ' . $e->getMessage());
+            return response()->json(['message' => 'Server Error'], 500);
         }
-
-        $rating = new Rating();
-        $rating->product_id = $data['product_id'];
-        $rating->rating = $data['index'];
-        $rating->save();
-
-        return response()->json(['message' => 'done'], 200);
-    } catch (\Exception $e) {
-        \Log::error('Error inserting rating: ' . $e->getMessage());
-        return response()->json(['message' => 'Server Error'], 500);
     }
-}
-
 }

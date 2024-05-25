@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Session;
 use Redirect;
 use Illuminate\Support\Facades\DB;
 use Auth;
+use Toastr;
 class SliderController extends Controller
 {
     public function AuthLogin()
@@ -49,30 +50,34 @@ class SliderController extends Controller
             $slider->slider_status = $data['slider_status'];
             $slider->slider_desc = $data['slider_desc'];
             $slider->save();
-
-            Session::put('message', 'Thêm slider thành công');
+            Toastr::success('Thêm slider thành công', 'Thành công');
+            // Session::put('message', 'Thêm slider thành công');
             return Redirect::to('managa-slider');
         } else {
-            Session::put('message', 'Làm ơn thêm hình ảnh');
-            return Redirect::to('managa-slider');
+            Toastr::error('Làm ơn thêm hình ảnh', 'Thêm hình ảnh');
+            // Session::put('message', 'Làm ơn thêm hình ảnh');
+            return Redirect::to('add-slider');
         }
     }
     public function unactive_slider($slider_id){
         $this->AuthLogin();
         DB::table('tbl_slider')->where('slider_id',$slider_id)->update(['slider_status'=>0]);
-        Session::put('message','Không kích hoạt được slider');
+        Toastr::error('Chưa kích hoạt được slider', 'Chưa kích hoạt');
+        // Session::put('message','Không kích hoạt được slider');
         return Redirect::to('managa-slider');
     }
     public function active_slider($slider_id){
         $this->AuthLogin();
         DB::table('tbl_slider')->where('slider_id',$slider_id)->update(['slider_status'=>1]);
-        Session::put('message','Kích hoạt được slider');
+        Toastr::success('Kích hoạt Slider thành công', 'Thành công');
+        // Session::put('message','Kích hoạt được slider');
         return Redirect::to('managa-slider');
     }
     public function delete_slider($slider_id){
         $slider = Slider::find($slider_id);
         $slider->delete();
-        Session::put('message','Xóa Slider thành công');
+        Toastr::error('Xóa Slider thành công', 'Thành công');
+        // Session::put('message','Xóa Slider thành công');
         return Redirect::to('managa-slider');
     }
 }
