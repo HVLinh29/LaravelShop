@@ -11,6 +11,6 @@ class Rating extends Model
     	'product_id', 'rating'
         
     ];
-    protected $primaryKey = 'rating_id';
+    protected $primaryKey = 'id';
  	protected $table = 'tbl_rating';
 }

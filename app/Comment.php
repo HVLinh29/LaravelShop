@@ -7,12 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class Comment extends Model
 {
     public $timestamps = false;
-    protected $fillable = ['comment','comment_name','comment_date','comment_peoduct_id','comment_status','comment_parent_comment'];
-    protected $primaryKey = 'comment_id';
+    protected $fillable = ['cmt','cmt_name','cmt_date','cmt_peoduct_id','cmt_status','cmt_parent_cmt'];
+    protected $primaryKey = 'cmt_id';
     protected $table = 'tbl_comment';
 
 
     public function product(){
-       return $this->belongsTo('App\Product','comment_product_id');
+       return $this->belongsTo('App\Product','cmt_pr_id');
     }
 }

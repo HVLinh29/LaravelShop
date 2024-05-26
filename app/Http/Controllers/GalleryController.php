@@ -9,7 +9,7 @@ use Session;
 use Illuminate\Support\Facades\Redirect;
 
 session_start();
-
+use Toastr;
 use Auth;
 use App\Gallery;
 
@@ -40,10 +40,10 @@ class GalleryController extends Controller
         <table class="table table-hover">
             <thead>
               <tr>
-              <th>Thu tu</th>
-                <th>Ten hinh anh</th>
-                <th>hinh anh</th>
-                <th>Quan ly</th>
+                <th>Thứ tự</th>
+                <th>Tên hình ảnh</th>
+                <th>Hình ảnh</th>
+                <th>Quản lý</th>
               </tr>
             </thead>
             <tbody>';
@@ -55,26 +55,26 @@ class GalleryController extends Controller
                
                 <tr>
                     <td>' . $i . '</td>
-                    <td contenteditable class="edit_gal_name" data-gal_id="' . $gal->gallery_id . '">' . $gal->gallery_name . '</td>
+                    <td contenteditable class="edit_gal_name" data-gal_id="' . $gal->g_id . '">' . $gal->g_name . '</td>
 
                    
                     <td>
-                    <img src="' . url('public/uploads/gallery/' . $gal->gallery_image) . '" class="img-thumbnail" 
+                    <img src="' . url('public/uploads/gallery/' . $gal->g_image) . '" class="img-thumbnail" 
                     width="100px" height="100px">
-                    <input type="file" class="file_image" style="width:40%" data-gal_id="' . $gal->gallery_id . '" 
-                    id="file-' . $gal->gallery_id . '" name="file" accept="image/*"/>
+                    <input type="file" class="file_image" style="width:40%" data-gal_id="' . $gal->g_id . '" 
+                    id="file-' . $gal->g_id . '" name="file" accept="image/*"/>
                     </td>
 
 
                     <td>
-                        <button type="button" data-gal_id="' . $gal->gallery_id . '" class="btn btn-danger delete-gallery">Xoa</button>
+                        <button type="button" data-gal_id="' . $gal->g_id . '" class="btn btn-danger delete-gallery">Xóa</button>
                     </td>
                     </tr>
                     ';
             }
         } else {
             $output .= '<tr>
-                <td colspan="4">San pham chua co thu vien anh</td>
+                <td colspan="4">Sản phẩm chưa có thư viện ảnh</td>
             </tr>';
         }
         $output .= '</tbody></table> </form>';
@@ -93,13 +93,14 @@ class GalleryController extends Controller
                 $image->move('public/uploads/gallery', $new_image);
 
                 $gallery = new Gallery();
-                $gallery->gallery_name = $new_image;
-                $gallery->gallery_image = $new_image;
+                $gallery->g_name = $new_image;
+                $gallery->gy_image = $new_image;
                 $gallery->product_id = $pro_id;
                 $gallery->save();
             }
         }
-        Session::put('message', 'Them thu vien anh thành công');
+        Toastr::success('Thêm thư viện ảnh thành công.', 'Thành công');
+        // Session::put('message', 'Thêm thư viện ảnh thành công');
         return redirect()->back();
     }
     public function update_gallery_name(Request $request)
@@ -114,7 +115,7 @@ class GalleryController extends Controller
     {
         $gal_id = $request->gal_id;
         $gallery = Gallery::find($gal_id);
-        unlink('public/uploads/gallery/' . $gallery->gallery_image);
+        unlink('public/uploads/gallery/' . $gallery->g_image);
         $gallery->delete();
     }
     public function update_gallery(Request $request)
@@ -130,8 +131,8 @@ class GalleryController extends Controller
             $get_image->move('public/uploads/gallery', $new_image);
 
             $gallery = Gallery::find($gal_id);
-            unlink('public/uploads/gallery/' . $gallery->gallery_image);
-            $gallery->gallery_image = $new_image;
+            unlink('public/uploads/gallery/' . $gallery->g_image);
+            $gallery->g_image = $new_image;
             $gallery->save();
         }
     }

@@ -23,10 +23,10 @@
             <div class="col-sm-5">
                 <ul id="imageGallery">
                     @foreach ($gallery as $key => $gal)
-                        <li data-thumb="{{ asset('public/uploads/gallery/' . $gal->gallery_image) }}"
-                            data-src="{{ asset('public/uploads/gallery/' . $gal->gallery_image) }}">
-                            <img style="margin-top: 24px;" width="100%" alt="{{ $gal->gallery_name }}"
-                                src="{{ asset('public/uploads/gallery/' . $gal->gallery_image) }}" />
+                        <li data-thumb="{{ asset('public/uploads/gallery/' . $gal->g_image) }}"
+                            data-src="{{ asset('public/uploads/gallery/' . $gal->g_image) }}">
+                            <img style="margin-top: 24px;" width="100%" alt="{{ $gal->g_name }}"
+                                src="{{ asset('public/uploads/gallery/' . $gal->g_image) }}" />
 
                         </li>
                     @endforeach
@@ -187,33 +187,15 @@
                             <span>Số lượt đánh giá: {{ $ratingCount }}</span>
                         </div>
                         <p><b>Bình luận về sản phẩm</b></p>
-                        {{-- <form action="#">
-
-                            <span>
-                                <input type="hidden" style="width: 100%;margin-left:0" type="text"
-                                    class="comment_name" placeholder="User"
-                                    value="{{ Session::get('customer_name', '') }}"
-                                    {{ Session::has('customer_name') ? 'readonly' : '' }} />
-                            </span>
-                            <input name="comment" class="comment_content" placeholder="Bình luận"></input>
-                            <div id="notify_comment"></div>
-                            @if (!Session::get('customer_name', ''))
-                                <button type="button" class="btn btn-danger pull-right send-comment">Đăng nhập để bình
-                                    luận</button>
-                            @else
-                                <button type="button" class="btn btn-danger pull-right send-comment">
-                                    Gửi bình luận
-                                </button>
-                            @endif
-                        </form> --}}
+                       
                         <div class="comment-section">
                             <form action="#">
                                 <span>
-                                    <input type="hidden" class="comment_name" placeholder="User"
+                                    <input type="hidden" class="cmt_name" placeholder="User"
                                            value="{{ Session::get('customer_name', '') }}"
                                            {{ Session::has('customer_name') ? 'readonly' : '' }} />
                                 </span>
-                                <input name="comment" class="comment_content" placeholder="Bình luận"></input>
+                                <input name="cmt" class="comment_content" placeholder="Bình luận"></input>
                                 <div id="notify_comment"></div>
                                 @if (!Session::get('customer_name', ''))
                                     <button type="button" class="btn btn-danger send-comment">Đăng nhập để bình luận</button>
@@ -226,7 +208,7 @@
                         <div>
                         <form>
                             @csrf
-                            <input type="hidden" name="comment_product_id" class="comment_product_id"
+                            <input type="hidden" name="cmt_pr_id" class="cmt_pr_id"
                                 value="{{ $value->product_id }}">
                             <div id="comment_show"></div>
 

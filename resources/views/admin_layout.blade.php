@@ -359,13 +359,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
     <script type="text/javascript">
         $('.comment_duyet').click(function() {
-            var comment_status = $(this).data('comment_status');
-            var comment_id = $(this).data('comment_id');
-            var comment_product_id = $(this).attr('id');
-            if (comment_status == 0) {
-                var alert = 'Duyet thanh cong binh luan';
+            var cmt_status = $(this).data('cmt_status');
+            var cmt_id = $(this).data('cmt_id');
+            var cmt_pr_id = $(this).attr('id');
+            if (cmt_status == 0) {
+                var alert = 'Bình luận đã được duyệt';
             } else {
-                var alert = 'Huy duyet thanh cong binh luan';
+                var alert = 'Hủy duyệt bình luận';
             }
             $.ajax({
                 url: "{{ url('/duyet-comment') }}",
@@ -375,9 +375,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
                 },
                 data: {
-                    comment_status: comment_status,
-                    comment_id: comment_id,
-                    comment_product_id: comment_product_id
+                    cmt_status: cmt_status,
+                    cmt_id: cmt_id,
+                    cmt_pr_id: cmt_pr_id
                 },
                 success: function(data) {
                     location.reload();
@@ -386,9 +386,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             });
         });
         $('.btn-reply-comment').click(function() {
-            var comment_id = $(this).data('comment_id');
-            var comment = $('.reply_comment_' + comment_id).val();
-            var comment_product_id = $(this).data('product_id');
+            var cmt_id = $(this).data('cmt_id');
+            var cmt = $('.reply_comment_' + cmt_id).val();
+            var cmt_pr_id = $(this).data('product_id');
 
             $.ajax({
                 url: "{{ url('/reply-comment') }}",
@@ -398,14 +398,14 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
                 },
                 data: {
-                    comment: comment,
-                    comment_id: comment_id,
-                    comment_product_id: comment_product_id
+                    cmt: cmt,
+                    cmt_id: cmt_id,
+                    cmt_pr_id: cmt_pr_id
                 },
                 success: function(data) {
-                    $('.reply_comment_' + comment_id).val('');
+                    $('.reply_comment_' + cmt_id).val('');
                     $('#notify_comment').html(
-                        '<span class="text text-alert">Tra loi binh luan thanh cong</span>');
+                        '<span class="text text-alert">Đã trả lời bình luận</span>');
                 }
             });
         });

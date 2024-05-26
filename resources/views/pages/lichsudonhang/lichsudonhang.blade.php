@@ -47,15 +47,15 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>{{ $shipping->shipping_name }}</td>
-                                    <td>{{ $shipping->shipping_address }}</td>
-                                    <td>{{ $shipping->shipping_phone }}</td>
-                                    <td>{{ $shipping->shipping_email }}</td>
-                                    <td>{{ $shipping->shipping_notes }}</td>
+                                    <td>{{ $shipping->s_name }}</td>
+                                    <td>{{ $shipping->s_address }}</td>
+                                    <td>{{ $shipping->s_phone }}</td>
+                                    <td>{{ $shipping->s_email }}</td>
+                                    <td>{{ $shipping->s_notes }}</td>
                                     <td>
-                                        @if ($shipping->shipping_method == 0)
+                                        @if ($shipping->s_method == 0)
                                             Thanh toán VNPAY, MOMO
-                                        @elseif($shipping->shipping_method == 1)
+                                        @elseif($shipping->s_method == 1)
                                             Tiền mặt
                                         @else
                                             Thanh toán PayPal

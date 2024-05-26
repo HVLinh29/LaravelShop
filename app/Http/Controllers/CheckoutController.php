@@ -200,16 +200,16 @@ class CheckoutController extends Controller
     public function save_checkout_customer(Request $request)
     {
         $data = array();
-        $data['shipping_name'] = $request->shipping_name;
-        $data['shipping_email'] = $request->shipping_email;
-        $data['shipping_notes'] = $request->shipping_notes;
-        $data['shipping_phone'] = $request->shipping_phone;
-        $data['shipping_address'] = $request->shipping_address;
+        $data['s_name'] = $request->s_name;
+        $data['s_email'] = $request->s_email;
+        $data['s_notes'] = $request->s_notes;
+        $data['s_phone'] = $request->s_phone;
+        $data['s_address'] = $request->s_address;
 
 
         $shipping_id = DB::table('tbl_shipping')->insertGetId($data);
 
-        Session::put('shipping_id', $shipping_id);
+        Session::put('s_id', $shipping_id);
 
         return Redirect::to('/payment');
     }
@@ -268,7 +268,7 @@ class CheckoutController extends Controller
         // them vao order
         $order_data = array();
         $order_data['customer_id'] = Session::get('customer_id');
-        $order_data['shipping_id'] = Session::get('shipping_id');
+        $order_data['s_id'] = Session::get('s_id');
         $order_data['payment_id'] = $payment_id;
         $order_data['order_total'] = Cart::total();
         $order_data['order_status'] = 'Dang cho xu ly';
@@ -312,7 +312,7 @@ class CheckoutController extends Controller
         $this->AuthLogin();
         $order_by_id = DB::table('tbl_order')
             ->join('tbl_customers', 'tbl_order.customer_id', '=', 'tbl_customers.customer_id')
-            ->join('tbl_shipping', 'tbl_order.shipping_id', '=', 'tbl_shipping.shipping_id')
+            ->join('tbl_shipping', 'tbl_order._id', '=', 'tbl_shipping.s_id')
             ->join('tbl_order_details', 'tbl_order.order_id', '=', 'tbl_order_details.order_id')
             ->select('tbl_order.*', 'tbl_customers.*', 'tbl_shipping.*', 'tbl_order_details.*')->first();
 
@@ -379,34 +379,30 @@ class CheckoutController extends Controller
         }
 
         $shipping = new Shipping();
-        $shipping->shipping_name = $data['shipping_name'];
-        $shipping->shipping_email = $data['shipping_email'];
-        $shipping->shipping_phone = $data['shipping_phone'];
-        $shipping->shipping_address = $data['shipping_address'];
-        $shipping->shipping_notes = $data['shipping_notes'];
-        $shipping->shipping_method = $data['shipping_method'];
+        $shipping->s_name = $data['s_name'];
+        $shipping->s_email = $data['s_email'];
+        $shipping->s_phone = $data['s_phone'];
+        $shipping->s_address = $data['s_address'];
+        $shipping->s_notes = $data['s_notes'];
+        $shipping->s_method = $data['s_method'];
         $shipping->save();
-        $shipping_id = $shipping->shipping_id;
+        $shipping_id = $shipping->s_id;
 
         if (Session::has('vnpay_code')) {
             $checkout_code = Session::get('vnpay_code');
         } elseif (Session::has('momo_code')) {
             $checkout_code = Session::get('momo_code');
         } else {
-            // Nếu cả hai session đều không tồn tại, tạo giá trị mặc định
+            
             $checkout_code = 'TM' . substr(md5(uniqid(mt_rand(), true)), 0, 10);
         }
 
         // Lưu session để đảm bảo rằng giá trị của $checkout_code không bị mất trong các lần thực thi sau
         Session::put('checkout_code', $checkout_code);
 
-
-
-
-
         $order = new Order;
         $order->customer_id = Session::get('customer_id');
-        $order->shipping_id = $shipping_id;
+        $order->s_id = $shipping_id;
         $order->order_status = 1;
         $order->order_code = $checkout_code;
 
@@ -456,12 +452,12 @@ class CheckoutController extends Controller
         $shipping_array = array(
             'fee' => $fee,
             'customer_name' => $customer->customer_name,
-            'shipping_name' => $data['shipping_name'],
-            'shipping_email' => $data['shipping_email'],
-            'shipping_phone' => $data['shipping_phone'],
-            'shipping_address' => $data['shipping_address'],
-            'shipping_notes' => $data['shipping_notes'],
-            'shipping_method' => $data['shipping_method'],
+            's_name' => $data['s_name'],
+            's_email' => $data['s_email'],
+            's_phone' => $data['s_phone'],
+            's_address' => $data['s_address'],
+            's_notes' => $data['s_notes'],
+            's_method' => $data['s_method'],
 
         );
         //lay ma giam gia va ma code cua ma giam gia

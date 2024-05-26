@@ -66,16 +66,16 @@
         <h3>Thông tin giao hàng:</h3>
         <ul>
             <li><strong>Khách hàng:</strong> {{ $shipping_array['customer_name'] }}</li>
-            <li><strong>Tên người nhận:</strong> {{ $shipping_array['shipping_name'] }}</li>
-            <li><strong>Email:</strong> {{ $shipping_array['shipping_email'] }}</li>
-            <li><strong>Số điện thoại:</strong> {{ $shipping_array['shipping_phone'] }}</li>
-            <li><strong>Địa chỉ giao hàng:</strong> {{ $shipping_array['shipping_address'] }}</li>
-            <li><strong>Ghi chú:</strong> {{ $shipping_array['shipping_notes'] }}</li>
+            <li><strong>Tên người nhận:</strong> {{ $shipping_array['s_name'] }}</li>
+            <li><strong>Email:</strong> {{ $shipping_array['s_email'] }}</li>
+            <li><strong>Số điện thoại:</strong> {{ $shipping_array['s_phone'] }}</li>
+            <li><strong>Địa chỉ giao hàng:</strong> {{ $shipping_array['s_address'] }}</li>
+            <li><strong>Ghi chú:</strong> {{ $shipping_array['s_notes'] }}</li>
             <li>
                 <strong>Phương thức giao hàng:</strong>
-                @if ($shipping_array['shipping_method'] == '0')
+                @if ($shipping_array['s_method'] == '0')
                 Thanh toán VNPAY, MOMO
-            @elseif($shipping_array['shipping_method'] == '1')
+            @elseif($shipping_array['s_method'] == '1')
                 Tiền mặt
             @else
             Thanh toán PayPal

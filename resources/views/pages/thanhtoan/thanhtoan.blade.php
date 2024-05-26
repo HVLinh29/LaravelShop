@@ -26,15 +26,15 @@
                             <div class="form-one">
                                 <form method="POST">
                                     @csrf
-                                    <input type="text" name="shipping_email" class="shipping_email"
+                                    <input type="text" name="s_email" class="s_email"
                                         placeholder="Điền email">
-                                    <input type="text" name="shipping_name" class="shipping_name"
+                                    <input type="text" name="s_name" class="s_name"
                                         placeholder="Họ và tên người gửi">
-                                    <input type="text" name="shipping_address" class="shipping_address"
+                                    <input type="text" name="s_address" class="s_address"
                                         placeholder="Địa chỉ gửi hàng">
-                                    <input type="text" name="shipping_phone" class="shipping_phone"
+                                    <input type="text" name="s_phone" class="s_phone"
                                         placeholder="Số điện thoại">
-                                    <textarea name="shipping_notes" class="shipping_notes" placeholder="Ghi chú đơn hàng của bạn" rows="5"></textarea>
+                                    <textarea name="s_notes" class="s_notes" placeholder="Ghi chú đơn hàng của bạn" rows="5"></textarea>
 
                                     @if (Session::get('fee'))
                                         <input type="hidden" name="order_fee" class="order_fee"
@@ -70,7 +70,6 @@
                                             @else
                                                 <select name="payment_select"
                                                     class="form-control input-sm m-bot15 payment_select">
-
                                                     <option value="1">Tiền mặt</option>
                                                 </select>
                                             @endif

@@ -54,13 +54,55 @@
         <div class="header-middle"><!--header-middle-->
             <div class="container">
                 <div class="row">
-                    <div class="col-sm-4">
-                        <div class="logo pull-left">
-                            <a href="index.html"><img src="{{ 'public/fontend/images/home/logo.png' }}"
-                                    alt="" /></a>
-                        </div>
+                   <div class="col-sm-4">
+                    <div class="shop-menu pull-right">
+                        <form method="POST" action="{{ URL::to('/tim-kiem') }}" autocomplete="off">
+                            {{ csrf_field() }}
+                            <div class="search_box pull-right">
+                               
+                                <input type="text" name="keywords_submit" id="keywords" placeholder="Từ khóa" />
+                                <div id="search_ajax"></div>
+                                <input type="submit" style="color: #000" name="search_item"
+                                    class=" btn-success btn-sm" value="Tìm kiếm">
+                                <style>
+                                    .search_box {
+                                        position: relative;
+                                    }
 
+                                    #search_ajax {
+                                        position: absolute;
+                                        top: 100%;
+                                        left: 0;
+                                        width: 100%;
+
+                                        /* Điều chỉnh màu nền của kết quả tìm kiếm */
+
+                                        z-index: 999;
+                                        /* Đảm bảo kết quả tìm kiếm được hiển thị trên menu */
+                                    }
+
+                                    .search_box {
+                                        display: flex;
+                                        align-items: center;
+                                    }
+
+                                    .search_box input[type="text"] {
+                                        flex: 1;
+                                        /* Ô tìm kiếm sẽ mở rộng để lấp đầy không gian còn lại */
+                                        margin-right: 10px;
+                                        /* Khoảng cách giữa ô tìm kiếm và nút submit */
+                                    }
+
+                                    .search_box input[type="submit"] {
+                                        font-size: 14px;
+                                        padding: 5px 10px;
+                                    }
+                                </style>
+
+                            </div>
+                        </form>
                     </div>
+                   </div>
                     <div class="col-sm-8">
                         <div class="shop-menu pull-right">
                             <ul class="nav navbar-nav">
@@ -68,7 +110,7 @@
 
                                 <?php
 								$customer_id = Session::get('customer_id');
-								$shipping_id = Session::get('shipping_id');
+								$shipping_id = Session::get('s_id');
 								if($customer_id!=NULL && $shipping_id==NULL ){
 								?>
                                 <li><a href="{{ URL::to('/thanhtoan') }}"><i class="fa fa-credit-card"></i></i> Thanh
@@ -133,9 +175,9 @@
         <div class="header-bottom"><!--header-bottom-->
             <div class="container">
                 <div class="row">
-                    <div class="col-sm-10">
+                    <div class="col-sm-12">
                        
-                        <div class="mainmenu pull-left">
+                        <div class="mainmenu text-center"><!-- Add text-center class here -->
                             <ul class="nav navbar-nav collapse navbar-collapse">
                                 <li><a href="{{ url('/trang-chu') }}" class="active">Trang chủ</a></li>
 
@@ -157,11 +199,7 @@
                                         @endforeach
                                     </ul>
                                 </li>
-                                {{-- <li><a href="{{ URL::to('/gio-hang') }}">Giỏ hàng 
-                                    <span class="show-cart">
-                                    </span></a>
-                                   
-                                </li> --}}
+                               
                                 <li class="dropdown"><a href="#">Bài viết<i class="fa fa-angle-down"></i></a>
                                     <ul role="menu" class="sub-menu">
                                         @foreach ($category_post as $key => $danhmucbaiviet)
@@ -176,60 +214,12 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="col-sm-2">
-                        <form method="POST" action="{{ URL::to('/tim-kiem') }}" autocomplete="off">
-                            {{ csrf_field() }}
-                            <div class="search_box pull-right">
-                                {{-- <input type="text" name="keywords_submit" id="keywords" placeholder="Từ khóa" />
-                                <div id="search_ajax"></div>
-        <input type="submit" style="color: #000" name="search_item" class="btn-success btn-sm" value="Tìm kiếm"> --}}
-                                <input type="text" name="keywords_submit" id="keywords" placeholder="Từ khóa" />
-                                <div id="search_ajax"></div>
-                                <input type="submit" style="color: #000" name="search_item"
-                                    class=" btn-success btn-sm" value="Tìm kiếm">
-                                <style>
-                                    .search_box {
-                                        position: relative;
-                                    }
-
-                                    #search_ajax {
-                                        position: absolute;
-                                        top: 100%;
-                                        left: 0;
-                                        width: 100%;
-
-                                        /* Điều chỉnh màu nền của kết quả tìm kiếm */
-
-                                        z-index: 999;
-                                        /* Đảm bảo kết quả tìm kiếm được hiển thị trên menu */
-                                    }
-
-                                    .search_box {
-                                        display: flex;
-                                        align-items: center;
-                                    }
-
-                                    .search_box input[type="text"] {
-                                        flex: 1;
-                                        /* Ô tìm kiếm sẽ mở rộng để lấp đầy không gian còn lại */
-                                        margin-right: 10px;
-                                        /* Khoảng cách giữa ô tìm kiếm và nút submit */
-                                    }
-
-                                    .search_box input[type="submit"] {
-                                        font-size: 14px;
-                                        padding: 5px 10px;
-                                    }
-                                </style>
-
-                            </div>
-                        </form>
-                    </div>
+                    
 
                 </div>
             </div>
-        </div><!--/header-bottom-->
-    </header><!--/header-->
+        </div>
+    </header>
 
 {{-- /slider --}}
 @yield('slider')
@@ -687,12 +677,12 @@
                     },
                     function(isConfirm) {
                         if (isConfirm) {
-                            var shipping_email = $('.shipping_email').val();
-                            var shipping_name = $('.shipping_name').val();
-                            var shipping_address = $('.shipping_address').val();
-                            var shipping_phone = $('.shipping_phone').val();
-                            var shipping_notes = $('.shipping_notes').val();
-                            var shipping_method = $('.payment_select').val();
+                            var s_email = $('.s_email').val();
+                            var s_name = $('.s_name').val();
+                            var s_address = $('.s_address').val();
+                            var s_phone = $('.s_phone').val();
+                            var s_notes = $('.s_notes').val();
+                            var s_method = $('.payment_select').val();
                             var order_fee = $('.order_fee').val();
                             var order_coupon = $('.order_coupon').val();
                             var _token = $('input[name="_token"]').val();
@@ -701,15 +691,15 @@
                                 url: '{{ url('/confirm-order') }}',
                                 method: 'POST',
                                 data: {
-                                    shipping_email: shipping_email,
-                                    shipping_name: shipping_name,
-                                    shipping_address: shipping_address,
-                                    shipping_phone: shipping_phone,
-                                    shipping_notes: shipping_notes,
+                                    s_email: s_email,
+                                    s_name: s_name,
+                                    s_address: s_address,
+                                    s_phone: s_phone,
+                                    s_notes: s_notes,
                                     _token: _token,
                                     order_fee: order_fee,
                                     order_coupon: order_coupon,
-                                    shipping_method: shipping_method
+                                    s_method: s_method
                                 },
                                 success: function() {
                                     swal("Đơn hàng",
@@ -962,7 +952,7 @@
             load_comment();
 
             function load_comment() {
-                var product_id = $('.comment_product_id').val();
+                var product_id = $('.cmt_pr_id').val();
                 var _token = $('input[name="_token"]').val();
                 $.ajax({
                     url: '{{ url('/load-comment') }}',
@@ -978,8 +968,8 @@
                 });
             }
             $('.send-comment').click(function() {
-                var product_id = $('.comment_product_id').val();
-                var comment_name = $('.comment_name').val();
+                var product_id = $('.cmt_pr_id').val();
+                var cmt_name = $('.cmt_name').val();
                 var comment_content = $('.comment_content').val();
                 var _token = $('input[name="_token"]').val();
                 $.ajax({
@@ -987,7 +977,7 @@
                     method: 'POST',
                     data: {
                         product_id: product_id,
-                        comment_name: comment_name,
+                        cmt_name: cmt_name,
                         comment_content: comment_content,
                         _token: _token,
                     },
@@ -999,7 +989,7 @@
                         load_comment();
                         $('#notify_comment').fadeOut(5000);
 
-                        $('.comment_name').val('');
+                        $('.cmt_name').val('');
                         $('.comment_content').val('');
                     }
 

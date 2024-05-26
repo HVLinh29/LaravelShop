@@ -33,11 +33,11 @@ class OrderController extends Controller
 		$orderr = Order::where('order_code', $order_code)->get();
 		foreach ($orderr as $key => $ord) {
 			$customer_id = $ord->customer_id;
-			$shipping_id = $ord->shipping_id;
+			$shipping_id = $ord->s_id;
 			$order_status = $ord->order_status;
 		}
 		$customerr = Customer::where('customer_id', $customer_id)->first();
-		$shipping = Shipping::where('shipping_id', $shipping_id)->first();
+		$shipping = Shipping::where('s_id', $shipping_id)->first();
 
 		$order_details_product = OrderDetails::with('product')->where('order_code', $order_code)->get();
 
@@ -69,10 +69,10 @@ class OrderController extends Controller
 		$order = Order::where('order_code', $checkout_code)->get();
 		foreach ($order as $key => $ord) {
 			$customer_id = $ord->customer_id;
-			$shipping_id = $ord->shipping_id;
+			$shipping_id = $ord->s_id;
 		}
 		$customer = Customer::where('customer_id', $customer_id)->first();
-		$shipping = Shipping::where('shipping_id', $shipping_id)->first();
+		$shipping = Shipping::where('s_id', $shipping_id)->first();
 
 		$order_details_product = OrderDetails::with('product')->where('order_code', $checkout_code)->get();
 
@@ -99,151 +99,287 @@ class OrderController extends Controller
 		}
 
 		$output = '';
-
-		$output .= '<style>body{
-			font-family: DejaVu Sans;
-		}
-		.table-styling{
-			border:1px solid #000;
-		}
-		.table-styling tbody tr td{
-			border:1px solid #000;
-		}
-		</style>
+		$output .= '<!DOCTYPE html>
+		<html lang="vi">
+		<head>
+			<meta charset="UTF-8">
+			<title>Đơn hàng</title>
+			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+			<style>
+				body { font-family: DejaVu Sans; font-size: 12px; }
+				.table th, .table td { vertical-align: middle; padding: 5px; font-size: 12px; }
+				.signature { margin-top: 30px; }
+				.signature table { width: 100%; }
+				.signature th, .signature td { text-align: center; }
+				.text-center { text-align: center; }
+				.container { width: 90%; margin: 0 auto; }
+				h1, h4 { font-family: DejaVu Sans; }
+			</style>
+		</head>
+		<body>
+		<div class="container mt-3">
 		<h1><center>Công ty TNHH đồng hồ LINHWATCH</center></h1>
 		<h4><center>Độc lập - Tự do - Hạnh phúc</center></h4>
-		<p>Người đặt hàng</p>
-		<table class="table-styling">
-				<thead>
+	
+			<p><strong>Người đặt hàng:</strong></p>
+			<table class="table table-bordered table-hover">
+				<thead class="thead-light">
 					<tr>
-						<th>Tên khách đặt</th>
-						<th>Số điện thoại</th>
+						<th>Tên</th>
+						<th>SĐT</th>
 						<th>Email</th>
 					</tr>
 				</thead>
-				<tbody>';
-
-		$output .= '		
+				<tbody>
 					<tr>
 						<td>' . $customer->customer_name . '</td>
 						<td>' . $customer->customer_phone . '</td>
 						<td>' . $customer->customer_email . '</td>
-						
-					</tr>';
-
-
-		$output .= '				
+					</tr>
 				</tbody>
-			
-		</table>
-
-		<p>Ship hàng tới</p>
-			<table class="table-styling">
-				<thead>
+			</table>
+	
+			<p><strong>Ship hàng tới:</strong></p>
+			<table class="table table-bordered table-hover">
+				<thead class="thead-light">
 					<tr>
-						<th>Tên người nhận</th>
+						<th>Tên</th>
 						<th>Địa chỉ</th>
-						<th>Sdt</th>
+						<th>SĐT</th>
 						<th>Email</th>
 						<th>Ghi chú</th>
 					</tr>
 				</thead>
-				<tbody>';
-
-		$output .= '		
+				<tbody>
 					<tr>
-						<td>' . $shipping->shipping_name . '</td>
-						<td>' . $shipping->shipping_address . '</td>
-						<td>' . $shipping->shipping_phone . '</td>
-						<td>' . $shipping->shipping_email . '</td>
-						<td>' . $shipping->shipping_notes . '</td>
-						
-					</tr>';
-
-
-		$output .= '				
+						<td>' . $shipping->s_name . '</td>
+						<td>' . $shipping->s_address . '</td>
+						<td>' . $shipping->s_phone . '</td>
+						<td>' . $shipping->s_email . '</td>
+						<td>' . $shipping->s_notes . '</td>
+					</tr>
 				</tbody>
-			
-		</table>
-
-		<p>Đơn hàng đặt</p>
-			<table class="table-styling">
-				<thead>
+			</table>
+	
+			<p><strong>Đơn hàng:</strong></p>
+			<table class="table table-bordered table-hover">
+				<thead class="thead-light">
 					<tr>
-						<th>Tên sản phẩm</th>
+						<th>Sản phẩm</th>
 						<th>Mã giảm giá</th>
 						<th>Phí ship</th>
-						<th>Số lượng</th>
-						<th>Giá sản phẩm</th>
+						<th>SL</th>
+						<th>Giá</th>
 						<th>Thành tiền</th>
 					</tr>
 				</thead>
 				<tbody>';
-
+	
 		$total = 0;
-
-		foreach ($order_details_product as $key => $product) {
-
+	
+		foreach ($order_details_product as $product) {
 			$subtotal = $product->product_price * $product->product_sales_quantity;
 			$total += $subtotal;
-
-			if ($product->product_coupon != 'no') {
-				$product_coupon = $product->product_coupon;
-			} else {
-				$product_coupon = 'không mã';
-			}
-
-			$output .= '		
+	
+			$product_coupon = $product->product_coupon != 'no' ? $product->product_coupon : 'không mã';
+	
+			$output .= '
 					<tr>
 						<td>' . $product->product_name . '</td>
 						<td>' . $product_coupon . '</td>
-						<td>' . number_format($product->product_feeship, 0, ',', '.') . 'đ' . '</td>
+						<td>' . number_format($product->product_feeship, 0, ',', '.') . 'đ</td>
 						<td>' . $product->product_sales_quantity . '</td>
-						<td>' . number_format($product->product_price, 0, ',', '.') . 'đ' . '</td>
-						<td>' . number_format($subtotal, 0, ',', '.') . 'đ' . '</td>
-						
+						<td>' . number_format($product->product_price, 0, ',', '.') . 'đ</td>
+						<td>' . number_format($subtotal, 0, ',', '.') . 'đ</td>
 					</tr>';
 		}
-
+	
 		if ($coupon_condition == 1) {
 			$total_after_coupon = ($total * $coupon_number) / 100;
 			$total_coupon = $total - $total_after_coupon;
 		} else {
 			$total_coupon = $total - $coupon_number;
 		}
-
-		$output .= '<tr>
-				<td colspan="2">
-					<p>Tổng giảm: ' . $coupon_echo . '</p>
-					<p>Phí ship: ' . number_format($product->product_feeship, 0, ',', '.') . 'đ' . '</p>
-					<p>Thanh toán : ' . number_format($total_coupon + $product->product_feeship, 0, ',', '.') . 'đ' . '</p>
-				</td>
-		</tr>';
-		$output .= '				
+	
+		$output .= '
+				<tr>
+					<td colspan="6" class="text-right">
+						<p><strong>Tổng giảm:</strong> ' . $coupon_echo . '</p>
+						<p><strong>Phí ship:</strong> ' . number_format($product->product_feeship, 0, ',', '.') . 'đ</p>
+						<p><strong>Thanh toán:</strong> ' . number_format($total_coupon + $product->product_feeship, 0, ',', '.') . 'đ</p>
+					</td>
+				</tr>
 				</tbody>
-			
-		</table>
-
-		<p>Ký tên</p>
-			<table>
-				<thead>
-					<tr>
-						<th width="200px">Người lập phiếu</th>
-						<th width="800px">Người nhận</th>
-						
-					</tr>
-				</thead>
-				<tbody>';
-
-		$output .= '				
-				</tbody>
-			
-		</table>
-
-		';
-
-
+			</table>
+	
+			<div class="signature">
+				<table class="table table-borderless">
+					<thead>
+						<tr>
+							<th>Người lập phiếu</th>
+							<th>Người nhận</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><br><br>_________________</td>
+							<td><br><br>_________________</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+		</body>
+		</html>';
+	
 		return $output;
+		// $output .= '<style>body{
+		// 	font-family: DejaVu Sans;
+		// }
+		// .table-styling{
+		// 	border:1px solid #000;
+		// }
+		// .table-styling tbody tr td{
+		// 	border:1px solid #000;
+		// }
+		// </style>
+		// <h1><center>Công ty TNHH đồng hồ LINHWATCH</center></h1>
+		// <h4><center>Độc lập - Tự do - Hạnh phúc</center></h4>
+		// <p>Người đặt hàng</p>
+		// <table class="table-styling">
+		// 		<thead>
+		// 			<tr>
+		// 				<th>Tên khách đặt</th>
+		// 				<th>Số điện thoại</th>
+		// 				<th>Email</th>
+		// 			</tr>
+		// 		</thead>
+		// 		<tbody>';
+
+		// $output .= '		
+		// 			<tr>
+		// 				<td>' . $customer->customer_name . '</td>
+		// 				<td>' . $customer->customer_phone . '</td>
+		// 				<td>' . $customer->customer_email . '</td>
+						
+		// 			</tr>';
+
+
+		// $output .= '				
+		// 		</tbody>
+			
+		// </table>
+
+		// <p>Ship hàng tới</p>
+		// 	<table class="table-styling">
+		// 		<thead>
+		// 			<tr>
+		// 				<th>Tên người nhận</th>
+		// 				<th>Địa chỉ</th>
+		// 				<th>Sdt</th>
+		// 				<th>Email</th>
+		// 				<th>Ghi chú</th>
+		// 			</tr>
+		// 		</thead>
+		// 		<tbody>';
+
+		// $output .= '		
+		// 			<tr>
+		// 				<td>' . $shipping->s_name . '</td>
+		// 				<td>' . $shipping->s_address . '</td>
+		// 				<td>' . $shipping->s_phone . '</td>
+		// 				<td>' . $shipping->s_email . '</td>
+		// 				<td>' . $shipping->s_notes . '</td>
+						
+		// 			</tr>';
+
+
+		// $output .= '				
+		// 		</tbody>
+			
+		// </table>
+
+		// <p>Đơn hàng đặt</p>
+		// 	<table class="table-styling">
+		// 		<thead>
+		// 			<tr>
+		// 				<th>Tên sản phẩm</th>
+		// 				<th>Mã giảm giá</th>
+		// 				<th>Phí ship</th>
+		// 				<th>Số lượng</th>
+		// 				<th>Giá sản phẩm</th>
+		// 				<th>Thành tiền</th>
+		// 			</tr>
+		// 		</thead>
+		// 		<tbody>';
+
+		// $total = 0;
+
+		// foreach ($order_details_product as $key => $product) {
+
+		// 	$subtotal = $product->product_price * $product->product_sales_quantity;
+		// 	$total += $subtotal;
+
+		// 	if ($product->product_coupon != 'no') {
+		// 		$product_coupon = $product->product_coupon;
+		// 	} else {
+		// 		$product_coupon = 'không mã';
+		// 	}
+
+		// 	$output .= '		
+		// 			<tr>
+		// 				<td>' . $product->product_name . '</td>
+		// 				<td>' . $product_coupon . '</td>
+		// 				<td>' . number_format($product->product_feeship, 0, ',', '.') . 'đ' . '</td>
+		// 				<td>' . $product->product_sales_quantity . '</td>
+		// 				<td>' . number_format($product->product_price, 0, ',', '.') . 'đ' . '</td>
+		// 				<td>' . number_format($subtotal, 0, ',', '.') . 'đ' . '</td>
+						
+		// 			</tr>';
+		// }
+
+		// if ($coupon_condition == 1) {
+		// 	$total_after_coupon = ($total * $coupon_number) / 100;
+		// 	$total_coupon = $total - $total_after_coupon;
+		// } else {
+		// 	$total_coupon = $total - $coupon_number;
+		// }
+
+		// $output .= '<tr>
+		// 		<td colspan="2">
+		// 			<p>Tổng giảm: ' . $coupon_echo . '</p>
+		// 			<p>Phí ship: ' . number_format($product->product_feeship, 0, ',', '.') . 'đ' . '</p>
+		// 			<p>Thanh toán : ' . number_format($total_coupon + $product->product_feeship, 0, ',', '.') . 'đ' . '</p>
+		// 		</td>
+		// </tr>';
+		// $output .= '				
+		// 		</tbody>
+			
+		// </table>
+
+		// <p>Ký tên</p>
+		// 	<table>
+		// 		<thead>
+		// 			<tr>
+		// 				<th width="200px">Người lập phiếu</th>
+		// 				<th width="800px">Người nhận</th>
+						
+		// 			</tr>
+		// 		</thead>
+		// 		<tbody>';
+
+		// $output .= '				
+		// 		</tbody>
+			
+		// </table>
+
+		// ';
+
+
+		// return $output;
 	}
 	public function update_qty(Request $request)
 	{
@@ -286,16 +422,16 @@ class OrderController extends Controller
 		$fee_ship = $details->product_feeship;
 		$coupon_mail = $details->product_coupon;
 
-		$shipping = Shipping::where('shipping_id', $order->shipping_id)->first();
+		$shipping = Shipping::where('s_id', $order->s_id)->first();
 		$shipping_array = array(
 			'fee_ship' => $fee_ship,
 			'customer_name' => $customer->customer_name,
-			'shipping_name' => $shipping['shipping_name'],
-			'shipping_email' => $shipping['shipping_email'],
-			'shipping_phone' => $shipping['shipping_phone'],
-			'shipping_address' => $shipping['shipping_address'],
-			'shipping_notes' => $shipping['shipping_notes'],
-			'shipping_method' => $shipping['shipping_method'],
+			's_name' => $shipping['s_name'],
+			's_email' => $shipping['s_email'],
+			's_phone' => $shipping['s_phone'],
+			's_address' => $shipping['s_address'],
+			's_notes' => $shipping['s_notes'],
+			's_method' => $shipping['s_method'],
 
 		);
 		//lay ma giam gia va ma code cua ma giam gia
@@ -432,11 +568,11 @@ class OrderController extends Controller
 			$orderr = Order::where('order_code', $order_code)->first();
 
 			$customer_id = $orderr->customer_id;
-			$shipping_id = $orderr->shipping_id;
+			$shipping_id = $orderr->s_id;
 			$order_status = $orderr->order_status;
 
 			$customerr = Customer::where('customer_id', $customer_id)->first();
-			$shipping = Shipping::where('shipping_id', $shipping_id)->first();
+			$shipping = Shipping::where('s_id', $shipping_id)->first();
 
 			$order_details_product = OrderDetails::with('product')->where('order_code', $order_code)->get();
 

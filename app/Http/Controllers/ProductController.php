@@ -88,8 +88,8 @@ class ProductController extends Controller
 
         $pro_id = DB::table('tbl_product')->insertGetId($data);
         $gallery = new Gallery();
-        $gallery->gallery_name = $new_image;
-        $gallery->gallery_image = $new_image;
+        $gallery->g_name = $new_image;
+        $gallery->g_image = $new_image;
         $gallery->product_id = $pro_id;
         $gallery->save();
 
@@ -283,28 +283,28 @@ class ProductController extends Controller
     {
         $product_id = $request->product_id;
 
-        $comment = Comment::where('comment_product_id', $product_id)->where('comment_parent_comment', '=', 0)->where('comment_status', 0)->get();
-        $comment_rep = Comment::with('product')->where('comment_parent_comment', '>', 0)->get();
+        $comment = Comment::where('cmt_pr_id', $product_id)->where('cmt_parent_cmt', '=', 0)->where('cmt_status', 0)->get();
+        $comment_rep = Comment::with('product')->where('cmt_parent_cmt', '>', 0)->get();
         $output = '';
         foreach ($comment as $key => $com) {
             
             $output .= '
             <div class="col-md-10">
                 <div class="comment-box" style=" margin-bottom: 10px;">
-                    <p style="color: green; font-weight: bold;">' . htmlspecialchars($com->comment_name) . '</p>
-                    <p style="color: #000; font-size: 12px;">' . htmlspecialchars($com->comment_date) . '</p>
-                    <p>' . nl2br(htmlspecialchars($com->comment)) . '</p>
+                    <p style="color: green; font-weight: bold;">' . htmlspecialchars($com->cmt_name) . '</p>
+                    <p style="color: #000; font-size: 12px;">' . htmlspecialchars($com->cmt_date) . '</p>
+                    <p>' . nl2br(htmlspecialchars($com->cmt)) . '</p>
                 </
                 </div>
                 ';
 
             foreach ($comment_rep as $key => $rep_comment) {
-                if ($rep_comment->comment_parent_comment == $com->comment_id) {
+                if ($rep_comment->cmt_parent_cmt == $com->cmt_id) {
                     $output .= '
             <div class="col-md-10 offset-md-1">
                 <div class="reply-box" style=" margin-bottom: 10px; ">
                     <p style="color: brown; font-weight: bold;">@Admin</p>
-                    <p style="color: #000;">' . nl2br(htmlspecialchars($rep_comment->comment)) . '</p>
+                    <p style="color: #000;">' . nl2br(htmlspecialchars($rep_comment->cmt)) . '</p>
                 </div>
             </div>
             ';
@@ -319,46 +319,46 @@ class ProductController extends Controller
     public function send_comment(Request $request)
     {
         $product_id = $request->product_id;
-        $comment_name = $request->comment_name;
+        $cmt_name = $request->cmt_name;
         $comment_content = $request->comment_content;
         $comment = new Comment();
-        $comment->comment_product_id = $product_id;
-        $comment->comment_name = $comment_name;
-        $comment->comment = $comment_content;
-        $comment->comment_status = 1;
-        $comment->comment_parent_comment = 0;
+        $comment->cmt_pr_id = $product_id;
+        $comment->cmt_name = $cmt_name;
+        $comment->cmt = $comment_content;
+        $comment->cmt_status = 1;
+        $comment->cmt_parent_cmt = 0;
         $comment->save();
     }
     public function list_comment()
     {
-        $comment = Comment::with('product')->orderBy('comment_status', 'desc')->get();
-        $comment_rep = Comment::with('product')->where('comment_parent_comment', '>', 0)->get();
+        $comment = Comment::with('product')->orderBy('cmt_status', 'desc')->get();
+        $comment_rep = Comment::with('product')->where('cmt_parent_cmt', '>', 0)->get();
         return view('admin.comment.list_comment')->with(compact('comment', 'comment_rep'));
     }
     public function duyet_comment(Request $request)
     {
         $data = $request->all();
-        $comment = Comment::find($data['comment_id']);
-        $comment->comment_status = $data['comment_status'];
+        $comment = Comment::find($data['cmt_id']);
+        $comment->cmt_status = $data['cmt_status'];
         $comment->save();
     }
     public function reply_comment(Request $request)
     {
         $data = $request->all();
         $comment = new Comment();
-        $comment->comment = $data['comment'];
-        $comment->comment_product_id = $data['comment_product_id'];
-        $comment->comment_parent_comment = $data['comment_id'];
-        $comment->comment_name = 'Admin';
-        $comment->comment_status = 0;
+        $comment->cmt = $data['cmt'];
+        $comment->cmt_pr_id = $data['cmt_pr_id'];
+        $comment->cmt_parent_cmt = $data['cmt_id'];
+        $comment->cmt_name = 'Admin';
+        $comment->cmt_status = 0;
         $comment->save();
     }
-    public function delete_comment($comment_id)
+    public function delete_comment($cmt_id)
     {
         // Kiểm tra xem comment_id có tồn tại không
-        if ($comment_id) {
+        if ($cmt_id) {
             // Xóa bình luận từ CSDL
-            $deleted = Comment::where('comment_id', $comment_id)->delete();
+            $deleted = Comment::where('cmt_id', $cmt_id)->delete();
 
             // Kiểm tra xem xóa bình luận thành công hay không
             if ($deleted) {
