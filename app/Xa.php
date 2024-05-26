@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Xa extends Model
 {
     public $timestamps = false;
-    protected $fillable = ['name_xaphuong','type','maqh'];
-    protected $primaryKey = 'xaid';
-    protected $table = 'tbl_xaphuongthitran';
+    protected $fillable = ['tenxa','type','mahuyen'];
+    protected $primaryKey = 'maxa';
+    protected $table = 't_xa';
 }

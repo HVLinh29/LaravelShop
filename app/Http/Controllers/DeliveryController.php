@@ -3,15 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-Use App\City;
-Use App\Quan;
+Use App\Tinh;
+Use App\Huyen;
 Use App\Xa;
 Use App\Feeship;
 use Toastr;
 class DeliveryController extends Controller
 {
     public function delivery(Request $request){
-        $city = City::orderby('matp','ASC')->get();
+        $city = Tinh::orderby('matinh','ASC')->get();
         return view('admin.delivery.add_delivery')->with(compact('city'));
     }
     public function select_delivery(Request $request){
@@ -19,18 +19,18 @@ class DeliveryController extends Controller
     	if($data['action']){
     		$output = '';
     		if($data['action']=="city"){
-    			$select_province = Quan::where('matp',$data['ma_id'])->orderby('maqh','ASC')->get();
+    			$select_province = Huyen::where('matinh',$data['ma_id'])->orderby('mahuyen','ASC')->get();
     				$output.='<option>Chọn quận huyện</option>';
     			foreach($select_province as $key => $province){
-    				$output.='<option value="'.$province->maqh.'">'.$province->name_quanhuyen.'</option>';
+    				$output.='<option value="'.$province->mahuyen.'">'.$province->tenhuyen.'</option>';
     			}
 
     		}else{
 
-    			$select_wards = Xa::where('maqh',$data['ma_id'])->orderby('xaid','ASC')->get();
+    			$select_wards = Xa::where('mahuyen',$data['ma_id'])->orderby('maxa','ASC')->get();
     			$output.='<option>Chọn xã phường</option>';
     			foreach($select_wards as $key => $ward){
-    				$output.='<option value="'.$ward->xaid.'">'.$ward->name_xaphuong.'</option>';
+    				$output.='<option value="'.$ward->maxa.'">'.$ward->tenxa.'</option>';
     			}
     		}
     		echo $output;
@@ -64,9 +64,9 @@ class DeliveryController extends Controller
 
 				$output.='
 					<tr>
-						<td>'.$fee->city->name_city.'</td>
-						<td>'.$fee->province->name_quanhuyen.'</td>
-						<td>'.$fee->wards->name_xaphuong.'</td>
+						<td>'.$fee->city->tentinh.'</td>
+						<td>'.$fee->province->tenhuyen.'</td>
+						<td>'.$fee->wards->tenxa.'</td>
 						<td contenteditable data-feeship_id="'.$fee->fee_id.'" class="fee_feeship_edit">'.number_format($fee->fee_feeship,0,',','.').'</td>
 					</tr>
 					';

@@ -23,7 +23,7 @@
                                 
                                         <option value="">--Chọn tỉnh thành phố--</option>
                                     @foreach($city as $key => $ci)
-                                        <option value="{{$ci->matp}}">{{$ci->name_city}}</option>
+                                        <option value="{{$ci->matinh}}">{{$ci->tentinh}}</option>
                                     @endforeach
                                         
                                 </select>

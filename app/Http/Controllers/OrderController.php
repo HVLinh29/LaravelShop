@@ -13,7 +13,7 @@ use Carbon\Carbon;
 use App\Coupon;
 use PDF;
 use App\Product;
-use App\Statistic;
+use App\Thongke;
 use Mail;
 use Session;
 use Illuminate\Support\Facades\DB;
@@ -453,24 +453,24 @@ class OrderController extends Controller
 		$order_date = $order->order_date;
 
 		// Tìm thống kê cho ngày hiện tại
-		$statistic = Statistic::where('order_date', $order_date)->first();
+		$statistic = Thongke::where('order_date', $order_date)->first();
 
 		// Nếu không có thống kê, tạo mới
 		if (!$statistic) {
-			$statistic = new Statistic();
+			$statistic = new Thongke();
 			$statistic->order_date = $order_date;
-			$statistic->sales = 0;
-			$statistic->quantity = 0;
-			$statistic->profit = 0;
+			$statistic->gia = 0;
+			$statistic->soluong = 0;
+			$statistic->loinhuan = 0;
 			$statistic->total_order = 0;
 		}
 
 		if ($order->order_status == 2) {
 			// Khởi tạo các biến
 			$total_order = 0;
-			$sales = 0;
-			$profit = 0;
-			$quantity = 0;
+			$gia = 0;
+			$loinhuan = 0;
+			$soluong = 0;
 
 			// Lặp qua các sản phẩm trong đơn hàng
 			foreach ($data['order_product_id'] as $key => $product_id) {
@@ -487,16 +487,16 @@ class OrderController extends Controller
 				$product->save();
 
 				// Cập nhật thông tin doanh thu và số lượng
-				$quantity += $qty;
+				$soluong += $qty;
 				$total_order++;
-				$sales += $product_price * $qty;
-				$profit = $sales - ($product_cost * $qty); // Giả sử 1000 là chi phí cố định
+				$gia += $product_price * $qty;
+				$loinhuan = $gia - ($product_cost * $qty); // Giả sử 1000 là chi phí cố định
 			}
 
 			// Cập nhật thông tin thống kê
-			$statistic->sales += $sales;
-			$statistic->quantity += $quantity;
-			$statistic->profit += $profit;
+			$statistic->gia += $gia;
+			$statistic->soluong += $soluong;
+			$statistic->loinhuan += $loinhuan;
 			$statistic->total_order += $total_order;
 			$statistic->save();
 		}

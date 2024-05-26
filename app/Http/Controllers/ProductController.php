@@ -250,7 +250,7 @@ class ProductController extends Controller
         $gallery = Gallery::where('product_id', $product_id)->get();
         $output['product_gallery'] = '';
         foreach ($gallery as $ket => $gal) {
-            $output['product_gallery'] .= '<p><img  width="100%" src="public/uploads/gallery/' . $gal->gallery_image . '"> </p>';
+            $output['product_gallery'] .= '<p><img  width="100%" src="public/uploads/gallery/' . $gal->g_image . '"> </p>';
         }
 
         $output['product_name'] = $product->product_name;

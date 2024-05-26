@@ -12,10 +12,10 @@ class Feeship extends Model
     protected $table = 'tbl_feeship';
 
     public function city(){
-        return $this->belongsTo('App\City', 'fee_matp');
+        return $this->belongsTo('App\Tinh', 'fee_matp');
     }
     public function province(){
-        return $this->belongsTo('App\Quan', 'fee_maqh');
+        return $this->belongsTo('App\Huyen', 'fee_maqh');
     }
     public function wards(){
         return $this->belongsTo('App\Xa', 'fee_xaid');

@@ -11,8 +11,8 @@ use Illuminate\Support\Facades\Redirect;
 session_start();
 
 use Cart;
-use App\City;
-use App\Quan;
+use App\Tinh;
+use App\Huyen;
 use App\Xa;
 use App\Feeship;
 use Carbon\Carbon;
@@ -101,7 +101,7 @@ class CheckoutController extends Controller
         // Lấy danh mục sản phẩm và thương hiệu
         $cate_product = DB::table('tbl_category_product')->where('category_status', '0')->orderby('category_id', 'desc')->get();
         $brand_product = DB::table('tbl_brand')->where('brand_status', '0')->orderby('brand_id', 'desc')->get();
-        $city = City::orderby('matp', 'ASC')->get();
+        $city = Tinh::orderby('matinh', 'ASC')->get();
 
         // Kiểm tra nếu có dữ liệu thanh toán từ VNPAY
         if ($request->has('vnp_Amount')) {
@@ -324,28 +324,27 @@ class CheckoutController extends Controller
         $data = $request->all();
         if ($data['action']) {
             $output = '';
-            if ($data['action'] == "city") {
-                $select_province = Quan::where('matp', $data['ma_id'])->orderby('maqh', 'ASC')->get();
-                $output .= '<option>Chọn quận huyện</option>';
-                foreach ($select_province as $key => $province) {
-                    $output .= '<option value="' . $province->maqh . '">' . $province->name_quanhuyen . '</option>';
-                }
-            } else {
-
-                $select_wards = Xa::where('maqh', $data['ma_id'])->orderby('xaid', 'ASC')->get();
-                $output .= '<option>Chọn xã phường</option>';
-                foreach ($select_wards as $key => $ward) {
-                    $output .= '<option value="' . $ward->xaid . '">' . $ward->name_xaphuong . '</option>';
-                }
-            }
+            if($data['action']=="city"){
+    			$select_province = Huyen::where('matinh',$data['ma_id'])->orderby('mahuyen','ASC')->get();
+    				$output.='<option>Chọn quận huyện</option>';
+    			foreach($select_province as $key => $province){
+    				$output.='<option value="'.$province->mahuyen.'">'.$province->tenhuyen.'</option>';
+    			}
+    		}else{
+    			$select_wards = Xa::where('mahuyen',$data['ma_id'])->orderby('maxa','ASC')->get();
+    			$output.='<option>Chọn xã phường</option>';
+    			foreach($select_wards as $key => $ward){
+    				$output.='<option value="'.$ward->maxa.'">'.$ward->tenxa.'</option>';
+    			}
+    		}
             echo $output;
         }
     }
     public function calculate_fee(Request $request)
     {
         $data = $request->all();
-        if ($data['matp']) {
-            $feeship = Feeship::where('fee_matp', $data['matp'])->where('fee_maqh', $data['maqh'])->where('fee_xaid', $data['xaid'])->get();
+        if ($data['matinh']) {
+            $feeship = Feeship::where('fee_matp', $data['matinh'])->where('fee_maqh', $data['mahuyen'])->where('fee_xaid', $data['maxa'])->get();
             if ($feeship) {
                 $count_feeship = $feeship->count();
                 if ($count_feeship > 0) {

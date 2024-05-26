@@ -61,14 +61,14 @@ class SliderController extends Controller
     }
     public function unactive_slider($slider_id){
         $this->AuthLogin();
-        DB::table('tbl_slider')->where('slider_id',$slider_id)->update(['slider_status'=>0]);
+        DB::table('t_slider')->where('slider_id',$slider_id)->update(['slider_status'=>0]);
         Toastr::error('Chưa kích hoạt được slider', 'Chưa kích hoạt');
         // Session::put('message','Không kích hoạt được slider');
         return Redirect::to('managa-slider');
     }
     public function active_slider($slider_id){
         $this->AuthLogin();
-        DB::table('tbl_slider')->where('slider_id',$slider_id)->update(['slider_status'=>1]);
+        DB::table('t_slider')->where('slider_id',$slider_id)->update(['slider_status'=>1]);
         Toastr::success('Kích hoạt Slider thành công', 'Thành công');
         // Session::put('message','Kích hoạt được slider');
         return Redirect::to('managa-slider');
