@@ -9,7 +9,7 @@
             </header>
 
             <div class="table-responsive">
-                <table class="table table-striped b-t b-light" id="myTable">
+                <table class="table" id="myTable">
                     <style>
                         .custom-button {
                             background-color: brown;
@@ -25,7 +25,7 @@
                             border-radius: 4px;
                         }
                     </style>
-                    <a href="{{ URL::to('/add-category-product') }}" class="custom-button" >Thêm danh mục</a>
+                    <a href="{{ URL::to('/add-category-product') }}" class="custom-button">Thêm danh mục</a>
                     <?php
                     $message = Session::get('message');
                     if ($message) {
@@ -33,24 +33,24 @@
                         Session::put('message', null);
                     }
                     ?>
-                    <thead>
+                    <thead class="thead-dark">
                         <tr>
-                            <th style="color:brown">Tên danh mục</th>
-                            <th style="color:brown">Slug</th>
-                            <th style="color:brown">Thuộc danh muc</th>
-                            <th style="color:brown">Hiển thị</th>
-                            <th style="color:brown">Quản lý</th>
-
+                            <th scope="col" style="color:white">Tên danh mục</th>
+                            <th scope="col" style="color:white">Slug</th>
+                            <th scope="col" style="color:white">Thuộc danh mục</th>
+                            <th scope="col" style="color:white">Hiển thị</th>
+                            <th scope="col" style="color:white">Quản lý</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($all_category_product as $key => $cate_pro)
                             <tr>
+                                <th scope="row">{{ $key + 1 }}</th>
                                 <td>{{ $cate_pro->category_name }}</td>
                                 <td>{{ $cate_pro->category_slug }}</td>
                                 <td>
                                     @if ($cate_pro->category_parent == 0)
-                                        <span style="color:red">Danh muc cha</span>
+                                        <span style="color:red">Danh mục cha</span>
                                     @else
                                         @foreach ($category_product as $key => $cate_sub_pro)
                                             @if ($cate_sub_pro->category_id == $cate_pro->category_parent)
@@ -61,20 +61,19 @@
                                 </td>
                                 <td><span class="text-ellipsis">
                                         <?php
-                  if($cate_pro->category_status==0){
-                  ?>
+                                        if($cate_pro->category_status==0){
+                                        ?>
 
                                         <a href="{{ URL::to('/unactive-category-product/' . $cate_pro->category_id) }}">
                                             <i class="fa-thumb-styling fa-solid fa-thumbs-up"></i></a>
                                         <?php
-                  }else{
-                   ?>
+                                        }else{
+                                        ?>
                                         <a href="{{ URL::to('/active-category-product/' . $cate_pro->category_id) }}">
                                             <i class="fa-thumb-styling fa-solid fa-thumbs-down"></i></a>
                                         <?php
-                  }
-
-                ?>
+                                        }
+                                        ?>
                                     </span></td>
 
                                 <td>
@@ -90,22 +89,7 @@
                         @endforeach
                     </tbody>
                 </table>
-
-                {{-- Xuat nhap excel --}}
-                </br>
-                <form action="{{ url('import-csv') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <input type="file" name="file" accept=".xlsx"><br>
-                    <input type="submit" value="Import Excel" name="import_csv" class="btn btn-danger">
-                </form>
-                </br>
-                <form action="{{ url('export-csv') }}" method="POST">
-                    @csrf
-                    <input type="submit" value="Export Excel" name="export_csv" class="btn btn-success">
-                </form>
-
             </div>
-
         </div>
     </div>
 @endsection

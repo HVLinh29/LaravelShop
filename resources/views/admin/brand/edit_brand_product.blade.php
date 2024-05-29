@@ -19,28 +19,28 @@
                         <form role="form" action="{{URL::to('/update-brand-product/'.$edit_value->brand_id)}}" method="POST">
                             {{csrf_field()}}
                             <div class="form-group">
-                                <label for="exampleInputEmail1">Tên thuong hieu</label>
-                                <input type="text" value="{{$edit_value->brand_name}}"  onkeyup="ChangeToSlug();" name="brand_product_name" class="form-control" id="slug" >
+                                <label for="">Tên thuong hieu</label>
+                                <input type="text" value="{{$edit_value->tenthuonghieu}}"  onkeyup="ChangeToSlug();" name="tenthuonghieu" class="form-control" id="slug" >
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputEmail1">Slug</label>
-                                <input type="text" value="{{$edit_value->brand_slug}}" name="brand_slug" class="form-control" id="convert_slug" >
+                                <label for="">Slug</label>
+                                <input type="text" value="{{$edit_value->thuonghieu_slug}}" name="thuonghieu_slug" class="form-control" id="convert_slug" >
                             </div>
                         <div class="form-group">
-                            <label for="exampleInputPassword1">Mô tả thương hiệu</label>
-                            <textarea style="resize: none"rows="5"  name="brand_product_desc" class="form-control" 
-                             id="exampleInputPassword1" >{{$edit_value->brand_desc}}</textarea>
+                            <label for="">Mô tả thương hiệu</label>
+                            <textarea style="resize: none"rows="5"  name="thuonghieu_desc" class="form-control" 
+                             id="" >{{$edit_value->thuonghieu_desc}}</textarea>
                         </div>
-                        <div class="form-group">
-                            <label for="exampleInputPassword1">Hiển thị</label>
-                            <select name="brand_product_status" class="form-control input-sm m-bot15">
+                        {{-- <div class="form-group">
+                            <label for="">Hiển thị</label>
+                            <select name="thuonghieu_status" class="form-control input-sm m-bot15">
                                 <option value="1">Ẩn</option>
                                 <option value="0">Hiển thị</option>
                               
                             </select>
-                        </div>
+                        </div> --}}
                     
-                        <button type="submit" name="update_brand_product" class="btn btn-success">Cập nhật thương hiệu</button>
+                        <button type="submit" name="update_thuonghieu" class="btn btn-success">Cập nhật thương hiệu</button>
                     </form>
                     </div>
                     @endforeach

@@ -154,6 +154,7 @@
             <hr>
         </div>  
         <p class="forgot"><a href="#">Quên mật khẩu?</a></p>
+        <a href="{{url('/register-auth')}}" class="btn btn-success btn-block"><i class="fa fa-user-plus"></i> Đăng kí phân quyền</a>
     </div>
 </div>
 <!-- Bootstrap JS -->

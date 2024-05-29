@@ -66,7 +66,7 @@
               <td>{{ number_format($pr->product_price,0,',','.')}}đ</td>
               <td>{{ number_format($pr->product_cost,0,',','.')}}đ</td>
               <td>{{$pr->category_name}}</td>
-              <td>{{$pr->brand_name}}</td>
+              <td>{{$pr->tenthuonghieu}}</td>
               <td><span class="text-ellipsis">
                 <?php
                   if($pr->product_status==0){

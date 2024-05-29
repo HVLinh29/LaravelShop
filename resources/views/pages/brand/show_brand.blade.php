@@ -5,7 +5,7 @@
 @section('content_thu2')
     <div class="features_items">
         @foreach ($brand_name as $key => $name)
-            <h2 class="title text-center">Thương hiệu: {{ $name->brand_name }}</h2>
+            <h2 class="title text-center">Thương hiệu: {{ $name->tenthuonghieu }}</h2>
             <div class="row">
                 @foreach ($brand_by_id as $key => $product)
                     <div class="col-md-3">

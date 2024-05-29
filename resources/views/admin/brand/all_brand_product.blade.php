@@ -47,25 +47,23 @@
                     <tbody>
                         @foreach ($all_brand_product as $key => $br)
                             <tr>
-                                <td>{{ $br->brand_name }}</td>
-                                <td>{{ $br->brand_slug }}</td>
-                                <td>{{ $br->brand_desc }}</td>
+                                <td>{{ $br->tenthuonghieu }}</td>
+                                <td>{{ $br->thuonghieu_slug }}</td>
+                                <td>{{ $br->thuonghieu_desc }}</td>
                                 <td><span class="text-ellipsis">
                                         <?php
-                  if($br->brand_status==0){
-                  ?>
-
+                                        if($br->thuonghieu_status==0){
+                                        ?>
                                         <a href="{{ URL::to('/unactive-brand-product/' . $br->brand_id) }}">
                                             <i class="fa-thumb-styling fa-solid fa-thumbs-up"></i></a>
                                         <?php
-                  }else{
-                   ?>
+                                        }else{
+                                        ?>
                                         <a href="{{ URL::to('/active-brand-product/' . $br->brand_id) }}">
                                             <i class="fa-thumb-styling fa-solid fa-thumbs-down"></i></a>
                                         <?php
-                  }
-
-                ?>
+                                        }
+                                        ?>
                                     </span></td>
 
                                 <td>

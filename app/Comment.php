@@ -9,7 +9,7 @@ class Comment extends Model
     public $timestamps = false;
     protected $fillable = ['cmt','cmt_name','cmt_date','cmt_peoduct_id','cmt_status','cmt_parent_cmt'];
     protected $primaryKey = 'cmt_id';
-    protected $table = 'tbl_comment';
+    protected $table = 't_comment';
 
 
     public function product(){

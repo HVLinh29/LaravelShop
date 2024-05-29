@@ -137,7 +137,7 @@ class PostController extends Controller
 
 
         $cate_product = DB::table('tbl_category_product')->where('category_status', '0')->orderby('category_id', 'desc')->get();
-        $brand_product = DB::table('tbl_brand')->where('brand_status', '0')->orderby('brand_id', 'desc')->get();
+        $brand_product = DB::table('t_thuonghieu')->where('thuonghieu_status','0')->orderby('brand_id','desc')->get(); 
 
         $catepost = Article::where('article_slug', $baiviet_slug)->take(1)->get();
 
@@ -164,7 +164,7 @@ class PostController extends Controller
         $slider = Slider::orderBy('slider_id', 'desc')->where('slider_status', '1')->take(3)->get();
 
         $cate_product = DB::table('tbl_category_product')->where('category_status', '0')->orderby('category_id', 'desc')->get();
-        $brand_product = DB::table('tbl_brand')->where('brand_status', '0')->orderby('brand_id', 'desc')->get();
+        $brand_product = DB::table('t_thuonghieu')->where('thuonghieu_status','0')->orderby('brand_id','desc')->get(); 
        
         $baiviett = Baiviet::with('cate_post')->where('baiviet_status', 1)->where('baiviet_slug', $baiviet_slug)->take(1)->get();
         foreach ($baiviett as $key => $p) {

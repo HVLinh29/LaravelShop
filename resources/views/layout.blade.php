@@ -194,7 +194,7 @@
                                     <ul role="menu" class="sub-menu">
                                         @foreach ($brand as $key => $brand)
                                             <li><a
-                                                    href="{{ URL::to('/thuong-hieu-san-pham/' . $brand->brand_slug) }}">{{ $brand->brand_name }}</a>
+                                                    href="{{ URL::to('/thuong-hieu-san-pham/' . $brand->thuonghieu_slug) }}">{{ $brand->tenthuonghieu }}</a>
                                             </li>
                                         @endforeach
                                     </ul>

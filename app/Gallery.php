@@ -9,6 +9,6 @@ class Gallery extends Model
     public $timestamps = false;
     protected $fillable = ['g_name','g_image','product_id'];
     protected $primaryKey = 'g_id';
-    protected $table = 'tbl_gallery';
+    protected $table = 't_gallery';
 
 }

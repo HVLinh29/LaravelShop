@@ -18,7 +18,7 @@ use Mail;
 use Session;
 use Illuminate\Support\Facades\DB;
 use App\Slider;
-use App\CatePost;
+use App\Article;
 use Toastr;
 class OrderController extends Controller
 {
@@ -521,7 +521,7 @@ class OrderController extends Controller
 		} else {
 
 			//post
-			$category_post = CatePost::orderBy('cate_post_id', 'DESC')->get();
+			$category_post = Article::orderBy('article_id', 'DESC')->get();
 
 			//slider
 			$slider = Slider::orderBy('slider_id', 'desc')->where('slider_status', '1')->take(3)->get();
@@ -533,7 +533,7 @@ class OrderController extends Controller
 			$url_canonical = $request->url();
 
 			$cate_product = DB::table('tbl_category_product')->where('category_status', '0')->orderby('category_id', 'desc')->get();
-			$brand_product = DB::table('tbl_brand')->where('brand_status', '0')->orderby('brand_id', 'desc')->get();
+			$brand_product = DB::table('t_thuonghieu')->where('thuonghieu_status','0')->orderby('brand_id','desc')->get(); 
 
 			$orderr = Order::where('customer_id', Session::get('customer_id'))->orderby('order_id', 'DESC')->get();
 
@@ -549,8 +549,7 @@ class OrderController extends Controller
 		} else {
 
 			//post
-			$category_post = CatePost::orderBy('cate_post_id', 'DESC')->get();
-
+			$category_post = Article::orderBy('article_id', 'DESC')->get();
 			//slider
 			$slider = Slider::orderBy('slider_id', 'desc')->where('slider_status', '1')->take(3)->get();
 

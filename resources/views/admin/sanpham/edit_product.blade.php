@@ -93,7 +93,7 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">Tags san pham</label>
+                                    <label for="exampleInputEmail1">Tags sản phẩm</label>
                                     <input type="text" data-role="tagsinput" class="form-control" value="{{$pro->product_tags}}" name="product_tags"  id="">
                                 </div>
                                 <div class="form-group">

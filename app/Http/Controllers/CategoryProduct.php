@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Redirect;
 use Toastr;
 session_start();
 
-use App\CatePost;
+use App\Article;
 use App\Slider;
 use App\Product;
 use Auth;
@@ -113,74 +113,11 @@ class CategoryProduct extends Controller
         return Redirect::to('all-category-product');
     }
 
-    //Danh muc trang chu
-    // public function show_category_home(Request $request,$category_slug){
-
-    //     $category_post = CatePost::orderBy('cate_post_id','DESC')->get();
-    //     $slider = Slider::orderBy('slider_id','desc')->where('slider_status','1')->take(3)->get();
-    //     //seo 
-    //     $meta_desc = "";
-    //     $meta_keywords = "";
-    //     $meta_title = "";
-    //     $url_canonical = $request->url();
-
-    //     $cate_product = DB::table('tbl_category_product')->where('category_status','0')->orderby('category_id','desc')->get();
-    //     $brand_product = DB::table('tbl_brand')->where('brand_status','0')->orderby('brand_id','desc')->get();
-
-    //     $category_by_slug = CategoryModel::where('category_slug',$category_slug)->get();
-
-    //     // $category_by_id = DB::table('tbl_product')->join('tbl_category_product','tbl_product.category_id','=','tbl_category_product.category_id')
-    //     // ->where('tbl_category_product.category_slug',$category_slug)->paginate(6);
-
-    //     foreach($category_by_slug as $key =>$cate){
-    //         $category_id = $cate->category_id;
-
-    //     }
-    //     (isset($_GET[ 'sort_by'])){
-    //         $sort_by = $_GET['sort_by'];
-
-    //         if($sort_by='giam_dan'){
-    //             $category_by_id =Product::with('category')->where('category_id',$category_id)->orderBy('product_price','DESC')-->paginate(6)
-    //             ->appends(request()->query());
-    //         }
-    //         elseif($sort_by='tang_dan'){
-    //             $category_by_id=Product::with('category')->where('category_id',$category_id)->orderBy('product_price','ASC' )->paginate(6)
-    //             ->aappends(request()->query());
-
-    //         }
-    //         elseif($sort_by='kytu_za'){
-    //             $category_by_id=Product::with('category')->where('category_id',$category_id)
-    //             ->orderBy('product_name','DESC')->paginate(6)->appends(request()->query());
-
-    //         }
-    //         elseif($sort_by='kytu_az'){
-    //             $category_by_idProduct::with('category')->where('category_id',$category_id)->orderBy('product_name','ASC')
-    //             ->paginate(6)->appends(request()->query());
-
-    //         }else{
-    //         $category_by_id = Product::with('category')->where('category_id',$category_id)->orderBy('product_id', 'DESC')->paginate(6)
-    //         };
-    //     }
-
-
-    //     foreach($category_by_id as $key => $val){
-    //         //seo 
-    //     $meta_desc = "$val->category_desc";
-    //     $meta_keywords = "$val->meta_keywords";
-    //     $meta_title = "$val->category_name";
-    //     $url_canonical = $request->url();
-    //     }
-
-    //     $category_name = DB::table('tbl_category_product')->where('tbl_category_product.category_slug',$category_slug)->limit(1)->get();
-
-    //     return view('pages.category.show_category')->with('category',$cate_product)->with('brand',$brand_product)
-    //     ->with('category_by_id',$category_by_id)->with('category_name',$category_name)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)
-    //     ->with('url_canonical',$url_canonical)->with('category_post',$category_post)->with('slider',$slider);
-    // }
+        
     public function show_category_home(Request $request, $category_slug)
     {
 
-        $category_post = CatePost::orderBy('cate_post_id', 'DESC')->get();
+        $category_post = Article::orderBy('article_id', 'DESC')->get();
         $slider = Slider::orderBy('slider_id', 'desc')->where('slider_status', '1')->take(3)->get();
         //seo 
         $meta_desc = "";
@@ -189,7 +126,7 @@ class CategoryProduct extends Controller
         $url_canonical = $request->url();
 
         $cate_product = DB::table('tbl_category_product')->where('category_status', '0')->orderby('category_id', 'desc')->get();
-        $brand_product = DB::table('tbl_brand')->where('brand_status', '0')->orderby('brand_id', 'desc')->get();
+        $brand_product = DB::table('t_thuonghieu')->where('thuonghieu_status','0')->orderby('brand_id','desc')->get(); 
 
         $category_by_slug = CategoryModel::where('category_slug', $category_slug)->get();
 

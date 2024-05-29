@@ -94,7 +94,7 @@ class GalleryController extends Controller
 
                 $gallery = new Gallery();
                 $gallery->g_name = $new_image;
-                $gallery->gy_image = $new_image;
+                $gallery->g_image = $new_image;
                 $gallery->product_id = $pro_id;
                 $gallery->save();
             }
@@ -108,7 +108,7 @@ class GalleryController extends Controller
         $gal_id = $request->gal_id;
         $gal_text = $request->gal_text;
         $gallery = Gallery::find($gal_id);
-        $gallery->gallery_name = $gal_text;
+        $gallery->g_name = $gal_text;
         $gallery->save();
     }
     public function delete_gallery(Request $request)

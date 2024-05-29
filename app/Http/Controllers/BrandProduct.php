@@ -9,7 +9,7 @@ use Session;
 use App\Brand;
 use Illuminate\Support\Facades\Redirect;
 session_start();
-use App\CatePost;
+use App\Article;
 use App\Slider;
 use Auth;
 use Toastr;
@@ -41,10 +41,10 @@ class BrandProduct extends Controller
         $this->AuthLogin();
         $data = $request->all();
         $brand = new Brand();
-        $brand->brand_name =$data['brand_product_name'];
-        $brand->brand_slug =$data['brand_slug'];
-        $brand->brand_desc =$data['brand_product_desc'];
-        $brand->brand_status =$data['brand_product_status'];
+        $brand->tenthuonghieu =$data['tenthuonghieu'];
+        $brand->thuonghieu_slug =$data['thuonghieu_slug'];
+        $brand->thuonghieu_desc =$data['thuonghieu_desc'];
+        $brand->thuonghieu_status =$data['thuonghieu_status'];
         $brand->save();
         Toastr::success('Thêm thương hiệu sản phẩm thành công', 'Thành công');
         // Session::put('message','Thêm thương hiệu sản phẩm thành công');
@@ -53,14 +53,14 @@ class BrandProduct extends Controller
     }
     public function unactive_brand_product($brand_product_id){
         $this->AuthLogin();
-        DB::table('tbl_brand')->where('brand_id',$brand_product_id)->update(['brand_status'=>1]);
-        Toastr::error('Không kích hoạt được thương hiệu sản phẩm', 'Không thành công');
+        DB::table('t_thuonghieu')->where('brand_id',$brand_product_id)->update(['thuonghieu_status'=>1]);
+        Toastr::error('Hủy kích hoạt được thương hiệu sản phẩm', 'Hủy thành công');
         // Session::put('message','Không kích hoạt được thương hiệu sản phẩm');
         return Redirect::to('all-brand-product');
     }
     public function active_brand_product($brand_product_id){
         $this->AuthLogin();
-        DB::table('tbl_brand')->where('brand_id',$brand_product_id)->update(['brand_status'=>0]);
+        DB::table('t_thuonghieu')->where('brand_id',$brand_product_id)->update(['thuonghieu_status'=>0]);
         Toastr::success('Kích hoạt thương hiệu sản phẩm thành công', 'Thành công');
         // Session::put('message','Kích hoạt thương hiệu sản phẩm thành công');
         return Redirect::to('all-brand-product');
@@ -77,10 +77,9 @@ class BrandProduct extends Controller
        
         $data = $request->all();
         $brand = Brand::find($brand_product_id);
-        $brand->brand_name =$data['brand_product_name'];
-        $brand->brand_slug =$data['brand_slug'];
-        $brand->brand_desc =$data['brand_product_desc'];
-        // $brand->brand_status =$data['brand_product_status'];
+        $brand->tenthuonghieu =$data['tenthuonghieu'];
+        $brand->thuonghieu_slug =$data['thuonghieu_slug'];
+        $brand->thuonghieu_desc =$data['thuonghieu_desc'];
         $brand->save();
         Toastr::success('Cập nhật thương hiệu sản phẩm thành công', 'Thành công');
         // Session::put('message','Cập nhật thương hiệu sản phẩm thành công');
@@ -88,7 +87,7 @@ class BrandProduct extends Controller
     }
     public function delete_brand_product($brand_product_id){
         $this->AuthLogin();
-        DB::table('tbl_brand')->where('brand_id',$brand_product_id)->delete();
+        DB::table('t_thuonghieu')->where('brand_id',$brand_product_id)->delete();
         Toastr::error('Xóa thương hiệu sản phẩm thành công', 'Thành công');
         // Session::put('message','Xóa thương hiệu sản phẩm thành công');
         return Redirect::to('all-brand-product');
@@ -96,23 +95,23 @@ class BrandProduct extends Controller
 
     //Trang chu Fontend
     public function show_brand_home(Request $request, $brand_slug){
-        $category_post = CatePost::orderBy('cate_post_id','DESC')->get();
+        $category_post = Article::orderBy('article_id', 'DESC')->get();
         //slide
         $slider = Slider::orderBy('slider_id','DESC')->where('slider_status','1')->take(4)->get();
 
         $cate_product = DB::table('tbl_category_product')->where('category_status','0')->orderby('category_id','desc')->get(); 
-        $brand_product = DB::table('tbl_brand')->where('brand_status','0')->orderby('brand_id','desc')->get(); 
+        $brand_product = DB::table('t_thuonghieu')->where('thuonghieu_status','0')->orderby('brand_id','desc')->get(); 
         
         
-        $brand_by_id = DB::table('tbl_product')->join('tbl_brand','tbl_product.brand_id','=','tbl_brand.brand_id')->where('tbl_brand.brand_slug',$brand_slug)->paginate(6);
+        $brand_by_id = DB::table('tbl_product')->join('t_thuonghieu','tbl_product.brand_id','=','t_thuonghieu.brand_id')->where('t_thuonghieu.thuonghieu_slug',$brand_slug)->paginate(6);
 
-        $brand_name = DB::table('tbl_brand')->where('tbl_brand.brand_slug',$brand_slug)->limit(1)->get();
+        $brand_name = DB::table('t_thuonghieu')->where('t_thuonghieu.thuonghieu_slug',$brand_slug)->limit(1)->get();
 
         foreach($brand_name as $key => $val){
             //seo 
-            $meta_desc = $val->brand_desc; 
-            $meta_keywords = $val->brand_desc;
-            $meta_title = $val->brand_name;
+            $meta_desc = $val->thuonghieu_desc; 
+            $meta_keywords = $val->thuonghieu_desc;
+            $meta_title = $val->tenthuonghieu;
             $url_canonical = $request->url();
             //--seo
         }

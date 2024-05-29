@@ -19,7 +19,7 @@ use Carbon\Carbon;
 use App\Shipping;
 use App\Order;
 use App\OrderDetails;
-use App\CatePost;
+use App\Article;
 use App\Slider;
 use App\Coupon;
 use App\Customer;
@@ -41,7 +41,7 @@ class CheckoutController extends Controller
     }
     public function login_checkout(Request $request)
     {
-        $category_post = CatePost::orderBy('cate_post_id', 'DESC')->get();
+        $category_post = Article::orderBy('article_id', 'DESC')->get();
         $slider = Slider::orderBy('slider_id', 'DESC')->where('slider_status', '1')->take(4)->get();
         //seo 
         $meta_desc = "Đăng nhập thanh toán";
@@ -51,13 +51,13 @@ class CheckoutController extends Controller
         //--seo 
 
         $cate_product = DB::table('tbl_category_product')->where('category_status', '0')->orderby('category_id', 'desc')->get();
-        $brand_product = DB::table('tbl_brand')->where('brand_status', '0')->orderby('brand_id', 'desc')->get();
+        $brand_product = DB::table('t_thuonghieu')->where('thuonghieu_status','0')->orderby('brand_id','desc')->get(); 
         return view('pages.thanhtoan.login_checkout')->with('category', $cate_product)->with('brand', $brand_product)->with('meta_desc', $meta_desc)->with('meta_keywords', $meta_keywords)->with('meta_title', $meta_title)
             ->with('url_canonical', $url_canonical)->with('category_post', $category_post)->with('slider', $slider);
     }
     public function dangki(Request $request)
     {
-        $category_post = CatePost::orderBy('cate_post_id', 'DESC')->get();
+        $category_post = Article::orderBy('article_id', 'DESC')->get();
         $slider = Slider::orderBy('slider_id', 'DESC')->where('slider_status', '1')->take(4)->get();
         //seo 
         $meta_desc = "Đăng nhập thanh toán";
@@ -67,7 +67,7 @@ class CheckoutController extends Controller
         //--seo 
 
         $cate_product = DB::table('tbl_category_product')->where('category_status', '0')->orderby('category_id', 'desc')->get();
-        $brand_product = DB::table('tbl_brand')->where('brand_status', '0')->orderby('brand_id', 'desc')->get();
+        $brand_product = DB::table('t_thuonghieu')->where('thuonghieu_status','0')->orderby('brand_id','desc')->get(); 
         return view('pages.thanhtoan.add_customer')->with('category', $cate_product)->with('brand', $brand_product)->with('meta_desc', $meta_desc)->with('meta_keywords', $meta_keywords)->with('meta_title', $meta_title)
             ->with('url_canonical', $url_canonical)->with('category_post', $category_post)->with('slider', $slider);
     }
@@ -89,7 +89,7 @@ class CheckoutController extends Controller
     public function checkout(Request $request)
     {
         // Lấy danh mục bài viết và slider
-        $category_post = CatePost::orderBy('cate_post_id', 'DESC')->get();
+        $category_post = Article::orderBy('article_id', 'DESC')->get();
         $slider = Slider::orderBy('slider_id', 'DESC')->where('slider_status', '1')->take(4)->get();
 
         // SEO metadata
@@ -100,7 +100,7 @@ class CheckoutController extends Controller
 
         // Lấy danh mục sản phẩm và thương hiệu
         $cate_product = DB::table('tbl_category_product')->where('category_status', '0')->orderby('category_id', 'desc')->get();
-        $brand_product = DB::table('tbl_brand')->where('brand_status', '0')->orderby('brand_id', 'desc')->get();
+        $brand_product = DB::table('t_thuonghieu')->where('thuonghieu_status','0')->orderby('brand_id','desc')->get(); 
         $city = Tinh::orderby('matinh', 'ASC')->get();
 
         // Kiểm tra nếu có dữ liệu thanh toán từ VNPAY
@@ -223,7 +223,7 @@ class CheckoutController extends Controller
         $url_canonical = $request->url();
         //--seo 
         $cate_product = DB::table('tbl_category_product')->where('category_status', '0')->orderby('category_id', 'desc')->get();
-        $brand_product = DB::table('tbl_brand')->where('brand_status', '0')->orderby('brand_id', 'desc')->get();
+        $brand_product = DB::table('t_thuonghieu')->where('thuonghieu_status','0')->orderby('brand_id','desc')->get(); 
         return view('pages.thanhtoan.payment')->with('category', $cate_product)->with('brand', $brand_product)->with('meta_desc', $meta_desc)->with('meta_keywords', $meta_keywords)->with('meta_title', $meta_title)
             ->with('url_canonical', $url_canonical);
     }
@@ -289,7 +289,7 @@ class CheckoutController extends Controller
         } elseif ($data['payment_method'] == 2) {
             Cart::destroy();
             $cate_product = DB::table('tbl_category_product')->where('category_status', '0')->orderby('category_id', 'desc')->get();
-            $brand_product = DB::table('tbl_brand')->where('brand_status', '0')->orderby('brand_id', 'desc')->get();
+            $brand_product = DB::table('t_thuonghieu')->where('thuonghieu_status','0')->orderby('brand_id','desc')->get(); 
             return view('pages.thanhtoan.handcash')->with('category', $cate_product)->with('brand', $brand_product)->with('meta_desc', $meta_desc)->with('meta_keywords', $meta_keywords)->with('meta_title', $meta_title)
                 ->with('url_canonical', $url_canonical);
         } else {

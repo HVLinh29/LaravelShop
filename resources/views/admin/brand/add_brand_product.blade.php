@@ -18,27 +18,27 @@
                         <form role="form" action="{{URL::to('/save-brand-product')}}" method="POST">
                             {{csrf_field()}}
                             <div class="form-group">
-                                <label for="exampleInputEmail1">Tên thương hiệu</label>
-                                <input type="text" name="brand_product_name" class="form-control" onkeyup="ChangeToSlug();" id="slug" placeholder="Tên danh mục">
+                                <label for="">Tên thương hiệu</label>
+                                <input type="text" name="tenthuonghieu" class="form-control" onkeyup="ChangeToSlug();" id="slug" >
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputEmail1">Slug</label>
-                                <input type="text" name="brand_slug" class="form-control" id="convert_slug" placeholder="Slug">
+                                <label for="">Slug</label>
+                                <input type="text" name="thuonghieu_slug" class="form-control" id="convert_slug" placeholder="Slug">
                             </div>
                         <div class="form-group">
-                            <label for="exampleInputPassword1">Mô tả thương hiệu</label>
-                            <textarea style="resize: none"rows="5"  name="brand_product_desc" class="form-control" id="exampleInputPassword1" ></textarea>
+                            <label for="">Mô tả thương hiệu</label>
+                            <textarea style="resize: none"rows="5"  name="thuonghieu_desc" class="form-control" id="" ></textarea>
                         </div>
                     
                         <div class="form-group">
-                            <label for="exampleInputPassword1">Hiển thị</label>
-                            <select name="brand_product_status" class="form-control input-sm m-bot15">
-                                <option value="1">Ẩn</option>
-                                <option value="0">Hiển thị</option>
+                            <label for="">Hiển thị</label>
+                            <select name="thuonghieu_status" class="form-control input-sm m-bot15">
+                                <option value="0">Ẩn</option>
+                                <option value="1">Hiển thị</option>
                               
                             </select>
                         </div>
-                        <button type="submit" name="add_brand_product" class="btn btn-success">Thêm thương hiệu</button>
+                        <button type="submit" name="add_thuonghieu" class="btn btn-success">Thêm thương hiệu</button>
                     </form>
                     </div>
 
