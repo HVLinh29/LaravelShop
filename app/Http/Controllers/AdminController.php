@@ -15,12 +15,12 @@ use Socialite;
 use App\LoginGG;
 use App\Login;
 use App\Product;
-use App\Post;
+use App\Baiviet;
 use App\Order;
 use App\Video;
 use App\Customer;
 use App\Thongke;
-use App\Visitors;
+use App\Truycap;
 use App\Rules\Captcha;
 use Validator;
 use Auth;
@@ -92,31 +92,31 @@ class AdminController extends Controller
         $oneyears = Carbon::now('Asia/Ho_Chi_Minh')->subDays(365)->toDateString();
         $now = Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
 
-        $visitor_of_lastmonth = Visitors::whereBetween('date_visitor', [$early_last_month, $end_of_last_month])->get();
+        $visitor_of_lastmonth = Truycap::whereBetween('ngaytruycap', [$early_last_month, $end_of_last_month])->get();
         $visitor_last_month_count = $visitor_of_lastmonth->count();
 
-        $visitor_of_thismonth = Visitors::whereBetween('date_visitor', [$early_this_month, $now])->get();
+        $visitor_of_thismonth = Truycap::whereBetween('ngaytruycap', [$early_this_month, $now])->get();
         $visitor_this_month_count = $visitor_of_thismonth->count();
 
-        $visitor_of_year = Visitors::whereBetween('date_visitor', [$oneyears, $now])->get();
+        $visitor_of_year = Truycap::whereBetween('ngaytruycap', [$oneyears, $now])->get();
         $visitor_year_count = $visitor_of_year->count();
 
-        $visitors_current = Visitors::where('ip_address', $user_ip_address)->get();
+        $visitors_current = Truycap::where('ip_address', $user_ip_address)->get();
         $visitor_count = $visitors_current->count();
 
         if ($visitor_count < 1) {
-            $visitor = new Visitors();
+            $visitor = new Truycap();
             $visitor->ip_address = $user_ip_address;
-            $visitor->date_visitor = Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
+            $visitor->ngaytruycap = Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
             $visitor->save();
         }
-        $visitors = Visitors::all();
+        $visitors = Truycap::all();
         $visitors_total = $visitors->count();
 
         $product = Product::all()->count();
         $product_view = Product::orderBy('product_view', 'DESC')->take(20)->get();
-        $post = Post::all()->count();
-        $post_view = Post::orderBy('post_view', 'DESC')->take(20)->get();
+        $baiviet= Baiviet::all()->count();
+        $baiviet_view = Baiviet::orderBy('baiviet_view', 'DESC')->take(20)->get();
         $order = Order::all()->count();
         $video = Video::all()->count();
         $customer = Customer::all()->count();
@@ -125,7 +125,7 @@ class AdminController extends Controller
             'order',
             'video',
             'customer',
-            'post_view',
+            'baiviet_view',
             'product_view',
             'visitors_total',
             'visitor_count',
@@ -133,7 +133,7 @@ class AdminController extends Controller
             'visitor_this_month_count',
             'visitor_year_count',
             'product',
-            'post'
+            'baiviet'
         ));
     }
     public function filter_by_date(Request $request)

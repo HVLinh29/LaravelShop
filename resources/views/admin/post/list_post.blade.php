@@ -51,16 +51,16 @@
             </tr>
           </thead>
           <tbody>
-            @foreach($all_post as $key =>$post)
+            @foreach($all_post as $key =>$baiviet)
             <tr>
-              <td>{{$post->post_title}}</td>
-              <td>{{$post->post_slug}}</td>
-              <td>{!!$post->post_desc!!}</td>
-              <td><img src ="public/uploads/post/{{$post->post_image}}" height="100" width="100"></td>
-              <td>{{$post->post_meta_keywords}}</td>
-              <td>{{$post->cate_post->cate_post_name}}</td>
+              <td>{{$baiviet->baiviet_title}}</td>
+              <td>{{$baiviet->baiviet_slug}}</td>
+              <td>{!!$baiviet->baiviet_desc!!}</td>
+              <td><img src ="public/uploads/post/{{$baiviet->baiviet_image}}" height="100" width="100"></td>
+              <td>{{$baiviet->baiviet_meta_keywords}}</td>
+              <td>{{$baiviet->cate_post->article_name}}</td>
               <td>
-                @if($post->post_status==0)
+                @if($baiviet->baiviet_status==0)
                 Ẩn
                 @else
                 Hiển thị
@@ -68,9 +68,9 @@
               </td>
               
               <td>
-                <a href="{{URL::to('/edit-post/'.$post->post_id)}}" class="active btn btn-success" ui-toggle-class="">
+                <a href="{{URL::to('/edit-post/'.$baiviet->id_baiviet)}}" class="active btn btn-success" ui-toggle-class="">
                Sửa</a>
-                <a onclick="return confirm('Bạn có muốn xóa bai viet này  ?')" href="{{URL::to('/delete-post/'.$post->post_id)}}" 
+                <a onclick="return confirm('Bạn có muốn xóa bai viet này  ?')" href="{{URL::to('/delete-post/'.$baiviet->id_baiviet)}}" 
                   class="active btn btn-danger" ui-toggle-class="">Xóa
                 </a>
               </td>

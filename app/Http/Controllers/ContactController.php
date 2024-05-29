@@ -9,14 +9,14 @@ use Session;
 use App\Brand;
 use Illuminate\Support\Facades\Redirect;
 session_start();
-use App\CatePost;
+use App\Article;
 use App\Slider;
-use App\Contact;
+use App\Lienhe;
 use Auth;
 class ContactController extends Controller
 {
     public function lien_he(Request $request){
-        $category_post = CatePost::orderBy('cate_post_id','DESC')->get();
+        $category_post = Article::orderBy('article_id','DESC')->get();
 
         //slider
         $slider = Slider::orderBy('slider_id','desc')->where('slider_status','1')->take(3)->get();
@@ -29,13 +29,13 @@ class ContactController extends Controller
 
         $cate_product = DB::table('tbl_category_product')->where('category_status','0')->orderby('category_id','desc')->get();
         $brand_product = DB::table('tbl_brand')->where('brand_status','0')->orderby('brand_id','desc')->get();
-        $contact = Contact::where('ct_id',4)->get();
+        $contact = Lienhe::where('ct_id',4)->get();
         return view('pages.lienhe.contact')->with('category',$cate_product)->with('brand',$brand_product)
         ->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)
         ->with('url_canonical',$url_canonical)->with('slider',$slider)->with('category_post',$category_post)->with('contact',$contact);
     }
     public function infomation(){
-        $contact = Contact::where('ct_id',4)->get();
+        $contact = Lienhe::where('ct_id',4)->get();
         return view('admin.contact.add_infomation')->with('contact',$contact);
     }
     // public function save_info(Request $request){
@@ -63,7 +63,7 @@ class ContactController extends Controller
     // }
     public function update_info(Request $request, $info_id){
         $data = $request->all();
-        $contact =  Contact::find($info_id);
+        $contact =  Lienhe::find($info_id);
         $contact->ct_contact = $data['ct_contact'];
         $contact->ct_map = $data['ct_map'];
         $contact->ct_fanpage = $data['ct_fanpage'];

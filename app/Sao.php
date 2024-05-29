@@ -4,13 +4,13 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Rating extends Model
+class Sao extends Model
 {
     public $timestamps = false; //set time to false
     protected $fillable = [
-    	'product_id', 'rating'
+    	'product_id', 'sosao'
         
     ];
     protected $primaryKey = 'id';
- 	protected $table = 'tbl_rating';
+ 	protected $table = 't_danhgiasao';
 }

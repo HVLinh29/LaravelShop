@@ -44,13 +44,13 @@
             </tr>
           </thead>
           <tbody>
-            @foreach($category_post as $key =>$cate_post)
+            @foreach($category_post as $key =>$article)
             <tr>
-              <td>{{$cate_post->cate_post_name}}</td>
-              <td>{{$cate_post->cate_post_slug}}</td>
-              <td>{{$cate_post->cate_post_desc}}</td>
+              <td>{{$article->article_name}}</td>
+              <td>{{$article->article_slug}}</td>
+              <td>{{$article->article_desc}}</td>
               <td>
-                @if($cate_post->cate_post_status==0)
+                @if($article->article_status==0)
                 <span style="color:red">Ẩn</span>
                 @else
                 <span style="color:green">Hiển thị</span>
@@ -58,9 +58,9 @@
               </td>
               
               <td>
-                <a href="{{URL::to('/edit-category-post/'.$cate_post->cate_post_id)}}" class="active btn btn-success" ui-toggle-class="">
+                <a href="{{URL::to('/edit-category-post/'.$article->article_id)}}" class="active btn btn-success" ui-toggle-class="">
                  Sửa</a>
-                <a onclick="return confirm('Bạn có muốn xóa danh mục này?')" href="{{URL::to('/delete-category-post/'.$cate_post->cate_post_id)}}" 
+                <a onclick="return confirm('Bạn có muốn xóa danh mục này?')" href="{{URL::to('/delete-category-post/'.$article->article_id)}}" 
                   class="active btn btn-danger" ui-toggle-class="">Xóa
                  </a>
               </td>

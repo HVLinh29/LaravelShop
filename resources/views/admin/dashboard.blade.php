@@ -148,11 +148,11 @@
             <div id="donut" class="morris-donut-inverse"></div>
         </div>
         <div class="col-md-4 col-xs-12">
-            <h3>Bài viết xem nhiều</h3>
+            <h3>Bài viết xem nhiều</h3> 
             <ol class="list_views">
-                @foreach ($post_view as $key => $post)
+                @foreach ($baiviet_view as $key => $baiviet)
                 <li>
-                    <a target="_blank" href="{{url('/bai-viet/'.$post->post_slug)}}">{{$post->post_title}} | <span style="color:black">{{$post->post_view}}</span> </a>
+                    <a target="_blank" href="{{url('/bai-viet/'.$baiviet->baiviet_slug)}}">{{$baiviet->baiviet_title}} | <span style="color:black">{{$baiviet->baiviet_view}}</span> </a>
                 </li>
                 @endforeach
             </ol>

@@ -204,7 +204,7 @@
                                     <ul role="menu" class="sub-menu">
                                         @foreach ($category_post as $key => $danhmucbaiviet)
                                             <li><a
-                                                    href="{{ URL::to('/danh-muc-bai-viet/' . $danhmucbaiviet->cate_post_slug) }}">{{ $danhmucbaiviet->cate_post_name }}</a>
+                                                    href="{{ URL::to('/danh-muc-bai-viet/' . $danhmucbaiviet->article_slug) }}">{{ $danhmucbaiviet->article_name }}</a>
                                             </li>
                                         @endforeach
                                     </ul>
@@ -1082,10 +1082,10 @@
         $(document).on('mouseleave', '.rating', function() {
             var index = $(this).data("index");
             var product_id = $(this).data('product_id');
-            var rating = $(this).data("rating");
+            var sosao = $(this).data("sosao");
             remove_background(product_id);
             //alert(rating);
-            for (var count = 1; count <= rating; count++) {
+            for (var count = 1; count <= sosao; count++) {
                 $('#' + product_id + '-' + count).css('color', '#ffcc00');
             }
         });

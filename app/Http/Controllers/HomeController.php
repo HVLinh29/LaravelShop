@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Redirect;
 session_start();
 
 use App\Slider;
-use App\CatePost;
+use App\Article;
 use App\Product;
 
 class HomeController extends Controller
@@ -19,7 +19,7 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         //post
-        $category_post = CatePost::orderBy('cate_post_id', 'DESC')->get();
+        $category_post = Article::orderBy('article_id', 'DESC')->get();
 
         //slider
         $slider = Slider::orderBy('slider_id', 'desc')->where('slider_status', '1')->take(3)->get();
@@ -44,7 +44,7 @@ class HomeController extends Controller
     public function search(Request $request)
     {
 
-        $category_post = CatePost::orderBy('cate_post_id', 'DESC')->get();
+        $category_post = Article::orderBy('article_id', 'DESC')->get();
         $slider = Slider::orderBy('slider_id', 'DESC')->where('slider_status', '1')->take(4)->get();
         //seo 
         $meta_desc = "Tìm kiếm sản phẩm";

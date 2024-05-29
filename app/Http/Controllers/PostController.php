@@ -11,8 +11,8 @@ use Toastr;
 session_start();
 
 use Auth;
-use App\Post;
-use App\CatePost;
+use App\Baiviet;
+use App\Article;
 use App\Slider;
 
 class PostController extends Controller
@@ -30,7 +30,7 @@ class PostController extends Controller
     public function add_post()
     {
         $this->AuthLogin();
-        $cate_post = CatePost::orderBy('cate_post_id', 'DESC')->get();
+        $cate_post = Article::orderBy('article_id', 'DESC')->get();
 
 
         return view('admin.post.add_post')->with(compact('cate_post'));
@@ -39,26 +39,26 @@ class PostController extends Controller
     {
         $this->AuthLogin();
         $data = $request->all();
-        $post = new Post();
-        $post->post_title = $data['post_title'];
-        $post->post_desc = $data['post_desc'];
-        $post->post_content = $data['post_content'];
-        $post->post_meta_desc = $data['post_meta_desc'];
-        $post->post_meta_keywords = $data['post_meta_keywords'];
-        $post->cate_post_id = $data['cate_post_id'];
-        $post->post_slug = $data['post_slug'];
-        $post->post_status = $data['post_status'];
+        $baiviet = new Baiviet();
+        $baiviet->baiviet_title = $data['baiviet_title'];
+        $baiviet->baiviet_desc = $data['baiviet_desc'];
+        $baiviet->baiviet_content = $data['baiviet_content'];
+        $baiviet->baiviet_meta_desc = $data['baiviet_meta_desc'];
+        $baiviet->baiviet_meta_keywords = $data['baiviet_meta_keywords'];
+        $baiviet->article_id = $data['article_id'];
+        $baiviet->baiviet_slug = $data['baiviet_slug'];
+        $baiviet->baiviet_status = $data['baiviet_status'];
 
-        $get_image = $request->file('post_image');
+        $get_image = $request->file('baiviet_image');
         if ($get_image) {
             $get_name_image = $get_image->getClientOriginalName(); // lay ten cua hinh anh do
             $name_imgae = current(explode('.', $get_name_image));
             $new_image = $name_imgae . rand(0, 9999) . '.' . $get_image->getClientOriginalExtension();
             $get_image->move('public/uploads/post', $new_image);
 
-            $post->post_image = $new_image;
+            $baiviet->baiviet_image = $new_image;
 
-            $post->save();
+            $baiviet->save();
             Toastr::success('Thêm bài viết thành công', 'Thành công');
             // Session::put('message', 'Thêm bai viet thành công');
             return redirect('/list-post');
@@ -71,48 +71,48 @@ class PostController extends Controller
     public function list_post()
     {
         $this->AuthLogin();
-        $all_post = Post::with('cate_post')->orderBy('post_id')->get();
+        $all_post = Baiviet::with('cate_post')->orderBy('id_baiviet')->get();
 
         return view('admin.post.list_post')->with(compact('all_post', $all_post));
     }
     public function delete_post($post_id)
     {
-        $post = Post::find($post_id);
-        $post_image = $post->post_image;
-        if ($post_image) {
-            $path = 'public/uploads/post/' . $post_image;
+        $baiviet = Baiviet::find($post_id);
+        $baiviet_image = $baiviet->baiviet_image;
+        if ($baiviet_image) {
+            $path = 'public/uploads/post/' . $baiviet_image;
             unlink($path);
         }
-        $post->delete();
+        $baiviet->delete();
         Toastr::error('Xóa bài viết thành công', 'Thành công');
         // Session::put('message', 'Xóa  bai viet thành công');
         return redirect('/list-post');
     }
-    public function edit_post($post_id)
+    public function edit_post($id_baiviet)
     {
-        $cate_post = CatePost::orderBy('cate_post_id')->get();
-        $postbv = Post::find($post_id);
-        return view('admin.post.edit_post')->with(compact('postbv', 'cate_post'));
+        $cate_post = Article::orderBy('article_id')->get();
+        $baivietbv = Baiviet::find($id_baiviet);
+        return view('admin.post.edit_post')->with(compact('baivietbv', 'cate_post'));
     }
-    public function update_post(Request $request, $post_id)
+    public function update_post(Request $request, $id_baiviet)
     {
         $this->AuthLogin();
         $data = $request->all();
-        $postbv = Post::find($post_id);
-        $postbv->post_title = $data['post_title'];
-        $postbv->post_desc = $data['post_desc'];
-        $postbv->post_content = $data['post_content'];
-        $postbv->post_meta_desc = $data['post_meta_desc'];
-        $postbv->post_meta_keywords = $data['post_meta_keywords'];
-        $postbv->cate_post_id = $data['cate_post_id'];
-        $postbv->post_slug = $data['post_slug'];
-        $postbv->post_status = $data['post_status'];
+        $baivietbv = Baiviet::find($id_baiviet);
+        $baivietbv->baiviet_title = $data['baiviet_title'];
+        $baivietbv->baiviet_desc = $data['baiviet_desc'];
+        $baivietbv->baiviet_content = $data['baiviet_content'];
+        $baivietbv->baiviet_meta_desc = $data['baiviet_meta_desc'];
+        $baivietbv->baiviet_meta_keywords = $data['baiviet_meta_keywords'];
+        $baivietbv->article_id = $data['article_id'];
+        $baivietbv->baiviet_slug = $data['baiviet_slug'];
+        $baivietbv->baiviet_status = $data['baiviet_status'];
 
-        $get_image = $request->file('post_image');
+        $get_image = $request->file('baiviet_image');
         if ($get_image) {
             //Xoa anh cu
-            $post_image_old = $postbv->post_image;
-            $path = 'public/uploads/post/' . $post_image_old;
+            $baiviet_image_old = $baivietbv->baiviet_image;
+            $path = 'public/uploads/post/' . $baiviet_image_old;
             unlink($path);
             //Cap nhat anh moi
             $get_name_image = $get_image->getClientOriginalName(); // lay ten cua hinh anh do
@@ -120,17 +120,17 @@ class PostController extends Controller
             $new_image = $name_imgae . rand(0, 9999) . '.' . $get_image->getClientOriginalExtension();
             $get_image->move('public/uploads/post', $new_image);
 
-            $postbv->post_image = $new_image;
+            $baivietbv->baiviet_image = $new_image;
         }
 
-        $postbv->save();
+        $baivietbv->save();
         Toastr::success('Cập nhật bài viết thành công', 'Thành công');
         // Session::put('message', 'Cập nhật bài viết thành công');
         return redirect('/list-post');
     }
-    public function danh_muc_bai_viet(Request $request, $post_slug)
+    public function danh_muc_bai_viet(Request $request, $baiviet_slug)
     {
-        $category_post = CatePost::orderBy('cate_post_id', 'DESC')->get();
+        $category_post = Article::orderBy('article_id', 'DESC')->get();
 
         $slider = Slider::orderBy('slider_id', 'desc')->where('slider_status', '1')->take(3)->get();
 
@@ -139,55 +139,55 @@ class PostController extends Controller
         $cate_product = DB::table('tbl_category_product')->where('category_status', '0')->orderby('category_id', 'desc')->get();
         $brand_product = DB::table('tbl_brand')->where('brand_status', '0')->orderby('brand_id', 'desc')->get();
 
-        $catepost = CatePost::where('cate_post_slug', $post_slug)->take(1)->get();
+        $catepost = Article::where('article_slug', $baiviet_slug)->take(1)->get();
 
         foreach ($catepost as $key => $cate) {
-            $meta_desc = $cate->cate_post_desc;
-            $meta_keywords = $cate->cate_post_slug;
-            $meta_title = $cate->cate_post_name;
-            $cate_id = $cate->cate_post_id;
+            $meta_desc = $cate->article_desc;
+            $meta_keywords = $cate->article_slug;
+            $meta_title = $cate->article_name;
+            $cate_id = $cate->article_id;
             $url_canonical = $request->url();
         }
 
-        $postt = Post::with('cate_post')->where('post_status', 0)->where('cate_post_id', $cate_id)->get();
+        $baiviett = Baiviet::with('cate_post')->where('baiviet_status', 1)->where('article_id', $cate_id)->get();
 
 
         return view('pages.baiviet.danhmucbaiviet')->with('category', $cate_product)->with('brand', $brand_product)
             ->with('meta_desc', $meta_desc)->with('meta_keywords', $meta_keywords)->with('meta_title', $meta_title)
             ->with('url_canonical', $url_canonical)->with('slider', $slider)->with('category_post', $category_post)
-            ->with('postt', $postt);
+            ->with('baiviett', $baiviett);
     }
-    public function bai_viet(Request $request, $post_slug)
+    public function bai_viet(Request $request, $baiviet_slug)
     {
-        $category_post = CatePost::orderBy('cate_post_id', 'DESC')->get();
+        $category_post = Article::orderBy('article_id', 'DESC')->get();
 
         $slider = Slider::orderBy('slider_id', 'desc')->where('slider_status', '1')->take(3)->get();
 
         $cate_product = DB::table('tbl_category_product')->where('category_status', '0')->orderby('category_id', 'desc')->get();
         $brand_product = DB::table('tbl_brand')->where('brand_status', '0')->orderby('brand_id', 'desc')->get();
-
-        $postt = Post::with('cate_post')->where('post_status', 0)->where('post_slug', $post_slug)->take(1)->get();
-        foreach ($postt as $key => $p) {
-            $meta_desc = $p->post_meta_desc;
-            $meta_keywords = $p->post_meta_keywords;
-            $meta_title = $p->post_title;
-            $cate_id = $p->cate_post_id;
+       
+        $baiviett = Baiviet::with('cate_post')->where('baiviet_status', 1)->where('baiviet_slug', $baiviet_slug)->take(1)->get();
+        foreach ($baiviett as $key => $p) {
+            $meta_desc = $p->baiviet_meta_desc;
+            $meta_keywords = $p->baiviet_meta_keywords;
+            $meta_title = $p->baiviet_title;
+            $cate_id = $p->article_id;
             $url_canonical = $request->url();
-            $cate_post_id = $p->cate_post_id;
-            $post_id = $p->post_id;
+            $article_id = $p->article_id;
+            $id_baiviet = $p->id_baiviet;
         }
 
         //update view 
-        $post = Post::where('post_id', $post_id)->first();
-        $post->post_view = $post->post_view + 1;
-        $post->save();
+        $baiviet = Baiviet::where('id_baiviet', $id_baiviet)->first();
+        $baiviet->baiviet_view = $baiviet->baiviet_view + 1;
+        $baiviet->save();
 
-        $related = Post::with('cate_post')->where('post_status', 0)->where('cate_post_id', $cate_post_id)
-            ->whereNotIn('post_slug', [$post_slug])->take(5)->get();
+        $related = Baiviet::with('cate_post')->where('baiviet_status', 1)->where('article_id', $article_id)
+            ->whereNotIn('baiviet_slug', [$baiviet_slug])->take(5)->get();
 
         return view('pages.baiviet.baiviet')->with('category', $cate_product)->with('brand', $brand_product)
             ->with('meta_desc', $meta_desc)->with('meta_keywords', $meta_keywords)->with('meta_title', $meta_title)
             ->with('url_canonical', $url_canonical)->with('slider', $slider)->with('category_post', $category_post)
-            ->with('postt', $postt)->with('related', $related);
+            ->with('baiviett', $baiviett)->with('related', $related);
     }
 }

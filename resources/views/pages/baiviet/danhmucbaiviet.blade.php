@@ -6,18 +6,18 @@
     <div class="features_items">
         <h2 class="title text-center">{{$meta_title}}</h2>
         <div class="product-image-wrapper" style="border: none">
-            @foreach ($postt as $key => $p)
+            @foreach ($baiviett as $key => $p)
                 <div class="single-products" style="margin: 10px 0;padding:2px">
                     <div class="text-center">
 
                         <img style="float: left;width:30%;padding:5px;height:150px"
-                            src="{{ URL::to('public/uploads/post/' . $p->post_image) }}" alt="{{ $p->post_slug }}" />
-                        <h4 style="color: red;padding:5px;">{{ $p->post_title }}</h4>
-                        <p>{!! $p->post_desc !!}</p>
+                            src="{{ URL::to('public/uploads/post/' . $p->baiviet_image) }}" alt="{{ $p->baiviet_slug }}" />
+                        <h4 style="color: red;padding:5px;">{{ $p->baiviet_title }}</h4>
+                        <p>{!! $p->baiviet_desc !!}</p>
 
                     </div>
                     <div class="text-right">
-                        <a href="{{url('/bai-viet',$p->post_slug)}}" class="btn btn-default add-to-cart">Xem bài viết</a>
+                        <a href="{{url('/bai-viet',$p->baiviet_slug)}}" class="btn btn-default add-to-cart">Xem bài viết</a>
                     </div>
 
                 </div>

@@ -102,7 +102,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <span>Danh mục sản phẩm</span>
                             </a>
                             <ul class="sub">
-                                {{-- <li><a href="{{ URL::to('/add-category-product') }}">Thêm danh mục sản phẩm</a></li> --}}
                                 <li><a href="{{ URL::to('/all-category-product') }}">Liệt kê danh mục sản phẩm</a></li>
 
                             </ul>
@@ -113,7 +112,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <span>Thương hiệu sản phẩm</span>
                             </a>
                             <ul class="sub">
-                                {{-- <li><a href="{{ URL::to('/add-brand-product') }}">Thêm thương hiệu sản phẩm</a></li> --}}
                                 <li><a href="{{ URL::to('/all-brand-product') }}">Liệt kê thương hiệu</a></li>
 
                             </ul>
@@ -124,7 +122,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <span>Danh mục bài viết</span>
                             </a>
                             <ul class="sub">
-                                {{-- <li><a href="{{ URL::to('/add-category-post') }}">Thêm danh mục bài viết</a></li> --}}
                                 <li><a href="{{ URL::to('/list-category-post') }}">Liệt kê danh mục bài viết</a></li>
 
                             </ul>
@@ -135,7 +132,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <span>Sản phẩm</span>
                             </a>
                             <ul class="sub">
-                                {{-- <li><a href="{{ URL::to('/add-product') }}">Thêm sản phẩm</a></li> --}}
                                 <li><a href="{{ URL::to('/all-product') }}">Liệt kê sản phẩm</a></li>
 
                             </ul>
@@ -156,8 +152,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <i class="fa fa-dollar-sign"></i>
                                 <span>Mã giảm giá</span>
                             </a>
-                            <ul class="sub">
-                                {{-- <li><a href="{{ URL::to('/insert-coupon') }}">Thêm mã giảm giá</a></li> --}}
+                            <ul class="sub">                   
                                 <li><a href="{{ URL::to('/list-coupon') }}">Liệt kê mã giảm giá</a></li>
 
                             </ul>
@@ -173,30 +168,29 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
                             </ul>
                         </li>
-                        <li>
+                        {{-- <li>
                             <a href="{{ URL::to('/infomation') }}">
                                 <i class="fa fa-address-card"></i>
                                 <span>Thông tin liên hệ</span>
                             </a>
-                        </li>
-                        <li class="sub-menu">
+                        </li> --}}
+                        {{-- <li class="sub-menu">
                             <a href="javascript:;">
                                 <i class="fa fa-sliders"></i>
                                 <span>Slider</span>
                             </a>
                             <ul class="sub">
                                 <li><a href="{{ URL::to('/managa-slider') }}">Liệt kê Slider</a></li>
-                                {{-- <li><a href="{{ URL::to('/add-slider') }}">Thêm Slider</a></li> --}}
+                               
 
                             </ul>
-                        </li>
+                        </li> --}}
                         <li class="sub-menu">
                             <a href="javascript:;">
                                 <i class="fa fa-book"></i>
                                 <span>Bài viết</span>
                             </a>
                             <ul class="sub">
-                                {{-- <li><a href="{{ URL::to('/add-post') }}">Thêm bài viết</a></li> --}}
                                 <li><a href="{{ URL::to('/list-post') }}">Liệt kê bài viết</a></li>
 
                             </ul>
@@ -207,12 +201,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <span>Bình luận</span>
                             </a>
                             <ul class="sub">
-
                                 <li><a href="{{ URL::to('/comment') }}">Liệt kê bình luận</a></li>
-
                             </ul>
                         </li>
-                        <li class="sub-menu">
+                        {{-- <li class="sub-menu">
                             <a href="javascript:;">
                                 <i class="fa fa-video"></i>
                                 <span>Video</span>
@@ -222,7 +214,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 
                             </ul>
-                        </li>
+                        </li> --}}
 
                         @transferrights
                             <li>
@@ -237,7 +229,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                     <span>User</span>
                                 </a>
                                 <ul class="sub">
-                                    {{-- <li><a href="{{ URL::to('/add-users') }}">Thêm user</a></li> --}}
                                     <li><a href="{{ URL::to('/users') }}">Liệt kê user</a></li>
 
                                 </ul>
@@ -998,7 +989,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 },
                 {
                     label: "Bài viết",
-                    value: <?php echo $post; ?>,
+                    value: <?php echo $baiviet; ?>,
                 },
                 {
                     label: "Đơn hàng",

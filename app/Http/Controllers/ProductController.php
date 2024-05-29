@@ -17,7 +17,7 @@ use App\Gallery;
 use App\Slider;
 use App\Product;
 use App\Comment;
-use App\Rating;
+use App\Sao;
 use File;
 
 class ProductController extends Controller
@@ -212,9 +212,9 @@ class ProductController extends Controller
             ->join('tbl_brand', 'tbl_brand.brand_id', '=', 'tbl_product.brand_id')
             ->where('tbl_category_product.category_id', $category_id)->whereNotIn('tbl_product.product_slug', [$product_slug])->get();
 
-        $rating = Rating::where('product_id', $product_id)->avg('rating');
+        $rating = Sao::where('product_id', $product_id)->avg('sosao');
         $rating = round($rating);
-        $ratingCount = Rating::where('product_id', $product_id)->count();
+        $ratingCount = Sao::where('product_id', $product_id)->count();
 
         return view('pages.sanpham.show_details')->with('category', $cate_product)->with('brand', $brand_product)
             ->with('product_details', $details_product)->with('splienquan', $splienquan)->with('meta_desc', $meta_desc)->with('meta_keywords', $meta_keywords)->with('meta_title', $meta_title)
@@ -388,9 +388,9 @@ class ProductController extends Controller
                 return response()->json(['message' => 'Missing product_id or index'], 400);
             }
 
-            $rating = new Rating();
+            $rating = new Sao();
             $rating->product_id = $data['product_id'];
-            $rating->rating = $data['index'];
+            $rating->sosao = $data['index'];
             $rating->save();
 
             return response()->json(['message' => 'done'], 200);

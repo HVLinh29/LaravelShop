@@ -29,8 +29,8 @@ Route::post('/save-info','ContactController@save_info');
 Route::post('/update-info/{info_id}','ContactController@update_info');
 
 //Danh muc bai viet
-Route::get('/danh-muc-bai-viet/{post_slug}','PostController@danh_muc_bai_viet');
-Route::get('/bai-viet/{post_slug}','PostController@bai_viet');
+Route::get('/danh-muc-bai-viet/{baiviet_slug}','PostController@danh_muc_bai_viet');
+Route::get('/bai-viet/{baiviet_slug}','PostController@bai_viet');
 
 //Backend
 Route::get('/admin','AdminController@index');
@@ -189,10 +189,10 @@ Route::post('assign-roles','UserController@assign_roles')->middleware('auth.role
 
 //Danh muc Bai viet
 Route::get('/add-category-post','CategoryPost@add_category_post');
-Route::get('/edit-category-post/{cate_post_id}','CategoryPost@edit_category_post');
+Route::get('/edit-category-post/{article_id}','CategoryPost@edit_category_post');
 Route::post('/save-category-post','CategoryPost@save_category_post');
 Route::get('list-category-post','CategoryPost@list_category_post');
-Route::get('/danh-muc-bai-viet/{cate_post_slug}','CategoryPost@danh_muc_bai_viet');
+Route::get('/danh-muc-bai-viet/{article_slug}','CategoryPost@danh_muc_bai_viet');
 Route::post('/update-category-post/{cate_id}','CategoryPost@update_category_post');
 Route::get('/delete-category-post/{cate_id}','CategoryPost@delete_category_post');
 
@@ -200,9 +200,9 @@ Route::get('/delete-category-post/{cate_id}','CategoryPost@delete_category_post'
 Route::get('/add-post','PostController@add_post');
 Route::get('/list-post','PostController@list_post');
 Route::post('/save-post','PostController@save_post');
-Route::get('/delete-post/{post_id}','PostController@delete_post');
-Route::get('/edit-post/{post_id}', 'PostController@edit_post');
-Route::post('/update-post/{post_id}', 'PostController@update_post');
+Route::get('/delete-post/{id_baiviet}','PostController@delete_post');
+Route::get('/edit-post/{id_baiviet}', 'PostController@edit_post');
+Route::post('/update-post/{id_baiviet}', 'PostController@update_post');
 
 
 //Gallery
