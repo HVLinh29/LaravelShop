@@ -6,7 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use App\Product;
 use App\Baiviet;
 use App\Order;
-use App\Video;
+
 use App\Customer;
 
 class AppServiceProvider extends ServiceProvider
@@ -35,12 +35,12 @@ class AppServiceProvider extends ServiceProvider
         $product = Product::all()->count();
         $baiviet = Baiviet::all()->count();
         $order = Order::all()->count();
-        $video = Video::all()->count();
+       
         $customer = Customer::all()->count();
         
        
 
-        $view->with('min_price',$min_price)->with('max_price',$max_price)->with('customer',$customer)->with('video',$video)->with('order',$order)
+        $view->with('min_price',$min_price)->with('max_price',$max_price)->with('customer',$customer)->with('order',$order)
         ->with('baiviet',$baiviet)->with('product',$product);
         
         });

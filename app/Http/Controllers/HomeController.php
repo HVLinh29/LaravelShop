@@ -30,7 +30,7 @@ class HomeController extends Controller
         $meta_title = " LINHWATCH";
         $url_canonical = $request->url();
 
-        $cate_product = DB::table('tbl_category_product')->where('category_status', '0')->orderby('category_id', 'desc')->get();
+        $cate_product = DB::table('t_danhmucsanpham')->where('danhmuc_status', '0')->orderby('category_id', 'desc')->get();
         $brand_product = DB::table('t_thuonghieu')->where('thuonghieu_status','0')->orderby('brand_id','desc')->get(); 
 
         $all_product = DB::table('tbl_product')->where('product_status', '0')->where('product_view','>','2')->orderby('product_id', 'desc')->limit(4)->get();
@@ -53,7 +53,7 @@ class HomeController extends Controller
         $url_canonical = $request->url();
 
         $keywords = $request->keywords_submit;
-        $cate_product = DB::table('tbl_category_product')->where('category_status', '0')->orderby('category_id', 'desc')->get();
+        $cate_product = DB::table('t_danhmucsanpham')->where('danhmuc_status', '0')->orderby('category_id', 'desc')->get();
         $brand_product = DB::table('t_thuonghieu')->where('thuonghieu_status','0')->orderby('brand_id','desc')->get(); 
 
         $search_product = DB::table('tbl_product')->where('product_name', 'like', '%' . $keywords . '%')->get();
@@ -153,7 +153,7 @@ class HomeController extends Controller
                     <div class="choose">
                         <ul class="nav nav-pills nav-justified">
                             <li>
-                                <i class="fa fa-heart"></i>
+                            <i class="fa fa-heart-o" aria-hidden="true"></i>
                                 <button class="button_wishlist" id="' . $pro->product_id . '" onclick="add_wishlist(this.id);">
                                     <span>Yêu thích</span>
                                 </button>
@@ -161,6 +161,7 @@ class HomeController extends Controller
                             <li><a href="#"><i class="fa fa-plus-square"></i>So sanh</a></li>
                         </ul>
                     </div>
+
                 </div>
             </div>';
             }

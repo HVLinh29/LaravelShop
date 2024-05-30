@@ -198,17 +198,7 @@
                                 <li><a href="{{ URL::to('/comment') }}">Liệt kê bình luận</a></li>
                             </ul>
                         </li>
-                        {{-- <li class="sub-menu">
-                            <a href="javascript:;">
-                                <i class="fa fa-video"></i>
-                                <span>Video</span>
-                            </a>
-                            <ul class="sub">
-                                <li><a href="{{ URL::to('/video') }}">Thêm video</a></li>
-
-
-                            </ul>
-                        </li> --}}
+                       
 
                         @transferrights
                             <li>
@@ -974,7 +964,7 @@
                 '#ce616a',
                 '#61a1ce',
                 '#ce8f61',
-                '#f5b942',
+              
                 '#006064'
             ],
             data: [{
@@ -989,10 +979,7 @@
                     label: "Đơn hàng",
                     value: <?php echo $order; ?>,
                 },
-                {
-                    label: "Video",
-                    value: <?php echo $video; ?>,
-                },
+                
                 {
                     label: "Khách hàng",
                     value: <?php echo $customer; ?>,

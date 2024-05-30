@@ -35,7 +35,7 @@ class ProductController extends Controller
     public function add_product()
     {
         $this->AuthLogin();
-        $cate_product = DB::table('tbl_category_product')->orderby('category_id', 'DESC')->get();
+        $cate_product = DB::table('t_danhmucsanpham')->orderby('category_id', 'DESC')->get();
        
         $brand_product = DB::table('t_thuonghieu')->orderby('brand_id','desc')->get(); 
 
@@ -46,7 +46,7 @@ class ProductController extends Controller
         $this->AuthLogin();
 
         $all_product = DB::table('tbl_product')
-            ->join('tbl_category_product', 'tbl_category_product.category_id', '=', 'tbl_product.category_id')
+            ->join('t_danhmucsanpham', 't_danhmucsanpham.category_id', '=', 'tbl_product.category_id')
             ->join('t_thuonghieu', 't_thuonghieu.brand_id', '=', 'tbl_product.brand_id')
             ->orderBy('tbl_product.product_id', 'DESC')->get();
         $manager_product = view('admin.sanpham.all_product')->with('all_product', $all_product);
@@ -117,7 +117,7 @@ class ProductController extends Controller
     public function edit_product($product_id)
     {
         $this->AuthLogin();
-        $cate_product = DB::table('tbl_category_product')->orderby('category_id', 'desc')->get();
+        $cate_product = DB::table('t_danhmucsanpham')->orderby('category_id', 'desc')->get();
       
         $brand_product = DB::table('t_thuonghieu')->orderby('brand_id','desc')->get(); 
         $edit_product = DB::table('tbl_product')->where('product_id', $product_id)->get();
@@ -179,19 +179,19 @@ class ProductController extends Controller
 
         $category_post = Article::orderBy('article_id', 'DESC')->get();
         $slider = Slider::orderBy('slider_id', 'DESC')->where('slider_status', '1')->take(4)->get();
-        $cate_product = DB::table('tbl_category_product')->where('category_status', '0')->orderby('category_id', 'desc')->get();
+        $cate_product = DB::table('t_danhmucsanpham')->where('danhmuc_status', '0')->orderby('category_id', 'desc')->get();
         $brand_product = DB::table('t_thuonghieu')->where('thuonghieu_status','0')->orderby('brand_id','desc')->get(); 
 
         $details_product = DB::table('tbl_product')
-            ->join('tbl_category_product', 'tbl_category_product.category_id', '=', 'tbl_product.category_id')
+            ->join('t_danhmucsanpham', 't_danhmucsanpham.category_id', '=', 'tbl_product.category_id')
             ->join('t_thuonghieu', 't_thuonghieu.brand_id', '=', 'tbl_product.brand_id')
             ->where('tbl_product.product_slug', $product_slug)->get();
 
         foreach ($details_product as $key => $val) {
             $category_id = $val->category_id;
             $product_id = $val->product_id;
-            $product_cate = $val->category_name;
-            $cate_slug = $val->category_slug;
+            $product_cate = $val->tendanhmuc;
+            $cate_slug = $val->danhmuc_slug;
             //seo 
             $meta_desc = "$val->product_desc";
             $meta_keywords = "$val->product_slug";
@@ -209,9 +209,9 @@ class ProductController extends Controller
         $product->save();
 
         $splienquan = DB::table('tbl_product')
-            ->join('tbl_category_product', 'tbl_category_product.category_id', '=', 'tbl_product.category_id')
+            ->join('t_danhmucsanpham', 't_danhmucsanpham.category_id', '=', 'tbl_product.category_id')
             ->join('t_thuonghieu', 't_thuonghieu.brand_id', '=', 'tbl_product.brand_id')
-            ->where('tbl_category_product.category_id', $category_id)->whereNotIn('tbl_product.product_slug', [$product_slug])->get();
+            ->where('t_danhmucsanpham.category_id', $category_id)->whereNotIn('tbl_product.product_slug', [$product_slug])->get();
 
         $rating = Sao::where('product_id', $product_id)->avg('sosao');
         $rating = round($rating);
@@ -227,7 +227,7 @@ class ProductController extends Controller
     {
         $category_post = Article::orderBy('article_id', 'DESC')->get();
         $slider = Slider::orderBy('slider_id', 'DESC')->where('slider_status', '1')->take(4)->get();
-        $cate_product = DB::table('tbl_category_product')->where('category_status', '0')->orderby('category_id', 'desc')->get();
+        $cate_product = DB::table('t_danhmucsanpham')->where('danhmuc_status', '0')->orderby('category_id', 'desc')->get();
         $brand_product = DB::table('t_thuonghieu')->where('thuonghieu_status','0')->orderby('brand_id','desc')->get(); 
 
         $tag = str_replace("-", "", $product_tag);

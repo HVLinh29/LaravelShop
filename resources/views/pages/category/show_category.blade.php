@@ -8,7 +8,7 @@
         <div class="fb-like" data-href="{{ $url_canonical }}" data-width="" data-layout="" data-action="" data-size=""
             data-share="true"></div>
         @foreach ($category_name as $key => $name)
-            <h2 class="title text-center">Danh mục: {{ $name->category_name }}</h2>
+            <h2 class="title text-center">Danh mục: {{ $name->tendanhmuc }}</h2>
         @endforeach
 
         <div class="row">

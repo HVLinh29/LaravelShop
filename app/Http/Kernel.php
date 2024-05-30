@@ -63,6 +63,8 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
 
         'auth.roles' => \App\Http\Middleware\AccessPermission::class,
+
+         'customer.auth' => \App\Http\Middleware\CustomerAuth::class,
     ];
 
     /**
@@ -80,4 +82,8 @@ class Kernel extends HttpKernel
         \Illuminate\Routing\Middleware\SubstituteBindings::class,
         \Illuminate\Auth\Middleware\Authorize::class,
     ];
+
+
+
+    
 }

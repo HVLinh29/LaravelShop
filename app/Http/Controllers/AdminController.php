@@ -118,12 +118,12 @@ class AdminController extends Controller
         $baiviet= Baiviet::all()->count();
         $baiviet_view = Baiviet::orderBy('baiviet_view', 'DESC')->take(20)->get();
         $order = Order::all()->count();
-        $video = Video::all()->count();
+  
         $customer = Customer::all()->count();
 
         return view('admin.dashboard')->with(compact(
             'order',
-            'video',
+           
             'customer',
             'baiviet_view',
             'product_view',

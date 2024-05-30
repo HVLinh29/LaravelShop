@@ -46,22 +46,22 @@
                         @foreach ($all_category_product as $key => $cate_pro)
                             <tr>
                                 <th scope="row">{{ $key + 1 }}</th>
-                                <td>{{ $cate_pro->category_name }}</td>
-                                <td>{{ $cate_pro->category_slug }}</td>
+                                <td>{{ $cate_pro->tendanhmuc }}</td>
+                                <td>{{ $cate_pro->danhmuc_slug }}</td>
                                 <td>
-                                    @if ($cate_pro->category_parent == 0)
+                                    @if ($cate_pro->danhmuc_parent == 0)
                                         <span style="color:red">Danh mục cha</span>
                                     @else
                                         @foreach ($category_product as $key => $cate_sub_pro)
-                                            @if ($cate_sub_pro->category_id == $cate_pro->category_parent)
-                                                <span style="color:black">{{ $cate_sub_pro->category_name }}</span>
+                                            @if ($cate_sub_pro->category_id == $cate_pro->danhmuc_parent)
+                                                <span style="color:black">{{ $cate_sub_pro->tendanhmuc }}</span>
                                             @endif
                                         @endforeach
                                     @endif
                                 </td>
                                 <td><span class="text-ellipsis">
                                         <?php
-                                        if($cate_pro->category_status==0){
+                                        if($cate_pro->danhmuc_status==0){
                                         ?>
 
                                         <a href="{{ URL::to('/unactive-category-product/' . $cate_pro->category_id) }}">

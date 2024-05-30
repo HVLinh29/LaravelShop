@@ -50,7 +50,7 @@ class CheckoutController extends Controller
         $url_canonical = $request->url();
         //--seo 
 
-        $cate_product = DB::table('tbl_category_product')->where('category_status', '0')->orderby('category_id', 'desc')->get();
+        $cate_product = DB::table('t_danhmucsanpham')->where('danhmuc_status', '0')->orderby('category_id', 'desc')->get();
         $brand_product = DB::table('t_thuonghieu')->where('thuonghieu_status','0')->orderby('brand_id','desc')->get(); 
         return view('pages.thanhtoan.login_checkout')->with('category', $cate_product)->with('brand', $brand_product)->with('meta_desc', $meta_desc)->with('meta_keywords', $meta_keywords)->with('meta_title', $meta_title)
             ->with('url_canonical', $url_canonical)->with('category_post', $category_post)->with('slider', $slider);
@@ -65,8 +65,7 @@ class CheckoutController extends Controller
         $meta_title = "Đăng nhập thanh toán";
         $url_canonical = $request->url();
         //--seo 
-
-        $cate_product = DB::table('tbl_category_product')->where('category_status', '0')->orderby('category_id', 'desc')->get();
+        $cate_product = DB::table('t_danhmucsanpham')->where('danhmuc_status', '0')->orderby('category_id', 'desc')->get();
         $brand_product = DB::table('t_thuonghieu')->where('thuonghieu_status','0')->orderby('brand_id','desc')->get(); 
         return view('pages.thanhtoan.add_customer')->with('category', $cate_product)->with('brand', $brand_product)->with('meta_desc', $meta_desc)->with('meta_keywords', $meta_keywords)->with('meta_title', $meta_title)
             ->with('url_canonical', $url_canonical)->with('category_post', $category_post)->with('slider', $slider);
@@ -99,7 +98,7 @@ class CheckoutController extends Controller
         $url_canonical = $request->url();
 
         // Lấy danh mục sản phẩm và thương hiệu
-        $cate_product = DB::table('tbl_category_product')->where('category_status', '0')->orderby('category_id', 'desc')->get();
+        $cate_product = DB::table('t_danhmucsanpham')->where('danhmuc_status', '0')->orderby('category_id', 'desc')->get();
         $brand_product = DB::table('t_thuonghieu')->where('thuonghieu_status','0')->orderby('brand_id','desc')->get(); 
         $city = Tinh::orderby('matinh', 'ASC')->get();
 
@@ -222,7 +221,7 @@ class CheckoutController extends Controller
         $meta_title = "Đăng nhập thanh toán";
         $url_canonical = $request->url();
         //--seo 
-        $cate_product = DB::table('tbl_category_product')->where('category_status', '0')->orderby('category_id', 'desc')->get();
+        $cate_product = DB::table('t_danhmucsanpham')->where('danhmuc_status', '0')->orderby('category_id', 'desc')->get();
         $brand_product = DB::table('t_thuonghieu')->where('thuonghieu_status','0')->orderby('brand_id','desc')->get(); 
         return view('pages.thanhtoan.payment')->with('category', $cate_product)->with('brand', $brand_product)->with('meta_desc', $meta_desc)->with('meta_keywords', $meta_keywords)->with('meta_title', $meta_title)
             ->with('url_canonical', $url_canonical);
@@ -252,50 +251,50 @@ class CheckoutController extends Controller
         }
         Session::save();
     }
-    public function order_place(Request $request)
-    {
-        //seo 
-        $meta_desc = "Đăng nhập thanh toán";
-        $meta_keywords = "Đăng nhập thanh toán";
-        $meta_title = "Đăng nhập thanh toán";
-        $url_canonical = $request->url();
-        //--seo 
-        //them hinh thuc thanh toan
-        $data = array();
-        $data['payment_method'] = $request->payment_option;
-        $data['payment_status'] = 'Dang cho xu ly';
-        $payment_id = DB::table('tbl_payment')->insertGetId($data);
-        // them vao order
-        $order_data = array();
-        $order_data['customer_id'] = Session::get('customer_id');
-        $order_data['s_id'] = Session::get('s_id');
-        $order_data['payment_id'] = $payment_id;
-        $order_data['order_total'] = Cart::total();
-        $order_data['order_status'] = 'Dang cho xu ly';
-        $order_id = DB::table('tbl_order')->insertGetId($order_data);
+    // public function order_place(Request $request)
+    // {
+    //     //seo 
+    //     $meta_desc = "Đăng nhập thanh toán";
+    //     $meta_keywords = "Đăng nhập thanh toán";
+    //     $meta_title = "Đăng nhập thanh toán";
+    //     $url_canonical = $request->url();
+    //     //--seo 
+    //     //them hinh thuc thanh toan
+    //     $data = array();
+    //     $data['payment_method'] = $request->payment_option;
+    //     $data['payment_status'] = 'Dang cho xu ly';
+    //     $payment_id = DB::table('tbl_payment')->insertGetId($data);
+    //     // them vao order
+    //     $order_data = array();
+    //     $order_data['customer_id'] = Session::get('customer_id');
+    //     $order_data['s_id'] = Session::get('s_id');
+    //     $order_data['payment_id'] = $payment_id;
+    //     $order_data['order_total'] = Cart::total();
+    //     $order_data['order_status'] = 'Dang cho xu ly';
+    //     $order_id = DB::table('tbl_order')->insertGetId($order_data);
 
-        // them vao order details
-        $content = Cart::content();
-        foreach ($content as $v_content) {
-            $order_d_data['order_id'] = $order_id;
-            $order_d_data['product_id'] = $v_content->id;
-            $order_d_data['product_name'] = $v_content->name;
-            $order_d_data['product_price'] = $v_content->price;
-            $order_d_data['product_sales_quantity'] = $v_content->qty;
-            DB::table('tbl_order_details')->insert($order_d_data);
-        }
-        if ($data['payment_method'] == 1) {
-            echo 'Thanh toan ATM';
-        } elseif ($data['payment_method'] == 2) {
-            Cart::destroy();
-            $cate_product = DB::table('tbl_category_product')->where('category_status', '0')->orderby('category_id', 'desc')->get();
-            $brand_product = DB::table('t_thuonghieu')->where('thuonghieu_status','0')->orderby('brand_id','desc')->get(); 
-            return view('pages.thanhtoan.handcash')->with('category', $cate_product)->with('brand', $brand_product)->with('meta_desc', $meta_desc)->with('meta_keywords', $meta_keywords)->with('meta_title', $meta_title)
-                ->with('url_canonical', $url_canonical);
-        } else {
-            echo 'The ghi no';
-        }
-    }
+    //     // them vao order details
+    //     $content = Cart::content();
+    //     foreach ($content as $v_content) {
+    //         $order_d_data['order_id'] = $order_id;
+    //         $order_d_data['product_id'] = $v_content->id;
+    //         $order_d_data['product_name'] = $v_content->name;
+    //         $order_d_data['product_price'] = $v_content->price;
+    //         $order_d_data['product_sales_quantity'] = $v_content->qty;
+    //         DB::table('tbl_order_details')->insert($order_d_data);
+    //     }
+    //     if ($data['payment_method'] == 1) {
+    //         echo 'Thanh toan ATM';
+    //     } elseif ($data['payment_method'] == 2) {
+    //         Cart::destroy();
+    //         $cate_product = DB::table('t_danhmucsanpham')->where('danhmuc_status', '0')->orderby('category_id', 'desc')->get();
+    //         $brand_product = DB::table('t_thuonghieu')->where('thuonghieu_status','0')->orderby('brand_id','desc')->get(); 
+    //         return view('pages.thanhtoan.handcash')->with('category', $cate_product)->with('brand', $brand_product)->with('meta_desc', $meta_desc)->with('meta_keywords', $meta_keywords)->with('meta_title', $meta_title)
+    //             ->with('url_canonical', $url_canonical);
+    //     } else {
+    //         echo 'The ghi no';
+    //     }
+    // }
     public function manage_order()
     {
 

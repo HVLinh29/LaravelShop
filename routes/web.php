@@ -235,6 +235,11 @@ Route::get('cancel-transaction', 'PayPalController@cancelTransaction')->name('ca
 
 
 
+Route::post('/add-to-wishlist', 'WishlistController@addToWishlist');
+
+Route::get('/yeuthichhhh', 'WishlistController@showWishlist');
+
+
 
 
 

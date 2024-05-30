@@ -532,7 +532,7 @@ class OrderController extends Controller
 			$meta_title = " Lịch sử đơn hàng";
 			$url_canonical = $request->url();
 
-			$cate_product = DB::table('tbl_category_product')->where('category_status', '0')->orderby('category_id', 'desc')->get();
+			$cate_product = DB::table('t_danhmucsanpham')->where('danhmuc_status', '0')->orderby('category_id', 'desc')->get();
 			$brand_product = DB::table('t_thuonghieu')->where('thuonghieu_status','0')->orderby('brand_id','desc')->get(); 
 
 			$orderr = Order::where('customer_id', Session::get('customer_id'))->orderby('order_id', 'DESC')->get();
@@ -559,8 +559,8 @@ class OrderController extends Controller
 			$meta_title = " Lịch sử đơn hàng";
 			$url_canonical = $request->url();
 
-			$cate_product = DB::table('tbl_category_product')->where('category_status', '0')->orderby('category_id', 'desc')->get();
-			$brand_product = DB::table('tbl_brand')->where('brand_status', '0')->orderby('brand_id', 'desc')->get();
+			$cate_product = DB::table('t_danhmucsanpham')->where('danhmuc_status', '0')->orderby('category_id', 'desc')->get();
+			$brand_product = DB::table('t_thuonghieu')->where('thuonghieu_status', '0')->orderby('brand_id', 'desc')->get();
 
 			//xem lich su don hang
 			$order_details = OrderDetails::with('product')->where('order_code', $order_code)->get();

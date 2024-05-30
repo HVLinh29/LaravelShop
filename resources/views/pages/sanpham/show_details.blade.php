@@ -111,7 +111,7 @@
                     <p><b>Điều kiện:</b> Mới 100%</p>
                     <p><b>Số lượng kho còn:</b> {{ $value->product_quantity }}</p>
                     <p><b>Thương hiệu:</b> {{ $value->tenthuonghieu }}</p>
-                    <p><b>Danh mục:</b> {{ $value->category_name }}</p>
+                    <p><b>Danh mục:</b> {{ $value->tendanhmuc }}</p>
                     <a href="#"><img src="images/product-details/share.png" class="share img-responsive"
                             alt="" /></a>
 

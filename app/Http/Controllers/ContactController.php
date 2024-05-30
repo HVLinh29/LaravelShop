@@ -27,7 +27,7 @@ class ContactController extends Controller
         $meta_title = " Liên hệ chúng tôi";
         $url_canonical = $request->url();
 
-        $cate_product = DB::table('tbl_category_product')->where('category_status','0')->orderby('category_id','desc')->get();
+        $cate_product = DB::table('t_danhmucsanpham')->where('danhmuc_status', '0')->orderby('category_id', 'desc')->get();
         $brand_product = DB::table('t_thuonghieu')->where('thuonghieu_status','0')->orderby('brand_id','desc')->get(); 
         $contact = Lienhe::where('ct_id',4)->get();
         return view('pages.lienhe.contact')->with('category',$cate_product)->with('brand',$brand_product)
