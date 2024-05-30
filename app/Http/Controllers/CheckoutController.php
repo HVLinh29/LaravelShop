@@ -74,11 +74,11 @@ class CheckoutController extends Controller
     {
         $data = array();
         $data['customer_name'] = $request->customer_name;
-        $data['customer_email'] = $request->customer_email;
-        $data['customer_password'] = md5($request->customer_password);
-        $data['customer_phone'] = $request->customer_phone;
+        $data['email'] = $request->email;
+        $data['password'] = md5($request->password);
+        $data['phone'] = $request->phone;
 
-        $customer_id = DB::table('tbl_customers')->insertGetId($data);
+        $customer_id = DB::table('t_customer')->insertGetId($data);
 
         Session::put('customer_id', $customer_id);
         Session::put('customer_name', $request->customer_name);
@@ -206,7 +206,7 @@ class CheckoutController extends Controller
         $data['s_address'] = $request->s_address;
 
 
-        $shipping_id = DB::table('tbl_shipping')->insertGetId($data);
+        $shipping_id = DB::table('t_shipping')->insertGetId($data);
 
         Session::put('s_id', $shipping_id);
 
@@ -237,7 +237,7 @@ class CheckoutController extends Controller
     {
         $email = $request->email_account;
         $password = md5($request->password_account);
-        $result = DB::table('tbl_customers')->where('customer_email', $email)->where('customer_password', $password)->first();
+        $result = DB::table('t_customer')->where('email', $email)->where('password', $password)->first();
         if (Session::get('coupon') == true) {
             Session::forget('coupon');
         }
@@ -251,57 +251,14 @@ class CheckoutController extends Controller
         }
         Session::save();
     }
-    // public function order_place(Request $request)
-    // {
-    //     //seo 
-    //     $meta_desc = "Đăng nhập thanh toán";
-    //     $meta_keywords = "Đăng nhập thanh toán";
-    //     $meta_title = "Đăng nhập thanh toán";
-    //     $url_canonical = $request->url();
-    //     //--seo 
-    //     //them hinh thuc thanh toan
-    //     $data = array();
-    //     $data['payment_method'] = $request->payment_option;
-    //     $data['payment_status'] = 'Dang cho xu ly';
-    //     $payment_id = DB::table('tbl_payment')->insertGetId($data);
-    //     // them vao order
-    //     $order_data = array();
-    //     $order_data['customer_id'] = Session::get('customer_id');
-    //     $order_data['s_id'] = Session::get('s_id');
-    //     $order_data['payment_id'] = $payment_id;
-    //     $order_data['order_total'] = Cart::total();
-    //     $order_data['order_status'] = 'Dang cho xu ly';
-    //     $order_id = DB::table('tbl_order')->insertGetId($order_data);
-
-    //     // them vao order details
-    //     $content = Cart::content();
-    //     foreach ($content as $v_content) {
-    //         $order_d_data['order_id'] = $order_id;
-    //         $order_d_data['product_id'] = $v_content->id;
-    //         $order_d_data['product_name'] = $v_content->name;
-    //         $order_d_data['product_price'] = $v_content->price;
-    //         $order_d_data['product_sales_quantity'] = $v_content->qty;
-    //         DB::table('tbl_order_details')->insert($order_d_data);
-    //     }
-    //     if ($data['payment_method'] == 1) {
-    //         echo 'Thanh toan ATM';
-    //     } elseif ($data['payment_method'] == 2) {
-    //         Cart::destroy();
-    //         $cate_product = DB::table('t_danhmucsanpham')->where('danhmuc_status', '0')->orderby('category_id', 'desc')->get();
-    //         $brand_product = DB::table('t_thuonghieu')->where('thuonghieu_status','0')->orderby('brand_id','desc')->get(); 
-    //         return view('pages.thanhtoan.handcash')->with('category', $cate_product)->with('brand', $brand_product)->with('meta_desc', $meta_desc)->with('meta_keywords', $meta_keywords)->with('meta_title', $meta_title)
-    //             ->with('url_canonical', $url_canonical);
-    //     } else {
-    //         echo 'The ghi no';
-    //     }
-    // }
+   
     public function manage_order()
     {
 
         $this->AuthLogin();
         $all_order = DB::table('tbl_order')
-            ->join('tbl_customers', 'tbl_order.customer_id', '=', 'tbl_customers.customer_id')
-            ->select('tbl_order.*', 'tbl_customers.customer_name')
+            ->join('t_customer', 'tbl_order.customer_id', '=', 't_customer.customer_id')
+            ->select('tbl_order.*', 't_customer.customer_name')
             ->orderBy('tbl_order.order_id', 'desc')->get();
         $manager_order = view('admin.manage_order')->with('all_order', $all_order);
         return view('admin_layout')->with('admin.manager_order', $manager_order);
@@ -310,10 +267,10 @@ class CheckoutController extends Controller
     {
         $this->AuthLogin();
         $order_by_id = DB::table('tbl_order')
-            ->join('tbl_customers', 'tbl_order.customer_id', '=', 'tbl_customers.customer_id')
-            ->join('tbl_shipping', 'tbl_order._id', '=', 'tbl_shipping.s_id')
+            ->join('t_customer', 'tbl_order.customer_id', '=', 't_customer.customer_id')
+            ->join('t_shipping', 'tbl_order._id', '=', 't_shipping.s_id')
             ->join('tbl_order_details', 'tbl_order.order_id', '=', 'tbl_order_details.order_id')
-            ->select('tbl_order.*', 'tbl_customers.*', 'tbl_shipping.*', 'tbl_order_details.*')->first();
+            ->select('tbl_order.*', 't_customer.*', 't_shipping.*', 'tbl_order_details.*')->first();
 
         $manager_order_by_id = view('admin.view_order')->with('order_by_id', $order_by_id);
         return view('admin_layout')->with('admin.view_order', $manager_order_by_id);
@@ -429,7 +386,7 @@ class CheckoutController extends Controller
         $now = Carbon::now('Asia/Ho_Chi_Minh')->format('d-m-Y');
         $title_mail = "Đơn hàng xác nhận ngày" . '' . $now;
         $customer = Customer::find(Session::get('customer_id'));
-        $data['email'][] = $customer->customer_email;
+        $data['email'][] = $customer->email;
 
         //lay gio hang
         if (Session::get('cart') == true) {

@@ -30,8 +30,8 @@
 
                         <tr>
                             <td>{{ $customerr->customer_name }}</td>
-                            <td>{{ $customerr->customer_phone }}</td>
-                            <td>{{ $customerr->customer_email }}</td>
+                            <td>{{ $customerr->phone }}</td>
+                            <td>{{ $customerr->email }}</td>
                         </tr>
 
                     </tbody>

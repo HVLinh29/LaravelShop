@@ -158,7 +158,7 @@ class HomeController extends Controller
                                     <span>Yêu thích</span>
                                 </button>
                             </li>
-                            <li><a href="#"><i class="fa fa-plus-square"></i>So sanh</a></li>
+                           
                         </ul>
                     </div>
 

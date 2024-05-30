@@ -298,6 +298,35 @@
       agent-id="c8ac63f0-8b2a-44ac-b959-e220da03860b"
       language-code="vi"
     ></df-messenger>
+
+    {{-- <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="image-container">
+                        <img src="{{asset('public/fontend/images/anhdh.jpg')}}" alt="Ảnh đại diện" class="image">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="image-text">
+                        <h2>Tại sao nên chọn chúng tôi?</h2>
+                        <p>
+                            Chúng tôi cung cấp dịch vụ chất lượng với đội ngũ chuyên nghiệp và tận tâm.
+                            Dưới đây là những lý do nên chọn chúng tôi:
+                        </p>
+                        <ul>
+                            <li>Chất lượng hàng đầu: Chúng tôi cam kết đem đến sản phẩm và dịch vụ tốt nhất.</li>
+                            <li>Đội ngũ chuyên nghiệp: Nhân viên của chúng tôi đều là những người có kinh nghiệm và chuyên môn cao.</li>
+                            <li>Dịch vụ tận tâm: Chúng tôi luôn đặt khách hàng lên hàng đầu và phục vụ với tinh thần tận tâm.</li>
+                            <li>Giá cả cạnh tranh: Chúng tôi cung cấp dịch vụ với mức giá hợp lý nhất.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+     --}}
+    
     <footer class="footer text-color-dark">
         <div class="container-fluid d-flex justify-content-center">
             <div class="row anhduoi flex-grow-1">
@@ -351,6 +380,33 @@
             height: 100%;
             }
 
+            .image-container {
+    position: relative;
+    max-width: 100%; /* Đảm bảo ảnh không vượt quá kích thước của trang */
+}
+
+.image-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff; /* Màu chữ trên ảnh */
+    text-align: center;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.7); /* Màu nền của phần chứa văn bản */
+    border-radius: 5px; /* Bo tròn các góc */
+}
+
+.image-text h2,
+.image-text p,
+.image-text ul {
+    margin: 0;
+    padding: 0;
+}
+
+.image-text ul {
+    list-style-type: none;
+}
 
             .col-md-4 {
             display: flex;
@@ -363,9 +419,8 @@
             }
         </style>
     </footer>
+    
     <footer id="footer">
-
-
         <div class="footer-widget">
             <div class="container">
                 <div class="row">

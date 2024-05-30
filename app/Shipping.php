@@ -11,5 +11,5 @@ class Shipping extends Model
     	's_name', 's_address', 's_phone','s_email','s_notes','s_method'
     ];
     protected $primaryKey = 's_id';
- 	protected $table = 'tbl_shipping';
+ 	protected $table = 't_shipping';
 }

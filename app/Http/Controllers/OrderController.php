@@ -133,8 +133,8 @@ class OrderController extends Controller
 				<tbody>
 					<tr>
 						<td>' . $customer->customer_name . '</td>
-						<td>' . $customer->customer_phone . '</td>
-						<td>' . $customer->customer_email . '</td>
+						<td>' . $customer->phone . '</td>
+						<td>' . $customer->email . '</td>
 					</tr>
 				</tbody>
 			</table>
@@ -401,7 +401,7 @@ class OrderController extends Controller
 		$now = Carbon::now('Asia/Ho_Chi_Minh')->format('d-m-Y H:i:s');
 		$title_mail = "Đơn hàng đã đặt được xác nhận ngày: " . '' . $now;
 		$customer = Customer::where('customer_id', $order->customer_id)->first();;
-		$data['email'][] = $customer->customer_email;
+		$data['email'][] = $customer->email;
 
 		//lay san pham
 		foreach ($data['order_product_id'] as $key => $product) {
