@@ -40,7 +40,7 @@ class DeliveryController extends Controller
     public function update_delivery(Request $request){
 		$data = $request->all();
 		$fee_ship = Feeship::find($data['feeship_id']);
-		$fee_value = rtrim($data['fee_value'],'.');
+		$fee_value = rtrim($data['fee_value'],'.');// bo moi dau cham
 		$fee_ship->fee_feeship = $fee_value;
 		$fee_ship->save();
 	}
@@ -84,9 +84,9 @@ class DeliveryController extends Controller
 	public function insert_delivery(Request $request){
 		$data = $request->all();
 		$fee_ship = new Feeship();
-		$fee_ship->fee_matp = $data['city'];
-		$fee_ship->fee_maqh = $data['province'];
-		$fee_ship->fee_xaid = $data['wards'];
+		$fee_ship->mtinh = $data['city'];
+		$fee_ship->mhuyen = $data['province'];
+		$fee_ship->mxa = $data['wards'];
 		$fee_ship->fee_feeship = $data['fee_ship'];
 		$fee_ship->save();
 		Toastr::success('Thêm phí vận chuyển thành công', 'Thành công');

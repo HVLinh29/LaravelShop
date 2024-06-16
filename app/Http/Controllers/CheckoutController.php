@@ -78,7 +78,7 @@ class CheckoutController extends Controller
         $data['password'] = md5($request->password);
         $data['phone'] = $request->phone;
 
-        $customer_id = DB::table('t_customer')->insertGetId($data);
+        $customer_id = DB::table('t_customer')->insertGetId($data);//them vao va lay luon cai id do
 
         Session::put('customer_id', $customer_id);
         Session::put('customer_name', $request->customer_name);
@@ -237,7 +237,7 @@ class CheckoutController extends Controller
     {
         $email = $request->email_account;
         $password = md5($request->password_account);
-        $result = DB::table('t_customer')->where('email', $email)->where('password', $password)->first();
+        $result = DB::table('t_customer')->where('email', $email)->where('password', $password)->first();// truy xuat du lieu neu dung lay ban ghi dau tien
         if (Session::get('coupon') == true) {
             Session::forget('coupon');
         }
@@ -257,7 +257,7 @@ class CheckoutController extends Controller
 
         $this->AuthLogin();
         $all_order = DB::table('tbl_order')
-            ->join('t_customer', 'tbl_order.customer_id', '=', 't_customer.customer_id')
+            ->join('t_customer', 'tbl_order.customer_id', '=', 't_customer.customer_id')//
             ->select('tbl_order.*', 't_customer.customer_name')
             ->orderBy('tbl_order.order_id', 'desc')->get();
         $manager_order = view('admin.manage_order')->with('all_order', $all_order);
@@ -267,10 +267,10 @@ class CheckoutController extends Controller
     {
         $this->AuthLogin();
         $order_by_id = DB::table('tbl_order')
-            ->join('t_customer', 'tbl_order.customer_id', '=', 't_customer.customer_id')
+            ->join('t_customer', 'tbl_order.customer_id', '=', 't_customer.customer_id')//
             ->join('t_shipping', 'tbl_order._id', '=', 't_shipping.s_id')
-            ->join('tbl_order_details', 'tbl_order.order_id', '=', 'tbl_order_details.order_id')
-            ->select('tbl_order.*', 't_customer.*', 't_shipping.*', 'tbl_order_details.*')->first();
+            ->join('t_chitietdonhang', 'tbl_order.order_id', '=', 't_chitietdonhang.order_id')
+            ->select('tbl_order.*', 't_customer.*', 't_shipping.*', 't_chitietdonhang.*')->first();//lay tat ca thong tin bang order, customer, shippinh va chi tiet don hang
 
         $manager_order_by_id = view('admin.view_order')->with('order_by_id', $order_by_id);
         return view('admin_layout')->with('admin.view_order', $manager_order_by_id);
@@ -278,7 +278,7 @@ class CheckoutController extends Controller
     public function select_delivery_home(Request $request)
     {
         $data = $request->all();
-        if ($data['action']) {
+        if ($data['action']) {//neu ma action bang city thi se tu dong select ra nhung cai huyen va xa cua tinh do
             $output = '';
             if($data['action']=="city"){
     			$select_province = Huyen::where('matinh',$data['ma_id'])->orderby('mahuyen','ASC')->get();
@@ -299,17 +299,17 @@ class CheckoutController extends Controller
     public function calculate_fee(Request $request)
     {
         $data = $request->all();
-        if ($data['matinh']) {
-            $feeship = Feeship::where('fee_matp', $data['matinh'])->where('fee_maqh', $data['mahuyen'])->where('fee_xaid', $data['maxa'])->get();
+        if ($data['matinh']) {// kiem tra id cua ma tinh co duoc lay hay ko
+            $feeship = Feeship::where('mtinh', $data['matinh'])->where('mhuyen', $data['mahuyen'])->where('mxa', $data['maxa'])->get();
             if ($feeship) {
                 $count_feeship = $feeship->count();
-                if ($count_feeship > 0) {
+                if ($count_feeship > 0) {//neu ma ton tai fee ship thi t session fee va lay phi ship ra
                     foreach ($feeship as $key => $fee) {
                         Session::put('fee', $fee->fee_feeship);
                         Session::save();
                     }
                 } else {
-                    Session::put('fee', 25000);
+                    Session::put('fee', 50000); // con ko thi se mac dinh la 50000
                     Session::save();
                 }
             }
@@ -377,9 +377,9 @@ class CheckoutController extends Controller
                 $order_details->product_id = $cart['product_id'];
                 $order_details->product_name = $cart['product_name'];
                 $order_details->product_price = $cart['product_price'];
-                $order_details->product_sales_quantity = $cart['product_qty'];
-                $order_details->product_coupon =  $data['order_coupon'];
-                $order_details->product_feeship = $data['order_fee'];
+                $order_details->soluong = $cart['product_qty'];
+                $order_details->magiamgia =  $data['order_coupon'];
+                $order_details->phiship = $data['order_fee'];
                 $order_details->save();
             }
         }
@@ -422,17 +422,16 @@ class CheckoutController extends Controller
         );
 
         Mail::send(
-            'pages.mail.mail_order',
-            ['cart_array' => $cart_array, 'shipping_array' => $shipping_array, 'code' => $ordercode_mail],
+            'pages.mail.mail_order',//GUI MAU TU DAY
+            ['cart_array' => $cart_array, 'shipping_array' => $shipping_array, 'code' => $ordercode_mail],// nhung noi dung se duoc su dung trong mail de goi ra cac thong tin
             function ($message) use ($title_mail, $data) {
-                $message->to($data['email'])->subject($title_mail);
-                $message->from($data['email'], $title_mail);
+                $message->to($data['email'])->subject($title_mail);//day la email cua nguoi nhan
+                $message->from($data['email'], $title_mail);// cua nguoi gui
             }
-        );
+        );//
         Session::forget('coupon');
         Session::forget('fee');
         Session::forget('cart');
-        Session::forget('success_paypal');
         Session::forget('success_vnpay');
         Session::forget('success_momo');
         Session::forget('total_paypal');

@@ -22,9 +22,11 @@ class UserController extends Controller
         if(Auth::id() == $request->admin_id){
             return redirect()->back()->with('message','Bạn không thể phân quyền tài khoản của bạn');
         }
-    
+    // Lấy đối tượng người dùng dựa trên email được cung cấp
         $user = Admin::where('admin_email',$request->admin_email)->first();
+        // Xóa tất cả các vai trò hiện tại của người dùng này
         $user->roles()->detach();
+         // Nếu yêu cầu chứa vai trò 'author', gán vai trò 'author' cho người dùng
         if($request->author_role){
            $user->roles()->attach(Roles::where('name','author')->first());     
         }
@@ -36,14 +38,14 @@ class UserController extends Controller
         }
         return redirect()->back()->with('message','Cấp quyền thành công');
     }
-    public function store_users(Request $request){
+    public function store_users(Request $request){// them guoi dung moi
         $data = $request->all();
         $admin = new Admin();
         $admin->admin_name = $data['admin_name'];
         $admin->admin_phone = $data['admin_phone'];
         $admin->admin_email = $data['admin_email'];
         $admin->admin_password = md5($data['admin_password']);
-        
+        // Gán vai trò 'user' cho người dùng mới
         $admin->roles()->attach(Roles::where('name','user')->first());
         $admin->save();
 
@@ -57,6 +59,7 @@ class UserController extends Controller
 
         $admin =Admin::find($admin_id);
         if($admin){
+               // Hủy bỏ tất cả các vai trò của Admin đó
             $admin->roles()->detach();
             $admin->delete();
         }

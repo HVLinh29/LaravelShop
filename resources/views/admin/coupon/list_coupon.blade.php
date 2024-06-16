@@ -9,7 +9,7 @@
       </div>
      
       <div class="table-responsive">
-        <table class="table table-striped b-t b-light" id="myTable">
+        <table class="table table-striped b-t b-light">
           <style>
             .custom-button {
                 background-color: brown;
@@ -57,7 +57,6 @@
           <tbody>
             @foreach($coupon as $key =>$cou)
             <tr>
-              
               <td>{{$cou->coupon_name}}</td>
               <td>{{$cou->coupon_code}}</td>
               <td>{{$cou->coupon_time}}</td>

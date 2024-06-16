@@ -38,15 +38,15 @@ class CartController extends Controller
             if ($coupon) {
                 return redirect()->back()->with('error', 'Mã giảm giá đã sử dung, quý khách vui lòng nhập mã khác');
             } else {
-                $coupon_login = Coupon::where('coupon_code', $data['coupon'])->where('coupon_status', 1)->where('coupon_date_end', '>=', $today)->first();
+                $coupon_login = Coupon::where('coupon_code', $data['coupon'])->where('coupon_status', 1)->where('coupon_date_end', '>=', $today)->first();// kiem tra ma giam gia con oat dong ko
                 if ($coupon_login) {
-                    $count_coupon = $coupon_login->count();
-                    if ($count_coupon > 0) {
+                    $count_coupon = $coupon_login->count();// kiem tra xem co ton tai cai ma giam gia ko
+                    if ($count_coupon > 0) { // nue ton tai thi kiem tra xem co ton tai session ko
                         $coupon_session = Session::get('coupon');
                         if ($coupon_session == true) {
                             $is_avaiable = 0;
                             if ($is_avaiable == 0) {
-                                $cou[] = array(
+                                $cou[] = array( // neu ton tai thi se luu thong tin cua ma do vao 1 mang va luu vao trong phien
                                     'coupon_code' => $coupon_login->coupon_code,
                                     'coupon_condition' => $coupon_login->coupon_condition,
                                     'coupon_number' => $coupon_login->coupon_number,
@@ -54,7 +54,7 @@ class CartController extends Controller
                                 Session::put('coupon', $cou);
                             }
                         } else {
-                            $cou[] = array(
+                            $cou[] = array( // neu ko ton tai thi luu truc tiep vao mang do va luu vao phien
                                 'coupon_code' => $coupon_login->coupon_code,
                                 'coupon_condition' => $coupon_login->coupon_condition,
                                 'coupon_number' => $coupon_login->coupon_number,
@@ -102,49 +102,7 @@ class CartController extends Controller
             }
         }
     }
-    public function save_cart(Request $request)
-    {
-        $productId = $request->productid_hidden;
-        $quantity = $request->qty;
-
-        $product_info = DB::table('tbl_product')->where('product_id', $productId)->first();
-
-        $data['id'] = $product_info->product_id;
-        $data['qty'] = $quantity;
-        $data['name'] = $product_info->product_name;
-        $data['price'] = $product_info->product_price;
-        $data['weight'] = $product_info->product_price;
-        $data['options']['image'] = $product_info->product_image;
-        Cart::add($data);
-        Cart::setGlobalTax(0);
-        // Cart::destroy();
-        return Redirect::to('show-cart');
-    }
-    public function show_cart(Request $request)
-    {
-
-        $meta_desc = "Giỏ hàng của bạn";
-        $meta_keywords = "Giỏ hàng Ajax";
-        $meta_title = "Giỏ hàng Ajax";
-        $url_canonical = $request->url();
-        //--seo
-        $cate_product = DB::table('t_danhmucsanpham')->where('danhmuc_status', '0')->orderby('category_id', 'desc')->get();
-        $brand_product = DB::table('t_thuonghieu')->where('thuonghieu_status','0')->orderby('brand_id','desc')->get(); 
-        return view('pages.cart.show_cart')->with('category', $cate_product)->with('brand', $brand_product)->with('meta_desc', $meta_desc)->with('meta_keywords', $meta_keywords)->with('meta_title', $meta_title)
-            ->with('url_canonical', $url_canonical);
-    }
-    public function delete_to_cart($rowId)
-    {
-        Cart::update($rowId, 0);
-        return Redirect::to('show-cart');
-    }
-    public function update_cart_quantity(Request $request)
-    {
-        $rowId = $request->rowId_cart;
-        $qty = $request->cart_quantity;
-        Cart::update($rowId, $qty);
-        return Redirect::to('show-cart');
-    }
+   
     public function add_cart_ajax(Request $request)
     {
 
@@ -203,15 +161,15 @@ class CartController extends Controller
     }
     public function delete_product($session_id)
     {
-        $cart = Session::get('cart');
+        $cart = Session::get('cart');//lay gio hang hien tai
 
-        if ($cart == true) {
+        if ($cart == true) { //neu ton tai gio hang/ lap qua tat ca cac san pham trong gio hang
             foreach ($cart as $key => $val) {
-                if ($val['session_id'] == $session_id) {
+                if ($val['session_id'] == $session_id) {// neu ton ai cai session id do thi se xoa
                     unset($cart[$key]);
                 }
             }
-            Session::put('cart', $cart);
+            Session::put('cart', $cart);// cap nhat lai gio hang 
             return redirect()->back()->with('message', 'Xóa sản phẩm thành công');
         } else {
             return redirect()->back()->with('message', 'Xóa sản phẩm thất bại');
@@ -219,19 +177,19 @@ class CartController extends Controller
     }
     public function update_cart(Request $request)
     {
-        $data = $request->all();
+        $data = $request->all();// lay tat ca du lieu
         $cart = Session::get('cart');
         if ($cart == true) {
             $message = '';
 
-            foreach ($data['cart_qty'] as $key => $qty) {
+            foreach ($data['cart_qty'] as $key => $qty) { // lay va lap lai so luong da duoc cung cap
                 $i = 0;
                 foreach ($cart as $session => $val) {
                     $i++;
 
-                    if ($val['session_id'] == $key && $qty < $cart[$session]['product_quantity']) {
+                    if ($val['session_id'] == $key && $qty < $cart[$session]['product_quantity']) {// neu ma so luong moi nho hon so luong san pham hien tai
 
-                        $cart[$session]['product_qty'] = $qty;
+                        $cart[$session]['product_qty'] = $qty; // cho phep cap nhat so luong     san pham
                         $message .= '<p style="color:brow">' . $i . ') Cập nhật số lượng :' . $cart[$session]['product_name'] . ' thành công</p>';
                     } elseif ($val['session_id'] == $key && $qty > $cart[$session]['product_quantity']) {
                         $message .= '<p style="color:red">' . $i . ') Cập nhật số lượng :' . $cart[$session]['product_name'] . ' thất bại</p>';

@@ -10,7 +10,7 @@
         </style>
     </div>
     <div class="row">
-        <p class="title_thongke">Thống kê đơn hàng, doanh số</p>
+        <p class="title_thongke">THỐNG KÊ</p>
         <form autocomplete="off">
             @csrf
             <div class="col-md-2">
@@ -36,15 +36,21 @@
 
                         chart60daysorder();
 
-                        var chart = new Morris.Bar({
+                        var chart = new Morris.Line({// thiet lap bieu do moris
                             element: 'chart',
-                            lineColors: ['#819C79', '#fc8710', '#FF6541', '#A4ADD3', '#766856'],
+                            lineColors: [
+                                '#1ABC9C', // Màu xanh ngọc
+                                '#E74C3C', // Màu đỏ tươi
+                                '#3498DB', // Màu xanh dương sáng
+                                '#9B59B6' // Màu tím sáng
+                            ],
+
                             parseTime: false,
                             hideHover: 'auto',
                             xkey: 'period',
                             ykeys: ['order', 'sales', 'profit', 'quantity'],
-                            labels: ['đơn hàng', 'doanh số',
-                                'lợi nhuận', 'số lượng'
+                            labels: ['Đơn hàng', 'Doanh số',
+                                'Lợi nhuận', 'Số lượng'
                             ]
                         });
 
@@ -64,7 +70,7 @@
                             });
                         }
 
-                        $('.dashboard-filter').change(function() {
+                        $('.dashboard-filter').change(function() {// lang nghe nhung thay doi
                             var dashboard_value = $(this).val();
                             var _token = $('input[name="_token"]').val();
 
@@ -83,7 +89,7 @@
                             });
                         });
 
-                        $('#btn-dashboard-filter').click(function() {
+                        $('#btn-dashboard-filter').click(function() {//loc tu ngay den ngay qua form date
                             var _token = $('input[name="_token"]').val();
                             var from_date = $('#datepicker').val();
                             var to_date = $('#datepicker2').val();
@@ -104,7 +110,7 @@
                         });
                     });
                 </script>
-                
+
 
             </div>
         </form>
@@ -112,70 +118,57 @@
             <div id="chart" style="height:250px;"></div>
         </div>
     </div>
-    <div class="row">
-        <style>
-            table.table.table-bordered.table-dark {
-                background: brown;
-            }
-
-            table.table.table-bordered.table-dark tr th {
-                color: #fff;
-            }
-        </style>
-        <p class="title_thongke">Thống kê truy cập</p>
-        <table class="table table-bordered table-dark">
-            <thead>
-                <tr>
-                    <th scope="col">Đang Online</th>
-                    <th scope="col">Tổng tháng trước</th>
-                    <th scope="col">Tổng tháng này</th>
-                    <th scope="col">Tổng một năm</th>
-                    <th scope="col">Tổng truy cập</th>
-                </tr>
-            </thead>
-            <tbody>
-                <td>{{ $visitor_count }}</td>
-                <td>{{ $visitor_last_month_count }}</td>
-                <td>{{ $visitor_this_month_count }}</td>
-                <td>{{ $visitor_year_count }}</td>
-                <td>{{ $visitors_total }}</td>
-            </tbody>
-        </table>
-    </div>
+    
+    </br>
     <div class="row">
         <div class="col-md-4 col-xs-12">
-            <p class="title_thongke">Thống kê tổng sản phẩm bài viết đơn hàng</p>
+            <p class="title_thongke">Thống kê Tổng </p>
             <div id="donut" class="morris-donut-inverse"></div>
         </div>
         <div class="col-md-4 col-xs-12">
-            <h3>Bài viết xem nhiều</h3> 
-            <ol class="list_views">
-                @foreach ($baiviet_view as $key => $baiviet)
-                <li>
-                    <a target="_blank" href="{{url('/bai-viet/'.$baiviet->baiviet_slug)}}">{{$baiviet->baiviet_title}} | <span style="color:black">{{$baiviet->baiviet_view}}</span> </a>
-                </li>
-                @endforeach
-            </ol>
-        </div>
-        <div class="col-md-4 col-xs-12">
             <style>
-                ul.list_views{
+                ul.list_views {
                     margin: 10px 0;
                     color: #fff;
                 }
-                ul.list_views a{
+
+                ul.list_views a {
                     color: orange;
                     font-weight: 400;
                 }
             </style>
-            <h3>Sản phẩm xem nhiều</h3>
-            <ol class="list_views">
-                @foreach ($product_view as $key => $product)
-                <li>
-                    <a target="_blank" href="{{url('/chi-tiet-san-pham/'.$product->product_slug)}}">{{$product->product_name}} | <span style="color:black">{{$product->product_view}}</span> </a>
-                </li>
-                @endforeach
-            </ol>
+            
+        </div>
+        <div class="col-md-4 col-xs-12">
+            <p>
+                <i class="fa fa-shopping-cart fa-2x" aria-hidden="true"></i>
+                <span>Số lượng đơn hàng: {{ $order }}</span>
+            </p>
+            <p>
+                <i class="fa fa-users fa-2x" aria-hidden="true"></i>
+                <span>Số lượng khách hàng: {{ $customer }}</span>
+            </p>
+            <p>
+                <i class="fa fa-money fa-2x" aria-hidden="true"></i>
+                <span>Doanh thu hôm nay: {{ number_format($doanhthu_homnay, 0, ',', '.') }} VNĐ</span>
+            </p>
+            <p>
+                <i class="fa fa-calendar fa-2x" aria-hidden="true"></i>
+                <span>Doanh thu tuần này: {{ number_format($doanhthu_tuan, 0, ',', '.') }} VND</span>
+            </p>
+            <p>
+                <i class="fa fa-calendar fa-2x" aria-hidden="true"></i>
+                <span>Doanh thu tháng này: {{ number_format($doanhthu_thang, 0, ',', '.') }} VNĐ</span>
+            </p>
+            <p>
+                <i class="fa fa-calendar fa-2x" aria-hidden="true"></i>
+                <span>Doanh thu tháng trước: {{ number_format($thangtruoc, 0, ',', '.') }} VNĐ</span>
+            </p>
+            <p>
+                <i class="fa fa-calendar fa-2x" aria-hidden="true"></i>
+                <span>Doanh thu năm nay: {{ number_format($doanhthu_nam, 0, ',', '.') }} VNĐ</span>
+            </p>
+
         </div>
     </div>
 @endsection

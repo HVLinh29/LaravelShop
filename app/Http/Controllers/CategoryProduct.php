@@ -36,15 +36,13 @@ class CategoryProduct extends Controller
     public function add_category_product()
     {
         $this->AuthLogin();
-        $category = CategoryModel::where('danhmuc_parent', 0)->orderBy('category_id', 'DESC')->get();
-        return view('admin.category.add_category_product')->with(compact('category'));
+        return view('admin.category.add_category_product');
     }
     public function all_category_product()
     {
         $this->AuthLogin();
-
-        $category_product = CategoryModel::where('danhmuc_parent', 0)->orderBy('category_id', 'DESC')->get();
-        $all_category_product = DB::table('t_danhmucsanpham')->orderBy('danhmuc_parent', 'DESC')->get();
+        $category_product = CategoryModel::orderBy('category_id', 'DESC')->get();
+        $all_category_product = DB::table('t_danhmucsanpham')->orderBy('category_id', 'DESC')->get();
         $manager_category_product = view('admin.category.all_category_product')->with('all_category_product', $all_category_product)
             ->with('category_product', $category_product);
         return view('admin_layout')->with('admin.all_category_product', $manager_category_product);
@@ -55,7 +53,7 @@ class CategoryProduct extends Controller
         $data = array();
         $data['tendanhmuc'] = $request->tendanhmuc;
         $data['danhmuc_slug'] = $request->danhmuc_slug;
-        $data['danhmuc_parent'] = $request->danhmuc_parent;
+      
         $data['meta_keywords'] = $request->danhmuc_keywords;
         $data['danhmuc_desc'] = $request->danhmuc_desc;
         $data['danhmuc_status'] = $request->danhmuc_status;
@@ -96,7 +94,6 @@ class CategoryProduct extends Controller
         $data = array();
         $data['tendanhmuc'] = $request->tendanhmuc;
         $data['danhmuc_slug'] = $request->danhmuc_slug;
-        $data['danhmuc_parent'] = $request->danhmuc_parent;
         $data['meta_keywords'] = $request->danhmuc_keywords;
         $data['danhmuc_desc'] = $request->danhmuc_desc;
         
@@ -110,7 +107,6 @@ class CategoryProduct extends Controller
 
         DB::table('t_danhmucsanpham')->where('category_id', $category_product_id)->delete();
         Toastr::error('Xóa danh mục sản phẩm thành công', 'Thành công');
-        // Session::put('message', 'Xóa danh mục sản phẩm thành công');
         return Redirect::to('all-category-product');
     }
 

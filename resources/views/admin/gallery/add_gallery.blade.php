@@ -4,7 +4,7 @@
         <div class="col-lg-12">
             <section class="panel">
                 <header class="panel-heading">
-                    Thêm thu vien anh sản phẩm
+                   Thư viện ảnh sản phẩm
                 </header>
                 <?php
                 $message = Session::get('message');
@@ -23,7 +23,7 @@
                             <span id="error_gallery"></span>
                         </div>
                         <div class="col-md-3">
-                            <input type="submit" name="upload" name="taianh" value="Tai anh" class="btn btn-success">
+                            <input type="submit" name="upload" name="taianh" value="Tải ảnh" class="btn btn-success">
                             
                         </div>
                 </form>

@@ -21,7 +21,7 @@
                     <thead>
                         <tr>
 
-                            <th style="color: brown">Duyệt</th>
+                           
                             <th style="color: brown">Tên người gửi</th>
                             <th style="color: brown">Bình luận</th>
                             <th style="color: brown">Ngày gửi</th>
@@ -33,50 +33,15 @@
                     <tbody>
                         @foreach ($comment as $key => $comm)
                             <tr>
-                                <td>
-                                    @if ($comm->cmt_status == 1)
-                                        <input type="button" data-cmt_status="0"
-                                            data-cmt_id="{{ $comm->cmt_id }}" id="{{ $comm->cmt_pr_id }}"
-                                            class="btn btn-success btn xs comment_duyet" value="Duyệt">
-                                    @else
-                                        <input type="button" data-cmt_status="1"
-                                            data-cmt_id="{{ $comm->cmt_id }}" id="{{ $comm->cmt_pr_id }}"
-                                            class="btn btn-danger btn xs comment_duyet" value="Bỏ Duyệt">
-                                    @endif
-                                </td>
+                                
 
                                 <td>{{ $comm->cmt_name }}</td>
                                 <td>{{ $comm->cmt }}
-                                    <style type="text/css">
-                                        ul.list_rep li {
-                                            list-style-type: decimal;
-                                            color: brown;
-                                            margin: 5px 40px;
-                                        }
-                                    </style>
-                                    <ul class="list_rep">
-                                        Trả lời:
-                                        @foreach ($comment_rep as $key => $comm_reply)
-                                            @if ($comm_reply->cmt_parent_cmt == $comm->cmt_id)
-                                                <li>{{ $comm_reply->cmt }}</li>
-                                            @endif
-                                        @endforeach
-                                    </ul>
-                                    @if ($comm->cmt_status == 0)
-                                        <br />
-                                        <textarea class="form-control reply_comment_{{ $comm->cmt_id }}" row="5"></textarea>
-                                        <br /><button class="btn btn-default btn-xs btn-reply-comment"
-                                            data-product_id="{{ $comm->cmt_pr_id }}"
-                                            data-cmt_id="{{ $comm->cmt_id }}">Trả lời</textarea>
-                                    @endif
-
                                 </td>
                                 <td>{{ $comm->cmt_date }}</td>
                                 <td><a href="{{ url('/chi-tiet-san-pham/' . $comm->product->product_slug) }}"
                                         target="_blank">{{ $comm->product->product_name }}</td>
-
                                 <td>
-                                    
                                     <a onclick="return confirm('Bạn có muốn xóa bình luận này?')" href="{{URL::to('/delete-comment/'.$comm->cmt_id)}}"
                                         class="active btn btn-danger" ui-toggle-class="">Xóa
                                        </a>

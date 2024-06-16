@@ -36,15 +36,12 @@ class ProductController extends Controller
     {
         $this->AuthLogin();
         $cate_product = DB::table('t_danhmucsanpham')->orderby('category_id', 'DESC')->get();
-       
         $brand_product = DB::table('t_thuonghieu')->orderby('brand_id','desc')->get(); 
-
         return view('admin.sanpham.add_product')->with('cate_product', $cate_product)->with('brand_product', $brand_product);
     }
     public function all_product()
     {
         $this->AuthLogin();
-
         $all_product = DB::table('tbl_product')
             ->join('t_danhmucsanpham', 't_danhmucsanpham.category_id', '=', 'tbl_product.category_id')
             ->join('t_thuonghieu', 't_thuonghieu.brand_id', '=', 'tbl_product.brand_id')
@@ -74,8 +71,8 @@ class ProductController extends Controller
         $data['category_id'] = $request->product_cate;
         $data['brand_id'] = $request->product_brand;
         $data['product_status'] = $request->product_status;
-        $get_image = $request->file('product_image');
 
+        $get_image = $request->file('product_image');
         $path = 'public/uploads/product/';
         $path_gallery = 'public/uploads/gallery/';
         if ($get_image) {
@@ -95,7 +92,6 @@ class ProductController extends Controller
         $gallery->save();
 
         Toastr::success('Thêm sản phẩm thành công', 'Thành công');
-        // Session::put('message', 'Thêm sản phẩm thành công');
         return Redirect::to('all-product');
     }
     public function unactive_product($product_id)
@@ -103,7 +99,7 @@ class ProductController extends Controller
         $this->AuthLogin();
         DB::table('tbl_product')->where('product_id', $product_id)->update(['product_status' => 1]);
         Toastr::error('Không kích hoạt sản phẩm thành công', 'Không thành công');
-        // Session::put('message', 'Không kích hoạt sản phẩm thành công');
+       
         return Redirect::to('all-product');
     }
     public function active_product($product_id)
@@ -111,7 +107,7 @@ class ProductController extends Controller
         $this->AuthLogin();
         DB::table('tbl_product')->where('product_id', $product_id)->update(['product_status' => 0]);
         Toastr::success('Kích hoạt sản phẩm thành công', 'Thành công');
-        // Session::put('message', 'Kích hoạt sản phẩm thành công');
+
         return Redirect::to('all-product');
     }
     public function edit_product($product_id)
@@ -155,12 +151,10 @@ class ProductController extends Controller
             $data['product_image'] = $new_image;
             DB::table('tbl_product')->where('product_id', $product_id)->update($data);
             Toastr::success('Cập nhật sản phẩm thành công', 'Thành công');
-            // Session::put('message', 'Cập nhật sản phẩm thành công');
             return Redirect::to('all-product');
         }
 
         DB::table('tbl_product')->where('product_id', $product_id)->update($data);
-        // Session::put('message', 'Cập nhật sản phẩm thành công');
         Toastr::success('Cập nhật sản phẩm thành công', 'Thành công');
         return Redirect::to('all-product');
     }
@@ -176,7 +170,6 @@ class ProductController extends Controller
     //Trang chu giao dien
     public function details_product(Request $request, $product_slug)
     {
-
         $category_post = Article::orderBy('article_id', 'DESC')->get();
         $slider = Slider::orderBy('slider_id', 'DESC')->where('slider_status', '1')->take(4)->get();
         $cate_product = DB::table('t_danhmucsanpham')->where('danhmuc_status', '0')->orderby('category_id', 'desc')->get();
@@ -230,7 +223,7 @@ class ProductController extends Controller
         $cate_product = DB::table('t_danhmucsanpham')->where('danhmuc_status', '0')->orderby('category_id', 'desc')->get();
         $brand_product = DB::table('t_thuonghieu')->where('thuonghieu_status','0')->orderby('brand_id','desc')->get(); 
 
-        $tag = str_replace("-", "", $product_tag);
+        $tag = str_replace("-", "", $product_tag);// thay the dau gach bang chuoi rong
         $pro_tag = Product::where('product_status', '0')->where('product_name', 'LIKE', '%' . $tag . '%')
             ->orWhere('product_tags', 'LIKE', '%' . $tag . '%')->orWhere('product_slug', 'LIKE', '%' . $tag . '%')->get();
 
@@ -278,17 +271,14 @@ class ProductController extends Controller
                  class="cart_product_price_' . $product->product_id . '">                  
         <input type="hidden" value="1"
                 class="cart_product_qty_' . $product->product_id . '">';
-        echo json_encode($output);
+        echo json_encode($output);// tra ve du lieu dang json de xu li o javascript va hien thi trong model
     }
     public function load_comment(Request $request)
     {
         $product_id = $request->product_id;
-
-        $comment = Comment::where('cmt_pr_id', $product_id)->where('cmt_parent_cmt', '=', 0)->where('cmt_status', 0)->get();
-        $comment_rep = Comment::with('product')->where('cmt_parent_cmt', '>', 0)->get();
+        $comment = Comment::where('cmt_pr_id', $product_id)->get();
         $output = '';
         foreach ($comment as $key => $com) {
-            
             $output .= '
             <div class="col-md-10">
                 <div class="comment-box" style=" margin-bottom: 10px;">
@@ -298,20 +288,6 @@ class ProductController extends Controller
                 </
                 </div>
                 ';
-
-            foreach ($comment_rep as $key => $rep_comment) {
-                if ($rep_comment->cmt_parent_cmt == $com->cmt_id) {
-                    $output .= '
-            <div class="col-md-10 offset-md-1">
-                <div class="reply-box" style=" margin-bottom: 10px; ">
-                    <p style="color: brown; font-weight: bold;">@Admin</p>
-                    <p style="color: #000;">' . nl2br(htmlspecialchars($rep_comment->cmt)) . '</p>
-                </div>
-            </div>
-            ';
-                }
-            }
-
             $output .= '</div>';
 
             echo $output;
@@ -326,34 +302,16 @@ class ProductController extends Controller
         $comment->cmt_pr_id = $product_id;
         $comment->cmt_name = $cmt_name;
         $comment->cmt = $comment_content;
-        $comment->cmt_status = 1;
-        $comment->cmt_parent_cmt = 0;
+       
         $comment->save();
     }
     public function list_comment()
     {
-        $comment = Comment::with('product')->orderBy('cmt_status', 'desc')->get();
-        $comment_rep = Comment::with('product')->where('cmt_parent_cmt', '>', 0)->get();
-        return view('admin.comment.list_comment')->with(compact('comment', 'comment_rep'));
+        $comment = Comment::with('product')->get();
+        return view('admin.comment.list_comment')->with(compact('comment'));
     }
-    public function duyet_comment(Request $request)
-    {
-        $data = $request->all();
-        $comment = Comment::find($data['cmt_id']);
-        $comment->cmt_status = $data['cmt_status'];
-        $comment->save();
-    }
-    public function reply_comment(Request $request)
-    {
-        $data = $request->all();
-        $comment = new Comment();
-        $comment->cmt = $data['cmt'];
-        $comment->cmt_pr_id = $data['cmt_pr_id'];
-        $comment->cmt_parent_cmt = $data['cmt_id'];
-        $comment->cmt_name = 'Admin';
-        $comment->cmt_status = 0;
-        $comment->save();
-    }
+   
+    
     public function delete_comment($cmt_id)
     {
         // Kiểm tra xem comment_id có tồn tại không
@@ -364,10 +322,8 @@ class ProductController extends Controller
             // Kiểm tra xem xóa bình luận thành công hay không
             if ($deleted) {
                 Toastr::success('Bình luận đã được xóa thành công', 'Thành công');
-                // Nếu xóa thành công, chuyển hướng về trang trước đó hoặc trang chính của ứng dụng của bạn
                 return redirect()->back()->with('success', 'Bình luận đã được xóa thành công.');
             } else {
-                // Nếu xóa không thành công, thông báo lỗi
                 Toastr::error('Xóa bình luận thất bại. Vui lòng thử lại sau.', 'Lỗi');
                 return redirect()->back()->with('error', 'Xóa bình luận thất bại. Vui lòng thử lại sau.');
             }
@@ -380,13 +336,13 @@ class ProductController extends Controller
     public function insert_rating(Request $request)
     {
         try {
-            \Log::info('Request Data: ', $request->all()); // Log all request data
+            \Log::info('Request Data: ', $request->all()); 
 
             $data = $request->all();
 
             if (!isset($data['product_id']) || !isset($data['index'])) {
-                \Log::error('Missing product_id or index', $data);
-                return response()->json(['message' => 'Missing product_id or index'], 400);
+                \Log::error('Thiếu Id sản phẩm', $data);
+                return response()->json(['message' => 'Thiếu Id sản phẩm'], 400);
             }
 
             $rating = new Sao();
@@ -396,7 +352,7 @@ class ProductController extends Controller
 
             return response()->json(['message' => 'done'], 200);
         } catch (\Exception $e) {
-            \Log::error('Error inserting rating: ' . $e->getMessage());
+            \Log::error('Lỗi khi đánh giá sao: ' . $e->getMessage());
             return response()->json(['message' => 'Server Error'], 500);
         }
     }

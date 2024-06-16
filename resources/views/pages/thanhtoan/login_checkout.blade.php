@@ -22,7 +22,7 @@
                             {{ csrf_field() }}
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
-                                <input type="email" name="email_account" class="form-control" id="email" placeholder="Email" required>
+                                <input type="email"  name="email_account" class="form-control" id="email" placeholder="Email" required>
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label">Mật khẩu</label>

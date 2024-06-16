@@ -53,8 +53,7 @@
             @endforeach
         </div>
     </div>
-    <div class="fb-comments" data-href="http://vulinh.com/laravel_shopTMDT/danh-muc-san-pham/4" data-width=""
-         data-numposts="20"></div>
+    
 @endsection
 
 @section('footer')

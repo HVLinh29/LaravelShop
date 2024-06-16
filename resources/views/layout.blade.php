@@ -56,103 +56,62 @@
                 <div class="row">
                    <div class="col-sm-4">
                     <div class="shop-menu pull-right">
-                        <form method="POST" action="{{ URL::to('/tim-kiem') }}" autocomplete="off">
-                            {{ csrf_field() }}
-                            <div class="search_box pull-right">
-                               
-                                <input type="text" name="keywords_submit" id="keywords" placeholder="Từ khóa" />
-                                <div id="search_ajax"></div>
-                                <input type="submit" style="color: #000" name="search_item"
-                                    class=" btn-success btn-sm" value="Tìm kiếm">
-                                <style>
-                                    .search_box {
-                                        position: relative;
-                                    }
-
-                                    #search_ajax {
-                                        position: absolute;
-                                        top: 100%;
-                                        left: 0;
-                                        width: 100%;
-
-                                        /* Điều chỉnh màu nền của kết quả tìm kiếm */
-
-                                        z-index: 999;
-                                        /* Đảm bảo kết quả tìm kiếm được hiển thị trên menu */
-                                    }
-
-                                    .search_box {
-                                        display: flex;
-                                        align-items: center;
-                                    }
-
-                                    .search_box input[type="text"] {
-                                        flex: 1;
-                                        /* Ô tìm kiếm sẽ mở rộng để lấp đầy không gian còn lại */
-                                        margin-right: 10px;
-                                        /* Khoảng cách giữa ô tìm kiếm và nút submit */
-                                    }
-
-                                    .search_box input[type="submit"] {
-                                        font-size: 14px;
-                                        padding: 5px 10px;
-                                    }
-                                </style>
-
-                            </div>
-                        </form>
+                        
                     </div>
                    </div>
                     <div class="col-sm-8">
                         <div class="shop-menu pull-right">
                             <ul class="nav navbar-nav">
 
-
-                                <?php
-								$customer_id = Session::get('customer_id');
-								$shipping_id = Session::get('s_id');
-								if($customer_id!=NULL && $shipping_id==NULL ){
-								?>
-                                <li><a href="{{ URL::to('/thanhtoan') }}"><i class="fa fa-credit-card"></i></i> Thanh
-                                        toán</a></li>
-
-                                <?php
-								}elseif($customer_id!=NULL && $shipping_id!=NULL ){
-								?>
-                                <li><a href="{{ URL::to('/payment') }}"><i class="fa fa-credit-card"></i></i> Thanh toán</a>
-                                </li>
-
-                                <?php
-								}
-								else{
-									?>
-                                <li><a href="{{ URL::to('/login-checkout') }}"><i class="fa fa-credit-card"></i></i> Thanh
-                                        toán</a></li>
-
-                                <?php
-								}
-								?>
                                
-                                <li><a href="{{ URL::to('/gio-hang') }}"><i class="fa fa-shopping-cart"></i> Giỏ hàng 
-                                            <span class="show-cart"></span>
+                                <li><a href="{{ URL::to('/gio-hang') }}"><i style="font-size: 28px" class="fa fa-shopping-cart"></i> 
+                                            <span  style="color: red;" class="show-cart"></span>
                                     </a>
                                 </li>
                                 @php
-                                        $customer_id = Session::get('customer_id');
-                                        if($customer_id!=NULL){
-                                            @endphp
-                                <li><a href="{{ URL::to('/yeuthichhhh') }}"><i class="fa fa-shopping-cart"></i> Yêu thích 
+                                $customer_id = Session::get('customer_id');
+                                $wishlistCount = $customer_id ? App\Wishlist::where('customer_id', $customer_id)->count() : 0;
+                            @endphp
+                            
+                            @if($customer_id != NULL)
+                                <li>
+                                    <a href="{{ URL::to('/yeuthichhhh') }}">
+                                        <i style="font-size: 28px" class="fa fa-heart" aria-hidden="true"></i>
+                                        <span style="color: red" id="wishlist-count" class="badgess">{{ $wishlistCount }}</span>
                                     </a>
                                 </li>
-                                @php
-                                        }
-                                @endphp
+                            @endif
+                            
+                                
+                            <?php
+                            $customer_id = Session::get('customer_id');
+                            $shipping_id = Session::get('s_id');
+                            if($customer_id!=NULL && $shipping_id==NULL ){
+                            ?>
+                            <li><a href="{{ URL::to('/thanhtoan') }}"><i class="fa fa-credit-card-alt" aria-hidden="true"></i> Thanh
+                                    toán</a></li>
 
+                            <?php
+                            }elseif($customer_id!=NULL && $shipping_id!=NULL ){
+                            ?>
+                            <li><a href="{{ URL::to('/payment') }}"><i class="fa fa-credit-card-alt" aria-hidden="true"></i> Thanh toán</a>
+                            </li>
+
+                            <?php
+                            }
+                            else{
+                                ?>
+                            <li><a href="{{ URL::to('/login-checkout') }}"><i class="fa fa-credit-card-alt" aria-hidden="true"></i> Thanh
+                                    toán</a></li>
+
+                            <?php
+                            }
+                            ?>
                                 @php
                                         $customer_id = Session::get('customer_id');
                                         if($customer_id!=NULL){
                                             @endphp
-                                <li><a href="{{ URL::to('lichsudh') }}"><i class="fa fa-shopping-cart"></i> Lịch sử đơn hàng</a>
+                                <li><a href="{{ URL::to('lichsudh') }}"><i class="fa fa-list-ol" aria-hidden="true"></i> Lịch sử đơn hàng</a>
                                 </li>
 
                                 @php
@@ -163,13 +122,13 @@
 								$customer_id = Session::get('customer_id');
 								if($customer_id!=NULL){
 								?>
-                                <li><a href="{{ URL::to('logout-checkout') }}"><i class="fa fa-lock"></i> Đăng xuất</a>
+                                <li><a href="{{ URL::to('logout-checkout') }}"><i class="fa fa-sign-out" aria-hidden="true"></i> Đăng xuất</a>
                                     <p>{{Session::get('customer_name')}}</p>
                                 </li>
                                 <?php
 								}else{
 									?>
-                                <li><a href="{{ URL::to('login-checkout') }}"><i class="fa fa-lock"></i> Đăng nhập</a>
+                                <li><a href="{{ URL::to('login-checkout') }}"><i class="fa fa-user-plus" aria-hidden="true"></i> Đăng nhập</a>
                                 </li>
                                 <?php
 								}
@@ -187,7 +146,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                        
-                        <div class="mainmenu text-center"><!-- Add text-center class here -->
+                        <div class="mainmenu pull-left"><!-- Add text-center class here -->
                             <ul class="nav navbar-nav collapse navbar-collapse">
                                 <li><a href="{{ url('/trang-chu') }}" class="active">Trang chủ</a></li>
 
@@ -222,6 +181,49 @@
                              
                                 <li><a href="{{ URL::to('/lien-he') }}">Liên hệ</a></li>
                             </ul>
+                        </div>
+                        <div class="search_box pull-right">
+                            <form method="POST" action="{{ URL::to('/tim-kiem') }}" autocomplete="off">
+                                {{ csrf_field() }}
+                                <input type="text" name="keywords_submit" id="keywords" placeholder="Từ khóa" />
+                                <div id="search_ajax"></div>
+                                <input type="submit" style="color: #000" name="search_item"
+                                    class=" btn-success btn-sm" value="Tìm kiếm">
+                                <style>
+                                    .search_box {
+                                        position: relative;
+                                    }
+    
+                                    #search_ajax {
+                                        position: absolute;
+                                        top: 100%;
+                                        left: 0;
+                                        width: 100%;
+    
+                                        /* Điều chỉnh màu nền của kết quả tìm kiếm */
+    
+                                        z-index: 999;
+                                        /* Đảm bảo kết quả tìm kiếm được hiển thị trên menu */
+                                    }
+    
+                                    .search_box {
+                                        display: flex;
+                                        align-items: center;
+                                    }
+    
+                                    .search_box input[type="text"] {
+                                        flex: 1;
+                                        /* Ô tìm kiếm sẽ mở rộng để lấp đầy không gian còn lại */
+                                        margin-right: 10px;
+                                        /* Khoảng cách giữa ô tìm kiếm và nút submit */
+                                    }
+    
+                                    .search_box input[type="submit"] {
+                                        font-size: 14px;
+                                        padding: 5px 10px;
+                                    }
+                                </style>
+                            </form>
                         </div>
                     </div>
                     
@@ -299,33 +301,7 @@
       language-code="vi"
     ></df-messenger>
 
-    {{-- <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="image-container">
-                        <img src="{{asset('public/fontend/images/anhdh.jpg')}}" alt="Ảnh đại diện" class="image">
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="image-text">
-                        <h2>Tại sao nên chọn chúng tôi?</h2>
-                        <p>
-                            Chúng tôi cung cấp dịch vụ chất lượng với đội ngũ chuyên nghiệp và tận tâm.
-                            Dưới đây là những lý do nên chọn chúng tôi:
-                        </p>
-                        <ul>
-                            <li>Chất lượng hàng đầu: Chúng tôi cam kết đem đến sản phẩm và dịch vụ tốt nhất.</li>
-                            <li>Đội ngũ chuyên nghiệp: Nhân viên của chúng tôi đều là những người có kinh nghiệm và chuyên môn cao.</li>
-                            <li>Dịch vụ tận tâm: Chúng tôi luôn đặt khách hàng lên hàng đầu và phục vụ với tinh thần tận tâm.</li>
-                            <li>Giá cả cạnh tranh: Chúng tôi cung cấp dịch vụ với mức giá hợp lý nhất.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
-     --}}
+    
     
     <footer class="footer text-color-dark">
         <div class="container-fluid d-flex justify-content-center">
@@ -511,8 +487,7 @@
     <script src=" https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.3/jquery-ui.min.js" async defer></script>
 
     
-    <div id="fb-root"></div>
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v19.0" nonce="HvSWG6qx"></script>
+  
     <script src="https://www.paypalobjects.com/api/checkout.js"></script>
    
         <script type="text/javascript">
@@ -524,20 +499,20 @@
                 $.ajax({
                     url: '{{ url('/load-more') }}',
                     method: 'POST',
-                    headers: {
+                    headers: {//tra ve gia tri cua thuoc tinh content
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 
                 },
                 data:{id:id},
                     success: function(data) {
                         $('#load_more_button').remove();
-                        $('#all_product').append(data);
+                        $('#all_product').append(data);//them noi dung moi vao cuoi phan tu duoc chon
                         
                     }
                 });
             }
             $(document).on('click', '#load_more_button',function(){
-                var id = $(this).data('id');
+                var id = $(this).data('id');//lay id cua dâta-id
                 load_more(id);
             });
         </script>
@@ -554,8 +529,8 @@
                 });
             }
     function Addtocart($product_id){
-        var id = $product_id;
-                // alert(id);
+                var id = $product_id;
+             
                 var cart_product_id = $('.cart_product_id_' + id).val();
                 var cart_product_name = $('.cart_product_name_' + id).val();
                 var cart_product_image = $('.cart_product_image_' + id).val();
@@ -584,7 +559,7 @@
 
                             swal({
                                     title: "Đã thêm sản phẩm vào giỏ hàng",
-                                    text: "Bạn có thể mua hàng tiếp hoặc tới giỏ hàng để tiến hành thanh toán",
+                                    text: "Tiếp tục xem hoặc thanh toán",
                                     showCancelButton: true,
                                     cancelButtonText: "Xem tiếp",
                                     confirmButtonClass: "btn-success",
@@ -605,7 +580,7 @@
 
 
     <script type="text/javascript">
-        $(document).ready(function() {
+        $(document).ready(function() {// dom da san sang
             show_cart();
             //dem so luong gio hang
             function show_cart(){
@@ -649,7 +624,7 @@
 
                             swal({
                                     title: "Đã thêm sản phẩm vào giỏ hàng",
-                                    text: "Bạn có thể mua hàng tiếp hoặc tới giỏ hàng để tiến hành thanh toán",
+                                    text: "Tiếp tục xem hoặc thanh toán",
                                     showCancelButton: true,
                                     cancelButtonText: "Xem tiếp",
                                     confirmButtonClass: "btn-success",
@@ -670,7 +645,7 @@
     </script>
     <script type="text/javascript">
         $(document).ready(function() {
-            $('.choose').on('change', function() {
+            $('.choose').on('change', function() {// class choose thay doi gia tri thi se dung change
                 var action = $(this).attr('id');
                 var ma_id = $(this).val();
                 var _token = $('input[name="_token"]').val();
@@ -795,8 +770,14 @@
                 _token: token,
                 product_id: product_id,
             },
-            success: function(data) {
-                alert(data.message);
+            success: function(response) {
+                if (response.wishlistCount !== undefined) {
+                    $('#wishlist-count').text(response.wishlistCount);
+                }
+                alert(response.message);
+            },
+            error: function(response) {
+                alert(response.responseJSON.message);
             }
         });
     }
@@ -808,7 +789,7 @@
                 gallery: true,
                 item: 1,
                 loop: true,
-                thumbItem: 3,
+                thumbItem: 5,
                 slideMargin: 0,
                 enableDrag: false,
                 currentPagerPosition: 'left',
@@ -820,26 +801,7 @@
             });
         });
     </script>
-    <script type="text/javascript">
-        $(document).on('click', '.watch-video', function() {
-            var video_id = $(this).attr('id');
-            var _token = $('input[name="_token"]').val();
-            $.ajax({
-                url: '{{ url('/watch-video') }}',
-                method: "POST",
-                dataType: "JSON",
-                data: {
-                    video_id: video_id,
-                    _token: _token
-                },
-                success: function(data) {
-                    $('#video_title').html(data.video_title);
-                    $('#video_link').html(data.video_link);
-                    $('#video_desc').html(data.video_desc);
-                }
-            });
-        })
-    </script>
+    
     <script type="text/javascript">
         $('#keywords').keyup(function() {
             var query = $(this).val();
@@ -880,7 +842,7 @@
                     _token: _token
                 },
                 success: function(data) {
-                    $('#product_quickview_title').html(data.product_name);
+                    $('#product_quickview_title').html(data.product_name);//cap nhat thanh gia tri cua thuoc tinh product name.
                     $('#product_quickview_price').html(data.product_price);
                     $('#product_quickview_image').html(data.product_image);
                     $('#product_quickview_id').html(data.product_id);
@@ -927,7 +889,7 @@
         $(document).on('click', '.add-to-cart-quickview', function() {
 
             var id = $(this).data('id_product');
-            // alert(id);
+            
             var cart_product_id = $('.cart_product_id_' + id).val();
             var cart_product_name = $('.cart_product_name_' + id).val();
             var cart_product_image = $('.cart_product_image_' + id).val();
@@ -952,7 +914,7 @@
                         _token: _token,
                         cart_product_quantity: cart_product_quantity
                     },
-                    beforeSend: function() {
+                    beforeSend: function() {// 1 ham callback de thong bao
                         $("#beforesend_quickview").html(
                             "<p class='text text-primary'>Đang thêm sản phẩm vào giỏ hàng</p>");
                     },
@@ -1005,7 +967,7 @@
                     success: function(data) {
 
                         $('#notify_comment').html(
-                            '<span class="text text-success">Đã thêm bình luận. Xin vui lòng đợi chúng tôi xem xét</span>'
+                            '<span class="text text-success">Đã thêm bình luận</span>'
                         )
                         load_comment();
                         $('#notify_comment').fadeOut(5000);
@@ -1094,8 +1056,6 @@
             var index = $(this).data("index"); //3
             var product_id = $(this).data('product_id'); //13
 
-            // alert(index);
-            // alert(product_id);
             remove_background(product_id);
             for (var count = 1; count <= index; count++) {
                 $('#' + product_id + '-' + count).css('color', '#ffcc00');
@@ -1112,31 +1072,7 @@
                 $('#' + product_id + '-' + count).css('color', '#ffcc00');
             }
         });
-        //clivk danh gia sao
-        // $(document).on('click', '.rating', function() {
-        //     var index = $(this).data("index"); 
-        //     var product_id = $(this).data('product_id'); 
-        //     var _token = $('input[name="_token"]').val();
-
-        //     $.ajax({
-        //         url: "{{ url('insert-rating') }}",
-        //         method: 'POST',
-        //         data: {
-        //             index: index,
-        //             product_id: product_id,
-        //             _token: _token
-        //         },
-        //         success: function(data) {
-        //             if (data == 'done') {
-        //                 alert("Bạn đã đánh giá " + index + " trên 5");
-        //                 location.reload();
-        //             } else {
-        //                 alert("Bạn chưa đánh giá");
-        //             }
-        //         }
-        //     });
-        // });
-        //KHAC NUA NHA
+        
         $(document).on('click', '.rating', function() {
     var index = $(this).data("index"); 
     var product_id = $(this).data('product_id'); 

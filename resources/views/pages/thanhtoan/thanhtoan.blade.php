@@ -56,16 +56,16 @@
                                         <div class="form-group">
                                             <label for="exampleInputPassword1">Chọn hình thức thanh toán</label>
 
-                                            @if (Session::has('success_vnpay') || Session::has('success_momo'))
+                                            @if (Session::has('success_vnpay'))
                                                 <select name="payment_select"
                                                     class="form-control input-sm m-bot15 payment_select">
-                                                    <option value="0">Đã thanh toán VNPAY, MOMO</option>
+                                                    <option value="0">Đã thanh toán VNPAY</option>
 
                                                 </select>
-                                            @elseif (Session::has('success_paypal'))
+                                            @elseif (Session::has('success_momo'))
                                                 <select name="payment_select"
                                                     class="form-control input-sm m-bot15 payment_select">
-                                                    <option value="2">Đã thanh toán bằng PayPal</option>
+                                                    <option value="2">Đã thanh toán MOMO</option>
                                                 </select>
                                             @else
                                                 <select name="payment_select"
@@ -86,7 +86,7 @@
                                 <form>
                                     @csrf
                                     <div class="form-group">
-                                        <label for="exampleInputPassword1">Chọn thành phố</label>
+                                        <label for="">Chọn thành phố</label>
                                         <select name="city" id="city"
                                             class="form-control input-sm m-bot15 choose city">
                                             <option value="">Chọn tỉnh thành phố</option>
@@ -96,14 +96,14 @@
                                         </select>
                                     </div>
                                     <div class="form-group">
-                                        <label for="exampleInputPassword1">Chọn quận huyện</label>
+                                        <label for="">Chọn quận huyện</label>
                                         <select name="province" id="province"
                                             class="form-control input-sm m-bot15 province choose">
                                             <option value="">Chọn quận huyện</option>
                                         </select>
                                     </div>
                                     <div class="form-group">
-                                        <label for="exampleInputPassword1">Chọn xã phường</label>
+                                        <label for="">Chọn xã phường</label>
                                         <select name="wards" id="wards" class="form-control input-sm m-bot15 wards">
                                             <option value="">Chọn xã phường</option>
                                         </select>
@@ -171,7 +171,7 @@
 
 
                                                             <input class="cart_quantity" type="number"
-                                                                @if (Session::get('success_paypal') || Session::get('success_momo') || Session::get('success_vnpay') == true) readonly @endif
+                                                                @if ( Session::get('success_momo') || Session::get('success_vnpay') == true) readonly @endif
                                                                 min="1" name="cart_qty[{{ $cart['session_id'] }}]"
                                                                 value="{{ $cart['product_qty'] }}">
 
@@ -185,7 +185,7 @@
                                                     </td>
                                                     <td class="cart_delete">
 
-                                                        @if (Session::get('success_paypal') || Session::get('success_vnpay') || Session::get('success_momo'))
+                                                        @if ( Session::get('success_vnpay') || Session::get('success_momo'))
                                                         @else
                                                             <a class="cart_quantity_delete"
                                                                 href="{{ url('/del-product/' . $cart['session_id']) }}">Xóa</a>
@@ -197,7 +197,7 @@
                                             @endforeach
                                             <tr>
                                                 {{-- @if (!Session::get('success_paypal') == true) --}}
-                                                @if (Session::get('success_paypal') || Session::get('success_vnpay') || Session::get('success_momo'))
+                                                @if ( Session::get('success_vnpay') || Session::get('success_momo'))
                                                 @else
                                                     <td><input type="submit" value="Cập nhật giỏ hàng" name="update_qty"
                                                             class="check_out btn btn-success btn-sm"></td>
@@ -283,13 +283,7 @@
                                                             VNĐ</span>
                                                     </div>
 
-                                                    <div class="col-md-12">
-                                                        @php
-                                                            $vnd_to_usd = $total_after / 25451;
-                                                            $total_paypal = round($vnd_to_usd, 2);
-                                                            \Session::put('total_paypal', $total_paypal);
-                                                        @endphp
-                                                    </div>
+                                                    
                                                 </td>
 
 
@@ -299,7 +293,7 @@
                                                 <td colspan="5">
                                                     <center>
                                                         @php
-                                                            echo 'Làm ơn thêm sản phẩm vào giỏ hàng';
+                                                            echo 'Bạn hãy thêm sản phẩm vào giỏ hàng';
                                                         @endphp
                                                     </center>
                                                 </td>
@@ -312,8 +306,8 @@
 
                             </form>
                             @if (Session::get('cart'))
-                                @if (Session::get('success_paypal') || Session::get('success_vnpay') || Session::get('success_momo'))
-                                    {{-- @if (!Session::get('success_paypal') == true) --}}
+                                @if ( Session::get('success_vnpay') || Session::get('success_momo'))
+                                    
                                 @else
                                     <tr>
                                         <td>
@@ -334,7 +328,7 @@
                                                     @csrf
                                                     <input type="hidden" name="total_vnpay"
                                                         value="{{ $total_after }}">
-                                                    <!-- Ẩn văn bản bằng CSS và thêm class để tùy chỉnh CSS -->
+                                                  
                                                     <button type="submit" class=" check_out vnpay-button"
                                                         name="redirect">
                                                         <!-- Hiển thị hình ảnh logo của VNPAY -->
@@ -362,17 +356,7 @@
                                                             class="vnpay-logo"></button>
                                                 </form>
                                         </td>
-                                        <td>
-                                            <a href="{{ route('processTransaction') }}">
-                                                <img src="{{ 'public/fontend/images/PayPal.png' }}" alt="PayPal"
-                                                    class="check_out paypal">
-                                            </a>
-                                        </td>
-                                        <style>
-                                            .payment-methods {
-                                                display: flex;
-                                            }
-                                        </style>
+                                       
                                     </tr>
                                 @endif
                             @endif

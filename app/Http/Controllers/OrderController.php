@@ -43,7 +43,7 @@ class OrderController extends Controller
 
 		foreach ($order_details_product as $key => $order_d) {
 
-			$product_coupon = $order_d->product_coupon;
+			$product_coupon = $order_d->magiamgia;
 		}
 		if ($product_coupon != 'no') {
 			$coupon = Coupon::where('coupon_code', $product_coupon)->first();
@@ -78,7 +78,7 @@ class OrderController extends Controller
 
 		foreach ($order_details_product as $key => $order_d) {
 
-			$product_coupon = $order_d->product_coupon;
+			$product_coupon = $order_d->magiamgia;
 		}
 		if ($product_coupon != 'no') {
 			$coupon = Coupon::where('coupon_code', $product_coupon)->first();
@@ -178,17 +178,17 @@ class OrderController extends Controller
 		$total = 0;
 	
 		foreach ($order_details_product as $product) {
-			$subtotal = $product->product_price * $product->product_sales_quantity;
+			$subtotal = $product->product_price * $product->soluong;
 			$total += $subtotal;
 	
-			$product_coupon = $product->product_coupon != 'no' ? $product->product_coupon : 'không mã';
+			$product_coupon = $product->magiamgia != 'no' ? $product->magiamgia : 'không mã';
 	
 			$output .= '
 					<tr>
 						<td>' . $product->product_name . '</td>
 						<td>' . $product_coupon . '</td>
-						<td>' . number_format($product->product_feeship, 0, ',', '.') . 'đ</td>
-						<td>' . $product->product_sales_quantity . '</td>
+						<td>' . number_format($product->phiship, 0, ',', '.') . 'đ</td>
+						<td>' . $product->soluong . '</td>
 						<td>' . number_format($product->product_price, 0, ',', '.') . 'đ</td>
 						<td>' . number_format($subtotal, 0, ',', '.') . 'đ</td>
 					</tr>';
@@ -205,8 +205,8 @@ class OrderController extends Controller
 				<tr>
 					<td colspan="6" class="text-right">
 						<p><strong>Tổng giảm:</strong> ' . $coupon_echo . '</p>
-						<p><strong>Phí ship:</strong> ' . number_format($product->product_feeship, 0, ',', '.') . 'đ</p>
-						<p><strong>Thanh toán:</strong> ' . number_format($total_coupon + $product->product_feeship, 0, ',', '.') . 'đ</p>
+						<p><strong>Phí ship:</strong> ' . number_format($product->phiship, 0, ',', '.') . 'đ</p>
+						<p><strong>Thanh toán:</strong> ' . number_format($total_coupon + $product->phiship, 0, ',', '.') . 'đ</p>
 					</td>
 				</tr>
 				</tbody>
@@ -236,156 +236,12 @@ class OrderController extends Controller
 		</html>';
 	
 		return $output;
-		// $output .= '<style>body{
-		// 	font-family: DejaVu Sans;
-		// }
-		// .table-styling{
-		// 	border:1px solid #000;
-		// }
-		// .table-styling tbody tr td{
-		// 	border:1px solid #000;
-		// }
-		// </style>
-		// <h1><center>Công ty TNHH đồng hồ LINHWATCH</center></h1>
-		// <h4><center>Độc lập - Tự do - Hạnh phúc</center></h4>
-		// <p>Người đặt hàng</p>
-		// <table class="table-styling">
-		// 		<thead>
-		// 			<tr>
-		// 				<th>Tên khách đặt</th>
-		// 				<th>Số điện thoại</th>
-		// 				<th>Email</th>
-		// 			</tr>
-		// 		</thead>
-		// 		<tbody>';
-
-		// $output .= '		
-		// 			<tr>
-		// 				<td>' . $customer->customer_name . '</td>
-		// 				<td>' . $customer->customer_phone . '</td>
-		// 				<td>' . $customer->customer_email . '</td>
-						
-		// 			</tr>';
-
-
-		// $output .= '				
-		// 		</tbody>
-			
-		// </table>
-
-		// <p>Ship hàng tới</p>
-		// 	<table class="table-styling">
-		// 		<thead>
-		// 			<tr>
-		// 				<th>Tên người nhận</th>
-		// 				<th>Địa chỉ</th>
-		// 				<th>Sdt</th>
-		// 				<th>Email</th>
-		// 				<th>Ghi chú</th>
-		// 			</tr>
-		// 		</thead>
-		// 		<tbody>';
-
-		// $output .= '		
-		// 			<tr>
-		// 				<td>' . $shipping->s_name . '</td>
-		// 				<td>' . $shipping->s_address . '</td>
-		// 				<td>' . $shipping->s_phone . '</td>
-		// 				<td>' . $shipping->s_email . '</td>
-		// 				<td>' . $shipping->s_notes . '</td>
-						
-		// 			</tr>';
-
-
-		// $output .= '				
-		// 		</tbody>
-			
-		// </table>
-
-		// <p>Đơn hàng đặt</p>
-		// 	<table class="table-styling">
-		// 		<thead>
-		// 			<tr>
-		// 				<th>Tên sản phẩm</th>
-		// 				<th>Mã giảm giá</th>
-		// 				<th>Phí ship</th>
-		// 				<th>Số lượng</th>
-		// 				<th>Giá sản phẩm</th>
-		// 				<th>Thành tiền</th>
-		// 			</tr>
-		// 		</thead>
-		// 		<tbody>';
-
-		// $total = 0;
-
-		// foreach ($order_details_product as $key => $product) {
-
-		// 	$subtotal = $product->product_price * $product->product_sales_quantity;
-		// 	$total += $subtotal;
-
-		// 	if ($product->product_coupon != 'no') {
-		// 		$product_coupon = $product->product_coupon;
-		// 	} else {
-		// 		$product_coupon = 'không mã';
-		// 	}
-
-		// 	$output .= '		
-		// 			<tr>
-		// 				<td>' . $product->product_name . '</td>
-		// 				<td>' . $product_coupon . '</td>
-		// 				<td>' . number_format($product->product_feeship, 0, ',', '.') . 'đ' . '</td>
-		// 				<td>' . $product->product_sales_quantity . '</td>
-		// 				<td>' . number_format($product->product_price, 0, ',', '.') . 'đ' . '</td>
-		// 				<td>' . number_format($subtotal, 0, ',', '.') . 'đ' . '</td>
-						
-		// 			</tr>';
-		// }
-
-		// if ($coupon_condition == 1) {
-		// 	$total_after_coupon = ($total * $coupon_number) / 100;
-		// 	$total_coupon = $total - $total_after_coupon;
-		// } else {
-		// 	$total_coupon = $total - $coupon_number;
-		// }
-
-		// $output .= '<tr>
-		// 		<td colspan="2">
-		// 			<p>Tổng giảm: ' . $coupon_echo . '</p>
-		// 			<p>Phí ship: ' . number_format($product->product_feeship, 0, ',', '.') . 'đ' . '</p>
-		// 			<p>Thanh toán : ' . number_format($total_coupon + $product->product_feeship, 0, ',', '.') . 'đ' . '</p>
-		// 		</td>
-		// </tr>';
-		// $output .= '				
-		// 		</tbody>
-			
-		// </table>
-
-		// <p>Ký tên</p>
-		// 	<table>
-		// 		<thead>
-		// 			<tr>
-		// 				<th width="200px">Người lập phiếu</th>
-		// 				<th width="800px">Người nhận</th>
-						
-		// 			</tr>
-		// 		</thead>
-		// 		<tbody>';
-
-		// $output .= '				
-		// 		</tbody>
-			
-		// </table>
-
-		// ';
-
-
-		// return $output;
 	}
 	public function update_qty(Request $request)
 	{
 		$data = $request->all();
 		$order_details = OrderDetails::where('product_id', $data['order_product_id'])->where('order_code', $data['order_code'])->first();
-		$order_details->product_sales_quantity = $data['order_qty'];
+		$order_details->soluong = $data['order_qty'];
 		$order_details->save();
 	}
 	
@@ -419,8 +275,8 @@ class OrderController extends Controller
 
 		//lay shipping
 		$details = OrderDetails::where('order_code', $order->order_code)->first();
-		$fee_ship = $details->product_feeship;
-		$coupon_mail = $details->product_coupon;
+		$fee_ship = $details->phiship;
+		$coupon_mail = $details->magiamgia;
 
 		$shipping = Shipping::where('s_id', $order->s_id)->first();
 		$shipping_array = array(
@@ -577,7 +433,7 @@ class OrderController extends Controller
 
 			foreach ($order_details_product as $key => $order_d) {
 
-				$product_coupon = $order_d->product_coupon;
+				$product_coupon = $order_d->magiamgia;
 			}
 			if ($product_coupon != 'no') {
 				$coupon = Coupon::where('coupon_code', $product_coupon)->first();

@@ -34,7 +34,7 @@ class HomeController extends Controller
         $brand_product = DB::table('t_thuonghieu')->where('thuonghieu_status','0')->orderby('brand_id','desc')->get(); 
 
         $all_product = DB::table('tbl_product')->where('product_status', '0')->where('product_view','>','2')->orderby('product_id', 'desc')->limit(4)->get();
-        $all_product_sl = DB::table('tbl_product')->where('product_status', '0')->where('product_sold','>=','5')->orderby('product_id', 'desc')->limit(4)->get();
+        $all_product_sl = DB::table('tbl_product')->where('product_status', '0')->where('product_sold','>=','5')->orderby('product_sold', 'desc')->limit(4)->get();
         $all_product_km = DB::table('tbl_product')->where('product_status', '0')->where('product_km','>=','1000000')->orderby('product_id', 'desc')->limit(4)->get();
 
         return view('pages.home')->with('category', $cate_product)->with('brand', $brand_product)->with('all_product', $all_product)
@@ -66,8 +66,8 @@ class HomeController extends Controller
     {
         $data = $request->all();
 
-        if ($data['query']) {
-            $product = Product::where('product_status', '0')->where('product_name', 'LIKE', '%' . $data['query'] . '%')->get();
+        if ($data['query']) {// kiem tra xem co query hay ko. co nghia la nguoi dung co nhap tu khoa khong
+            $product = Product::where('product_status', '0')->where('product_name', 'LIKE', '%' . $data['query'] . '%')->get();//lay cac san pham co chuoi ki tu do roi hien thi ra
             $output = '<ul class="dropdown-menu" style="display:block; position:relative">';
             foreach ($product as $key => $val) {
                 $output .= '<li><a href="#">' . $val->product_name . '</a></li>';

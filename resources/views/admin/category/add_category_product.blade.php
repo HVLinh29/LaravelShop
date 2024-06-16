@@ -33,16 +33,7 @@
                             <label for="">Từ khóa danh mục</label>
                             <textarea style="resize: none"rows="5"  name="danhmuc_keywords" class="form-control" id="" ></textarea>
                         </div>
-                        <div class="form-group">
-                            <label for="">Thuộc danh mục</label>
-                            <select name="danhmuc_parent" class="form-control input-sm m-bot15">
-                                <option value="0">Danh mục cha</option>
-                                @foreach($category as $key => $val)
-                                <option value="{{$val->category_id}}">{{$val->category_name}}</option>
-                              @endforeach
-                              
-                            </select>
-                        </div>
+                       
                         <div class="form-group">
                             <label for="">Hiển thị</label>
                             <select name="danhmuc_status" class="form-control input-sm m-bot15">

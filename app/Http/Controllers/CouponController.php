@@ -24,13 +24,11 @@ class CouponController extends Controller
         $coupon = Coupon::find($coupon_id);
         $coupon->delete();
         Toastr::error('Xóa mã giảm giá thành công', 'Thành công');
-        // Session::put('message','Xóa mã giảm giá thành công');
         return Redirect::to('list-coupon');
     }
     public function unset_coupon(){
         $coupon = Session::get('coupon');
         if($coupon==true){
-      
             Session::forget('coupon');
             return redirect()->back()->with('message','Xóa mã khuyến mại thành công');
         }
@@ -47,7 +45,7 @@ class CouponController extends Controller
         $coupon->coupon_condition = $data['coupon_condition'];
         $coupon->save();
         Toastr::success('Thêm mã giảm giá thành công', 'Thành công');
-        // Session::put('message','Thêm mã giảm giá thành công');
+        
         return Redirect::to('list-coupon');
 
     }

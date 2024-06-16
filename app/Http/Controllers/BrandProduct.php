@@ -32,8 +32,7 @@ class BrandProduct extends Controller
     }
     public function all_brand_product(){
         $this->AuthLogin();
-        // $all_brand_product=DB::table('tbl_brand')->get();c1
-        $all_brand_product = Brand::orderBy('brand_id','DESC')->get();//c2
+        $all_brand_product = Brand::orderBy('brand_id','DESC')->get();
         $manager_brand_product = view('admin.brand.all_brand_product')->with('all_brand_product',$all_brand_product);
         return view('admin_layout')->with('admin.brand.all_brand_product',$manager_brand_product);
     }
@@ -47,7 +46,6 @@ class BrandProduct extends Controller
         $brand->thuonghieu_status =$data['thuonghieu_status'];
         $brand->save();
         Toastr::success('Thêm thương hiệu sản phẩm thành công', 'Thành công');
-        // Session::put('message','Thêm thương hiệu sản phẩm thành công');
         return Redirect::to('all-brand-product');
 
     }
@@ -55,19 +53,17 @@ class BrandProduct extends Controller
         $this->AuthLogin();
         DB::table('t_thuonghieu')->where('brand_id',$brand_product_id)->update(['thuonghieu_status'=>1]);
         Toastr::error('Hủy kích hoạt được thương hiệu sản phẩm', 'Hủy thành công');
-        // Session::put('message','Không kích hoạt được thương hiệu sản phẩm');
         return Redirect::to('all-brand-product');
     }
     public function active_brand_product($brand_product_id){
         $this->AuthLogin();
         DB::table('t_thuonghieu')->where('brand_id',$brand_product_id)->update(['thuonghieu_status'=>0]);
         Toastr::success('Kích hoạt thương hiệu sản phẩm thành công', 'Thành công');
-        // Session::put('message','Kích hoạt thương hiệu sản phẩm thành công');
+       
         return Redirect::to('all-brand-product');
     }
     public function edit_brand_product($brand_product_id){
         $this->AuthLogin();
-        // $edit_brand_product=DB::table('tbl_brand')->where('brand_id',$brand_product_id)->get();
         $edit_brand_product= Brand::where('brand_id',$brand_product_id)->get();
         $manager_brand_product = view('admin.brand.edit_brand_product')->with('edit_brand_product',$edit_brand_product);
         return view('admin_layout')->with('edit_brand_product',$manager_brand_product);
@@ -76,20 +72,18 @@ class BrandProduct extends Controller
         $this->AuthLogin();
        
         $data = $request->all();
-        $brand = Brand::find($brand_product_id);
+        $brand = Brand::find($brand_product_id);// truy xuat 1 ban ghi
         $brand->tenthuonghieu =$data['tenthuonghieu'];
         $brand->thuonghieu_slug =$data['thuonghieu_slug'];
         $brand->thuonghieu_desc =$data['thuonghieu_desc'];
         $brand->save();
         Toastr::success('Cập nhật thương hiệu sản phẩm thành công', 'Thành công');
-        // Session::put('message','Cập nhật thương hiệu sản phẩm thành công');
         return Redirect::to('all-brand-product');
     }
     public function delete_brand_product($brand_product_id){
         $this->AuthLogin();
         DB::table('t_thuonghieu')->where('brand_id',$brand_product_id)->delete();
         Toastr::error('Xóa thương hiệu sản phẩm thành công', 'Thành công');
-        // Session::put('message','Xóa thương hiệu sản phẩm thành công');
         return Redirect::to('all-brand-product');
     }
 

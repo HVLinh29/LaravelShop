@@ -25,7 +25,7 @@ class MailController extends Controller
     {
 
         $to_name = "VLinh C8";
-        $to_email = "20111061462@hunre.edu.vn"; //send to this email
+        $to_email = "20111061462@hunre.edu.vn"; // tat ca mail duoc dyi tu mail nay
 
 
         $data = array("name" => "Mail từ tài khoản Khách hàng", "body" => 'Mail gửi về vấn về hàng hóa');
@@ -46,9 +46,9 @@ class MailController extends Controller
 
         $data = [];
         foreach($customer_vip as $vip){
-            $data['email'][]= $vip->customer_email;
+            $data['email'][]= $vip->customer_email;// them cac email cua khach hang vip vao day
 
-        }
+        }// them cac thong tin cuua ma khuyen mai vao day
         $coupon = array(
             'start' =>$start,
             'end' =>$end,

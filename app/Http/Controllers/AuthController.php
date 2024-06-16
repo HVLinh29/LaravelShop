@@ -38,7 +38,7 @@ class AuthController extends Controller
             'admin_email' => 'required|email|max:255',
            
         ]);
-        // $data = $request->all();
+       //attempt  dung de xac thuc
         if(Auth::attempt(['admin_email' => $request->admin_email,'admin_password' => $request->admin_password])){
             return redirect('/dashboard');
         }else{

@@ -85,7 +85,6 @@ class PostController extends Controller
         }
         $baiviet->delete();
         Toastr::error('Xóa bài viết thành công', 'Thành công');
-        // Session::put('message', 'Xóa  bai viet thành công');
         return redirect('/list-post');
     }
     public function edit_post($id_baiviet)
@@ -116,7 +115,7 @@ class PostController extends Controller
             unlink($path);
             //Cap nhat anh moi
             $get_name_image = $get_image->getClientOriginalName(); // lay ten cua hinh anh do
-            $name_imgae = current(explode('.', $get_name_image));
+            $name_imgae = current(explode('.', $get_name_image));// lay ten truoc dau cham
             $new_image = $name_imgae . rand(0, 9999) . '.' . $get_image->getClientOriginalExtension();
             $get_image->move('public/uploads/post', $new_image);
 
@@ -125,7 +124,6 @@ class PostController extends Controller
 
         $baivietbv->save();
         Toastr::success('Cập nhật bài viết thành công', 'Thành công');
-        // Session::put('message', 'Cập nhật bài viết thành công');
         return redirect('/list-post');
     }
     public function danh_muc_bai_viet(Request $request, $baiviet_slug)
@@ -134,12 +132,10 @@ class PostController extends Controller
 
         $slider = Slider::orderBy('slider_id', 'desc')->where('slider_status', '1')->take(3)->get();
 
-
-
         $cate_product = DB::table('t_danhmucsanpham')->where('danhmuc_status', '0')->orderby('category_id', 'desc')->get();
         $brand_product = DB::table('t_thuonghieu')->where('thuonghieu_status','0')->orderby('brand_id','desc')->get(); 
 
-        $catepost = Article::where('article_slug', $baiviet_slug)->take(1)->get();
+        $catepost = Article::where('article_slug', $baiviet_slug)->take(1)->get();// tim cai danh muc bai viet dua tren slug 
 
         foreach ($catepost as $key => $cate) {
             $meta_desc = $cate->article_desc;
@@ -149,7 +145,7 @@ class PostController extends Controller
             $url_canonical = $request->url();
         }
 
-        $baiviett = Baiviet::with('cate_post')->where('baiviet_status', 1)->where('article_id', $cate_id)->get();
+        $baiviett = Baiviet::with('cate_post')->where('baiviet_status', 1)->where('article_id', $cate_id)->get();// tim cac bai viet lien quan dua tren danh muc cua no
 
 
         return view('pages.baiviet.danhmucbaiviet')->with('category', $cate_product)->with('brand', $brand_product)

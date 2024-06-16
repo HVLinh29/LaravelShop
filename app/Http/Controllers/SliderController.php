@@ -51,11 +51,9 @@ class SliderController extends Controller
             $slider->slider_desc = $data['slider_desc'];
             $slider->save();
             Toastr::success('Thêm slider thành công', 'Thành công');
-            // Session::put('message', 'Thêm slider thành công');
             return Redirect::to('managa-slider');
         } else {
             Toastr::error('Làm ơn thêm hình ảnh', 'Thêm hình ảnh');
-            // Session::put('message', 'Làm ơn thêm hình ảnh');
             return Redirect::to('add-slider');
         }
     }
@@ -63,21 +61,18 @@ class SliderController extends Controller
         $this->AuthLogin();
         DB::table('t_slider')->where('slider_id',$slider_id)->update(['slider_status'=>0]);
         Toastr::error('Chưa kích hoạt được slider', 'Chưa kích hoạt');
-        // Session::put('message','Không kích hoạt được slider');
         return Redirect::to('managa-slider');
     }
     public function active_slider($slider_id){
         $this->AuthLogin();
         DB::table('t_slider')->where('slider_id',$slider_id)->update(['slider_status'=>1]);
         Toastr::success('Kích hoạt Slider thành công', 'Thành công');
-        // Session::put('message','Kích hoạt được slider');
         return Redirect::to('managa-slider');
     }
     public function delete_slider($slider_id){
         $slider = Slider::find($slider_id);
         $slider->delete();
         Toastr::error('Xóa Slider thành công', 'Thành công');
-        // Session::put('message','Xóa Slider thành công');
         return Redirect::to('managa-slider');
     }
 }

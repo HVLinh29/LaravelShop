@@ -80,15 +80,15 @@
                             <td>{{ $shipping->s_name }}</td>
                             <td>{{ $shipping->s_address }}</td>
                             <td>{{ $shipping->s_phone }}</td>
-                            <td>{{ $shipping->sg_email }}</td>
+                            <td>{{ $shipping->s_email }}</td>
                             <td>{{ $shipping->s_notes }}</td>
                             <td>
                                 @if ($shipping->s_method == 0)
-                                    Thanh toán VNPAY, MOMO
+                                    Thanh toán VNPAY
                                 @elseif($shipping->s_method == 1)
                                     Tiền mặt
                                 @else
-                                    Thanh toán PayPal
+                                Thanh toán MOMO
                                 @endif
                             </td>
 
@@ -123,11 +123,7 @@
                 <table class="table table-striped b-t b-light">
                     <thead>
                         <tr>
-                            <th style="width:20px;">
-                                <label class="i-checks m-b-none">
-                                    <input type="checkbox"><i></i>
-                                </label>
-                            </th>
+                           
                             <th style="color:brown">Tên sản phẩm</th>
                             <th style="color:brown">Số lượng kho còn</th>
                             <th style="color:brown">Mã giảm giá</th>
@@ -148,27 +144,27 @@
                         @foreach ($order_details as $key => $details)
                             @php
                                 $i++;
-                                $subtotal = $details->product_price * $details->product_sales_quantity;
+                                $subtotal = $details->product_price * $details->soluong;
                                 $total += $subtotal;
                             @endphp
                             <tr class="color_qty_{{ $details->product_id }}">
 
-                                <td><i>{{ $i }}</i></td>
+                              
                                 <td>{{ $details->product_name }}</td>
                                 <td>{{ $details->product->product_quantity }}</td>
                                 <td>
-                                    @if ($details->product_coupon != 'no')
-                                        {{ $details->product_coupon }}
+                                    @if ($details->magiamgia != 'no')
+                                        {{ $details->magiamgia }}
                                     @else
                                         Không mã
                                     @endif
                                 </td>
-                                <td>{{ number_format($details->product_feeship, 0, ',', '.') }}đ</td>
+                                <td>{{ number_format($details->phiship, 0, ',', '.') }}đ</td>
                                 <td>
 
                                     <input type="number" min="1" {{ $order_status == 2 ? 'disabled' : '' }}
                                         class="order_qty_{{ $details->product_id }}"
-                                        value="{{ $details->product_sales_quantity }}" name="product_sales_quantity">
+                                        value="{{ $details->soluong }}" name="product_sales_quantity">
 
                                     <input type="hidden" name="order_qty_storage"
                                         class="order_qty_storage_{{ $details->product_id }}"
@@ -201,23 +197,23 @@
                                     @php
                                         $total_after_coupon = ($total * $coupon_number) / 100;
                                         echo 'Tổng giảm :' . number_format($total_after_coupon, 0, ',', '.') . '</br>';
-                                        $total_coupon = $total + $details->product_feeship - $total_after_coupon;
+                                        $total_coupon = $total + $details->phiship - $total_after_coupon;
                                     @endphp
                                 @else
                                     @php
-                                        echo 'Tổng giảm :' . number_format($coupon_number, 0, ',', '.') . 'k' . '</br>';
-                                        $total_coupon = $total + $details->product_feeship - $coupon_number;
+                                        echo 'Tổng giảm :' . number_format($coupon_number, 0, ',', '.') . ' VNĐ' . '</br>';
+                                        $total_coupon = $total + $details->phiship - $coupon_number;
 
                                     @endphp
                                 @endif
 
-                                Phí ship : {{ number_format($details->product_feeship, 0, ',', '.') }}đ</br>
-                                Thanh toán: {{ number_format($total_coupon, 0, ',', '.') }}đ
-                                {{-- <input type="hidden" name="total_coupon" value="{{ $total_coupon }}"> --}}
+                                Phí ship : {{ number_format($details->phiship, 0, ',', '.') }} VNĐ</br>
+                                Thanh toán: {{ number_format($total_coupon, 0, ',', '.') }} VNĐ
+                              
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="6">
+                            <td colspan="1">
                                 @foreach ($orderr as $key => $or)
                                     @if ($or->order_status == 1)
                                         <form>
@@ -226,7 +222,7 @@
 
                                                 <option id="{{ $or->order_id }}" selected value="1">Chưa xử lý
                                                 </option>
-                                                <option id="{{ $or->order_id }}" value="2">Đã xử lý-Đã giao hàng
+                                                <option id="{{ $or->order_id }}" value="2">Đã xử lý
                                                 </option>
 
                                             </select>
@@ -238,8 +234,7 @@
 
                                                 <option disabled id="{{ $or->order_id }}" value="1">Chưa xử lý
                                                 </option>
-                                                <option id="{{ $or->order_id }}" selected value="2">Đã xử lý-Đã giao
-                                                    hàng</option>
+                                                <option id="{{ $or->order_id }}" selected value="2">Đã xử lý</option>
 
                                             </select>
                                         </form>

@@ -33,9 +33,10 @@ class GalleryController extends Controller
     public function select_gallery(Request $request)
     {
         $product_id = $request->pro_id;
-        $gallery = Gallery::where('product_id', $product_id)->get();
-        $gallery_count = $gallery->count();
-        $output = ' <form>
+        $gallery = Gallery::where('product_id', $product_id)->get();//lay tât ca anh thuoc san pham co product id do
+        $gallery_count = $gallery->count(); // dêm sp luong anh
+        // tao 1 bien output  va 1 csrf de bao ve form khoi bi tan cong
+        $output = ' <form>  
         ' . csrf_field() . '
         <table class="table table-hover">
             <thead>
@@ -56,16 +57,12 @@ class GalleryController extends Controller
                 <tr>
                     <td>' . $i . '</td>
                     <td contenteditable class="edit_gal_name" data-gal_id="' . $gal->g_id . '">' . $gal->g_name . '</td>
-
-                   
                     <td>
                     <img src="' . url('public/uploads/gallery/' . $gal->g_image) . '" class="img-thumbnail" 
                     width="100px" height="100px">
                     <input type="file" class="file_image" style="width:40%" data-gal_id="' . $gal->g_id . '" 
                     id="file-' . $gal->g_id . '" name="file" accept="image/*"/>
                     </td>
-
-
                     <td>
                         <button type="button" data-gal_id="' . $gal->g_id . '" class="btn btn-danger delete-gallery">Xóa</button>
                     </td>
@@ -83,14 +80,14 @@ class GalleryController extends Controller
 
     public function insert_gallery(Request $request, $pro_id)
     {
-        $get_image = $request->file('file');
-        if ($get_image) {
+        $get_image = $request->file('file');//lay tap ten hinh anh tu request 
+        if ($get_image) {// neu co anh duoc tai len
             foreach ($get_image as $image) {
-                $get_name_image = $image->getClientOriginalName();
-                $name_image = current(explode('.', $get_name_image));
-                $new_image = $name_image . rand(0, 99) . '.' . $image->getClientOriginalExtension();
-                // Inside the foreach loop, correct the file move operation
-                $image->move('public/uploads/gallery', $new_image);
+                $get_name_image = $image->getClientOriginalName();// lay ten cua hinh anh
+                $name_image = current(explode('.', $get_name_image)); // lay ten anh trupc dau cham
+                $new_image = $name_image . rand(0, 99) . '.' . $image->getClientOriginalExtension();// tao ten moi voi so ngau nhien
+                
+                $image->move('public/uploads/gallery', $new_image);// luu anh vao day
 
                 $gallery = new Gallery();
                 $gallery->g_name = $new_image;
@@ -100,7 +97,7 @@ class GalleryController extends Controller
             }
         }
         Toastr::success('Thêm thư viện ảnh thành công.', 'Thành công');
-        // Session::put('message', 'Thêm thư viện ảnh thành công');
+       
         return redirect()->back();
     }
     public function update_gallery_name(Request $request)
@@ -127,7 +124,7 @@ class GalleryController extends Controller
             $get_name_image = $get_image->getClientOriginalName();
             $name_image = current(explode('.', $get_name_image));
             $new_image = $name_image . rand(0, 99) . '.' . $get_image->getClientOriginalExtension();
-            // Inside the foreach loop, correct the file move operation
+            
             $get_image->move('public/uploads/gallery', $new_image);
 
             $gallery = Gallery::find($gal_id);

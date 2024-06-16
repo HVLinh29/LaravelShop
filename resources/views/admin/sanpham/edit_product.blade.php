@@ -70,9 +70,9 @@
                                         @foreach ($cate_product as $key => $cate)
                                             @if ($cate->category_id == $pro->category_id)
                                                 <option selected value="{{ $cate->category_id }}">
-                                                    {{ $cate->category_name }}</option>
+                                                    {{ $cate->tendanhmuc }}</option>
                                             @else
-                                                <option value="{{ $cate->category_id }}">{{ $cate->category_name }}
+                                                <option value="{{ $cate->category_id }}">{{ $cate->tendanhmuc }}
                                                 </option>
                                             @endif
                                         @endforeach
@@ -84,10 +84,10 @@
                                     <select name="product_brand" class="form-control input-sm m-bot15">
                                         @foreach ($brand_product as $key => $brand)
                                             @if ($brand->brand_id == $pro->brand_id)
-                                                <option selected value="{{ $brand->brand_id }}">{{ $brand->brand_name }}
+                                                <option selected value="{{ $brand->brand_id }}">{{ $brand->tenthuonghieu }}
                                                 </option>
                                             @else
-                                                <option value="{{ $brand->brand_id }}">{{ $brand->brand_name }}</option>
+                                                <option value="{{ $brand->brand_id }}">{{ $brand->tenthuonghieu }}</option>
                                             @endif
                                         @endforeach
                                     </select>

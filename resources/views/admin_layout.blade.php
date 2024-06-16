@@ -50,10 +50,10 @@
             </div>
 
             <div class="top-nav clearfix">
-                <!--search & user info start-->
+           
                 <ul class="nav pull-right top-menu">
 
-                    <!-- user login dropdown start-->
+                  
                     <li class="dropdown">
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
 
@@ -86,7 +86,7 @@
                     <ul class="sidebar-menu" id="nav-accordion">
                         <li>
                             <a class="active" href="{{ URL::to('/dashboard') }}">
-                                <i class="fa fa-dashboard"></i>
+                                <i class="icon-dashboard"></i>
                                 <span>Tổng quan</span>
                             </a>
                         </li>
@@ -101,7 +101,7 @@
                             </ul>
                         </li>
                         <li class="sub-menu">
-                            <a href="javascript:;">
+                            <a href="">
                                 <i class="fa fa-copyright"></i>
                                 <span>Thương hiệu sản phẩm</span>
                             </a>
@@ -111,7 +111,7 @@
                             </ul>
                         </li>
                         <li class="sub-menu">
-                            <a href="javascript:;">
+                            <a href="">
                                 <i class="fa fa-tag"></i>
                                 <span>Danh mục bài viết</span>
                             </a>
@@ -121,8 +121,8 @@
                             </ul>
                         </li>
                         <li class="sub-menu">
-                            <a href="javascript:;">
-                                <i class="fa fa-shopify"></i>
+                            <a href=""> 
+                                <i class="icon-folder-open"></i>
                                 <span>Sản phẩm</span>
                             </a>
                             <ul class="sub">
@@ -131,7 +131,7 @@
                             </ul>
                         </li>
                         <li class="sub-menu">
-                            <a href="javascript:;">
+                            <a href="">
                                 <i class="fa fa-eye"></i>
                                 <span>Đơn hàng</span>
                             </a>
@@ -142,7 +142,7 @@
                             </ul>
                         </li>
                         <li class="sub-menu">
-                            <a href="javascript:;">
+                            <a href="">
                                 <i class="fa fa-dollar-sign"></i>
                                 <span>Mã giảm giá</span>
                             </a>
@@ -152,7 +152,7 @@
                             </ul>
                         </li>
                         <li class="sub-menu">
-                            <a href="javascript:;">
+                            <a href="">
                                 <i class="fa fa-car"></i>
                                 <span>Phí vận chuyển</span>
                             </a>
@@ -169,7 +169,7 @@
                             </a>
                         </li> --}}
                         {{-- <li class="sub-menu">
-                            <a href="javascript:;">
+                            <a href="">
                                 <i class="fa fa-sliders"></i>
                                 <span>Slider</span>
                             </a>
@@ -180,7 +180,7 @@
                             </ul>
                         </li> --}}
                         <li class="sub-menu">
-                            <a href="javascript:;">
+                            <a href="">
                                 <i class="fa fa-book"></i>
                                 <span>Bài viết</span>
                             </a>
@@ -190,7 +190,7 @@
                             </ul>
                         </li>
                         <li class="sub-menu">
-                            <a href="javascript:;">
+                            <a href="">
                                 <i class="fa fa-comments"></i>
                                 <span>Bình luận</span>
                             </a>
@@ -208,7 +208,7 @@
                         @endtransferrights
                         @hasrole(['admin', 'author'])
                             <li class="sub-menu">
-                                <a href="javascript:;">
+                                <a href="">
                                     <i class="fa fa-users"></i>
                                     <span>User</span>
                                 </a>
@@ -332,201 +332,9 @@
         });
     </script>
 
-    <script type="text/javascript">
-        $('.comment_duyet').click(function() {
-            var cmt_status = $(this).data('cmt_status');
-            var cmt_id = $(this).data('cmt_id');
-            var cmt_pr_id = $(this).attr('id');
-            if (cmt_status == 0) {
-                var alert = 'Bình luận đã được duyệt';
-            } else {
-                var alert = 'Hủy duyệt bình luận';
-            }
-            $.ajax({
-                url: "{{ url('/duyet-comment') }}",
-                method: "POST",
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-
-                },
-                data: {
-                    cmt_status: cmt_status,
-                    cmt_id: cmt_id,
-                    cmt_pr_id: cmt_pr_id
-                },
-                success: function(data) {
-                    location.reload();
-                    $('#notify_comment').html('<span class="text text-alert">' + alert + '</span>');
-                }
-            });
-        });
-        $('.btn-reply-comment').click(function() {
-            var cmt_id = $(this).data('cmt_id');
-            var cmt = $('.reply_comment_' + cmt_id).val();
-            var cmt_pr_id = $(this).data('product_id');
-
-            $.ajax({
-                url: "{{ url('/reply-comment') }}",
-                method: "POST",
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-
-                },
-                data: {
-                    cmt: cmt,
-                    cmt_id: cmt_id,
-                    cmt_pr_id: cmt_pr_id
-                },
-                success: function(data) {
-                    $('.reply_comment_' + cmt_id).val('');
-                    $('#notify_comment').html(
-                        '<span class="text text-alert">Đã trả lời bình luận</span>');
-                }
-            });
-        });
+ 
     </script>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            load_video();
 
-            function load_video() {
-
-                $.ajax({
-                    url: "{{ url('/select-video') }}",
-                    method: "POST",
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-
-                    },
-                    success: function(data) {
-                        $('#video_load').html(data);
-                    }
-                });
-            }
-            $(document).on('click', '.btn-add-video', function() {
-                var video_title = $('.video_title').val();
-                var video_slug = $('.video_slug').val();
-                var video_desc = $('.video_desc').val();
-                var video_link = $('.video_link').val();
-
-                var form_data = new FormData();
-                form_data.append("file", document.getElementById("file_img_video").files[0]);
-                form_data.append("video_title", video_title);
-                form_data.append("video_slug", video_slug);
-                form_data.append("video_desc", video_desc);
-                form_data.append("video_link", video_link);
-
-                $.ajax({
-                    url: "{{ url('/insert-video') }}",
-                    method: "POST",
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-
-                    },
-                    data: form_data,
-                    contentType: false,
-                    processData: false,
-                    cache: false,
-                    success: function(data) {
-                        load_video();
-                        $('#notify').html(
-                            '<span class="text text-success">Thêm video thành công</span>'
-                        );
-                    }
-                });
-
-            });
-            $(document).on('blur', '.video_edit', function() {
-                var video_type = $(this).data('video_type');
-                var video_id = $(this).data('video_id');
-                if (video_type == 'video_title') {
-                    var video_edit = $('#' + video_type + '_' + video_id).text();
-                    var video_check = video_type;
-                } else if (video_type == 'video_desc') {
-                    var video_edit = $('#' + video_type + '_' + video_id).text();
-                    var video_check = video_type;
-                } else if (video_type == 'video_link') {
-                    var video_edit = $('#' + video_type + '_' + video_id).text();
-                    var video_check = video_type;
-                } else {
-                    var video_edit = $('#' + video_type + '_' + video_id).text();
-                    var video_check = video_type;
-                }
-                $.ajax({
-                    url: "{{ url('/update-video') }}",
-                    method: "POST",
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-
-                    },
-                    data: {
-                        video_check: video_check,
-                        video_edit: video_edit,
-                        video_id: video_id
-                    },
-                    success: function(data) {
-                        load_video();
-                        $('#notify').html(
-                            '<span class="text text-success">Cập nhật video thành công</span>'
-                        );
-                    }
-                });
-            });
-            $(document).on('click', '.btn-delete-video', function() {
-                var video_id = $(this).data('video_id');
-                if (confirm('Bạn có muốn xóa video này?')) {
-                    $.ajax({
-                        url: "{{ url('/delete-video') }}",
-                        method: "POST",
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-
-                        },
-                        data: {
-                            video_id: video_id
-                        },
-                        success: function(data) {
-                            load_video();
-                            $('#notify').html(
-                                '<span class="text text-success">Xóa video thành công!</span>'
-                            );
-                        }
-                    });
-                }
-
-            });
-            $(document).on('change', '.file_img_video', function() {
-                var video_id = $(this).data('video_id');
-                var image = document.getElementById('file-video-' + video_id).files[0];
-
-                var form_data = new FormData();
-                form_data.append("file", document.getElementById('file-video-' + video_id).files[0]);
-                form_data.append("video_id", video_id);
-
-
-                $.ajax({
-                    url: "{{ url('/update-video-image') }}",
-                    method: "POST",
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-
-                    },
-                    data: form_data,
-                    contentType: false,
-                    processData: false,
-                    cache: false,
-                    success: function(data) {
-                        load_video();
-                        $('#notify').html(
-                            '<span class="text text-success">Cập nhật hình video thành công</span>'
-                        );
-                    }
-                });
-
-            });
-
-        });
-    </script>
     <script type="text/javascript">
         $(document).ready(function() {
             load_gallery();
@@ -567,7 +375,7 @@
                     return false;
                 }
             });
-            $(document).on('blur', '.edit_gal_name', function() {
+            $(document).on('blur', '.edit_gal_name', function() {// cac o nhap thay doi truc tiep thi can cai nay
                 var gal_id = $(this).data('gal_id');
                 var gal_text = $(this).text();
                 var _token = $('input[name="_token"]').val();
@@ -820,105 +628,7 @@
 
     <script src="js/jquery.scrollTo.js"></script>
     <!-- morris JavaScript -->
-    <script>
-        $(document).ready(function() {
-            //BOX BUTTON SHOW AND CLOSE
-            jQuery('.small-graph-box').hover(function() {
-                jQuery(this).find('.box-button').fadeIn('fast');
-            }, function() {
-                jQuery(this).find('.box-button').fadeOut('fast');
-            });
-            jQuery('.small-graph-box .box-close').click(function() {
-                jQuery(this).closest('.small-graph-box').fadeOut(200);
-                return false;
-            });
-
-            //CHARTS
-            function gd(year, day, month) {
-                return new Date(year, month - 1, day).getTime();
-            }
-
-            graphArea2 = Morris.Area({
-                element: 'hero-area',
-                padding: 10,
-                behaveLikeLine: true,
-                gridEnabled: false,
-                gridLineColor: '#dddddd',
-                axes: true,
-                resize: true,
-                smooth: true,
-                pointSize: 0,
-                lineWidth: 0,
-                fillOpacity: 0.85,
-                data: [{
-                        period: '2015 Q1',
-                        iphone: 2668,
-                        ipad: null,
-                        itouch: 2649
-                    },
-                    {
-                        period: '2015 Q2',
-                        iphone: 15780,
-                        ipad: 13799,
-                        itouch: 12051
-                    },
-                    {
-                        period: '2015 Q3',
-                        iphone: 12920,
-                        ipad: 10975,
-                        itouch: 9910
-                    },
-                    {
-                        period: '2015 Q4',
-                        iphone: 8770,
-                        ipad: 6600,
-                        itouch: 6695
-                    },
-                    {
-                        period: '2016 Q1',
-                        iphone: 10820,
-                        ipad: 10924,
-                        itouch: 12300
-                    },
-                    {
-                        period: '2016 Q2',
-                        iphone: 9680,
-                        ipad: 9010,
-                        itouch: 7891
-                    },
-                    {
-                        period: '2016 Q3',
-                        iphone: 4830,
-                        ipad: 3805,
-                        itouch: 1598
-                    },
-                    {
-                        period: '2016 Q4',
-                        iphone: 15083,
-                        ipad: 8977,
-                        itouch: 5185
-                    },
-                    {
-                        period: '2017 Q1',
-                        iphone: 10697,
-                        ipad: 4470,
-                        itouch: 2038
-                    },
-
-                ],
-                lineColors: ['#eb6f6f', '#926383', '#eb6f6f'],
-                xkey: 'period',
-                redraw: true,
-                ykeys: ['iphone', 'ipad', 'itouch'],
-                labels: ['All Visitors', 'Returning Visitors', 'Unique Visitors'],
-                pointSize: 2,
-                hideHover: 'auto',
-                resize: true
-            });
-
-
-        });
-    </script>
+    
      <script type="text/javascript">
         $('.money').simpleMoneyFormat();
         $('.money_cost').simpleMoneyFormat();
@@ -961,11 +671,10 @@
             element: 'donut',
             resize: true,
             colors: [
-                '#ce616a',
-                '#61a1ce',
-                '#ce8f61',
-              
-                '#006064'
+                '#FF5733', // Màu cam đậm
+                '#33FF57', // Màu xanh lá tươi sáng
+                '#3357FF', // Màu xanh dương đậm
+                '#FFC300'  // Màu vàng sáng
             ],
             data: [{
                     label: "Sản phẩm",

@@ -17,8 +17,8 @@ Route::get('/comment','ProductController@list_comment');
 Route::post('/quickview','ProductController@quickview');
 Route::post('/load-comment','ProductController@load_comment');
 Route::post('/send-comment','ProductController@send_comment');
-Route::post('/duyet-comment','ProductController@duyet_comment');
-Route::post('/reply-comment','ProductController@reply_comment');
+
+
 Route::get('/delete-comment/{cmt_id}','ProductController@delete_comment');
 Route::post('/insert-rating','ProductController@insert_rating');
 

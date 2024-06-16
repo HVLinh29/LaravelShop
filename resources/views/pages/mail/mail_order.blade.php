@@ -74,11 +74,11 @@
             <li>
                 <strong>Phương thức giao hàng:</strong>
                 @if ($shipping_array['s_method'] == '0')
-                    Thanh toán VNPAY, MOMO
+                    Thanh toán VNPAY
                 @elseif($shipping_array['s_method'] == '1')
                     Tiền mặt
                 @else
-                Thanh toán PayPal
+                Thanh toán MOMO
                 @endif
                 
             </li>

@@ -54,11 +54,11 @@
                                     <td>{{ $shipping->s_notes }}</td>
                                     <td>
                                         @if ($shipping->s_method == 0)
-                                            Thanh toán VNPAY, MOMO
+                                            Thanh toán VNPAY
                                         @elseif($shipping->s_method == 1)
                                             Tiền mặt
                                         @else
-                                            Thanh toán PayPal
+                                        Thanh toán MOMO
                                         @endif
                                     </td>
                                 </tr>
@@ -96,7 +96,7 @@
                         @foreach ($order_details as $key => $details)
                             @php
                                 $i++;
-                                $subtotal = $details->product_price * $details->product_sales_quantity;
+                                $subtotal = $details->product_price * $details->soluong;
                                 $total += $subtotal;
                             @endphp
                             <tr>
@@ -104,19 +104,19 @@
                                 <td>{{ $details->product_name }}</td>
                                 <td>{{ $details->product->product_quantity }}</td>
                                 <td>
-                                    @if ($details->product_coupon != 'no')
-                                        {{ $details->product_coupon }}
+                                    @if ($details->magiamgia != 'no')
+                                        {{ $details->magiamgia }}
                                     @else
                                         Không mã
                                     @endif
                                 </td>
-                                <td>{{ number_format($details->product_feeship, 0, ',', '.') }}đ
+                                <td>{{ number_format($details->phiship, 0, ',', '.') }} VNĐ
                                 </td>
                                 <td>
                                     <input type="number" min="1" readonly
                                         {{ $order_status == 2 ? 'disabled' : '' }}
                                         class="order_qty_{{ $details->product_id }}"
-                                        value="{{ $details->product_sales_quantity }}" name="product_sales_quantity">
+                                        value="{{ $details->soluong }}" name="product_sales_quantity">
                                     <input type="hidden" name="order_qty_storage"
                                         class="order_qty_storage_{{ $details->product_id }}"
                                         value="{{ $details->product->product_quantity }}">
@@ -125,10 +125,10 @@
                                     <input type="hidden" name="order_product_id" class="order_product_id"
                                         value="{{ $details->product_id }}">
                                 </td>
-                                <td>{{ number_format($details->product_price, 0, ',', '.') }}đ
+                                <td>{{ number_format($details->product_price, 0, ',', '.') }} VNĐ
                                 </td>
 
-                                <td>{{ number_format($subtotal, 0, ',', '.') }}đ</td>
+                                <td>{{ number_format($subtotal, 0, ',', '.') }} VNĐ</td>
                             </tr>
                         @endforeach
                         <tr>
@@ -140,18 +140,18 @@
                                     @php
                                         $total_after_coupon = ($total * $coupon_number) / 100;
                                         echo 'Tổng giảm :' . number_format($total_after_coupon, 0, ',', '.') . '</br>';
-                                        $total_coupon = $total + $details->product_feeship - $total_after_coupon;
+                                        $total_coupon = $total + $details->phiship - $total_after_coupon;
                                     @endphp
                                 @else
                                     @php
-                                        echo 'Tổng giảm :' . number_format($coupon_number, 0, ',', '.') . 'k' . '</br>';
-                                        $total_coupon = $total + $details->product_feeship - $coupon_number;
+                                        echo 'Tổng giảm :' . number_format($coupon_number, 0, ',', '.') . ' VNĐ' . '</br>';
+                                        $total_coupon = $total + $details->phiship - $coupon_number;
                                     @endphp
                                 @endif
                                 Phí ship :
-                                {{ number_format($details->product_feeship, 0, ',', '.') }}đ</br>
+                                {{ number_format($details->phiship, 0, ',', '.') }} VNĐ</br>
                                 Thanh toán:
-                                {{ number_format($total_coupon, 0, ',', '.') }}đ
+                                {{ number_format($total_coupon, 0, ',', '.') }} VNĐ
                             </td>
                         </tr>
                     </tbody>

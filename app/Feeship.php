@@ -7,17 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 class Feeship extends Model
 {
     public $timestamps = false;
-    protected $fillable = ['fee_matp','fee_maqh','fee_xaid','fee_feeship'];
+    protected $fillable = ['mtinh','mhuyen','mxa','fee_feeship'];
     protected $primaryKey = 'fee_id';
-    protected $table = 'tbl_feeship';
+    protected $table = 't_phiship';
 
     public function city(){
-        return $this->belongsTo('App\Tinh', 'fee_matp');
+        return $this->belongsTo('App\Tinh', 'mtinh');
     }
     public function province(){
-        return $this->belongsTo('App\Huyen', 'fee_maqh');
+        return $this->belongsTo('App\Huyen', 'mhuyen');
     }
     public function wards(){
-        return $this->belongsTo('App\Xa', 'fee_xaid');
+        return $this->belongsTo('App\Xa', 'mxa');
     }
 }
